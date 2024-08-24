@@ -1,0 +1,63 @@
+/* Cool infinite background scrolling animation.
+ * Twitter: @kootoopas
+ */
+/* Background data (Original source: https://subtlepatterns.com/grid-me/) */
+/* Animations */
+@-webkit-keyframes bg-scrolling-reverse {
+    100% {
+      background-position: 100px 100px;
+    }
+  }
+  @-moz-keyframes bg-scrolling-reverse {
+    100% {
+      background-position: 100px 100px;
+    }
+  }
+  @-o-keyframes bg-scrolling-reverse {
+    100% {
+      background-position: 100px 100px;
+    }
+  }
+  @keyframes bg-scrolling-reverse {
+    100% {
+      background-position: 100px 100px;
+    }
+  }
+  @-webkit-keyframes bg-scrolling {
+    0% {
+      background-position: 100px 100px;
+    }
+  }
+  @-moz-keyframes bg-scrolling {
+    0% {
+      background-position: 100px 100px;
+    }
+  }
+  @-o-keyframes bg-scrolling {
+    0% {
+      background-position: 100px 100px;
+    }
+  }
+  @keyframes bg-scrolling {
+    0% {
+      background-position: 100px 100px;
+    }
+  }
+  /* Main styles */
+  .animation1 {
+    /* img size is 50x50 via sizing (20x20 normally) */
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAADdJREFUOE9j/P///z8GBgZGBuqAv4yCgoL/qWMWxJRRAykPzdEwHA1DMkJgNNmQEWhoWkZgGAIA9gAbxFFKH5QAAAAASUVORK5CYII=") repeat 0 0;
+    background-size: 100px 100px;
+    -webkit-animation: bg-scrolling-reverse 1.92s infinite;
+    /* Safari 4+ */
+    -moz-animation: bg-scrolling-reverse 1.92s infinite;
+    /* Fx 5+ */
+    -o-animation: bg-scrolling-reverse 1.92s infinite;
+    /* Opera 12+ */
+    animation: bg-scrolling-reverse 1.92s infinite;
+    /* IE 10+ */
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+    -o-animation-timing-function: linear;
+    animation-timing-function: linear;
+  }

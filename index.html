@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:600">
+
+    <link rel="stylesheet" href="animation1.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: sans-serif;
+        }
+        
+        .jumbotron {
+            background-color: #0f0f0f;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 3vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .jumbotron.animation1 h1 {
+            font-size: 20vh;
+        }
+
+        .jumbotron .content {
+            max-width: 1300px;
+        }
+        
+        .footer {
+            background-color: #252d35;
+            color: #fff;
+            height: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .nav-links {
+            width: 20%;
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0;
+            float: right;
+        }
+
+        .nav-links li {
+            margin-right: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="jumbotron animation1">
+        <div class="content">
+            <h1>MeasuresAI</h1>
+        </div>
+    </div>
+    <div class="jumbotron animation2">
+        <div class="content">
+            <h1>The agentic AI platform.</h1>
+            <p>The smartest, most resourceful multi-step models at your fingertips so you can automate your decision-making.</p>
+        </div>
+    </div>
+
+    <!-- <div class="footer">
+        Measures AI
+    </div> -->
+</body>
+</html>
