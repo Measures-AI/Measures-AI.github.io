@@ -8,9 +8,19 @@ body {
 }
 
 .content {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    justify-content: center;
+    padding: 0 20px;
+    justify-content: right;
+}
+
+.inner-content {
+    width: 100%;
+    max-width: 800px;
+    margin: 0;
+    margin-right: auto;
+    padding: 0;
 }
 
 
@@ -28,7 +38,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 0;
 }
 
 .navbar .logo {
@@ -37,6 +47,7 @@ header {
     color: white;
     padding: 0;
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .navbar .logo h2 {
@@ -76,7 +87,7 @@ header {
     justify-content: center;
     align-items: center;
     color: #fff;
-    font-size: 3vh;
+    font-size: 2vh;
     font-family: 'Montserrat', sans-serif;
 }
 .jumbotron .graphic {
@@ -88,22 +99,6 @@ header {
     display: flex;
     opacity: 0.2;
     z-index: -1;
-}
-
-#home h1 {
-    margin: 0;
-    padding: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 12vw;
-}
-
-#home p {
-    font-size: 3vw;
-    margin: 0;
-    padding: 0 1vw;
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 
 
@@ -130,21 +125,16 @@ header {
 }
 
 @media (min-width: 1400px) {
-    #home h1 {
-        font-size: 200px;
-    }
-}
-@media (max-width: 700px) {
-    .content {
-        padding: 0 20px;
-    }
+    /* #home h1 {
+        /* font-size: 200px; 
+    } */
 }
 
 @media (max-width: 700px) {
     .nav-links {
         display: none;
     }
-}
-header .content {
-    padding: 0;
+    .jumbotron {
+        font-size: 2vh;
+    }
 }
