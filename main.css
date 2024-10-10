@@ -5,6 +5,8 @@ body {
     flex-direction: column;
     font-family: sans-serif;
     background-color: #0f0f0f;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
 }
 
 .content {
@@ -47,7 +49,7 @@ header {
     color: white;
     padding: 0;
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
 }
 
 .navbar .logo h2 {
@@ -88,7 +90,13 @@ header {
     align-items: center;
     color: #fff;
     font-size: 2vh;
-    font-family: 'Montserrat', sans-serif;
+    
+}
+.jumbotron h1 {
+    font-weight: 600;
+}
+#home {
+    font-weight: 600;
 }
 .jumbotron .graphic {
     position: absolute;
