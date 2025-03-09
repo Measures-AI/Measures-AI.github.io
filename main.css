@@ -6,7 +6,7 @@ body {
     font-family: sans-serif;
     background-color: #0f0f0f;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
+    /* font-weight: 400; */
 }
 
 .content {
@@ -36,6 +36,9 @@ header {
     padding: 20px 0;
     background-image: linear-gradient(to bottom, rgba(15, 15, 15, 1), rgba(15, 15, 15, 0));
 }
+header .content {
+    max-width: 95vw;
+}
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -44,7 +47,7 @@ header {
 }
 
 .navbar .logo {
-    width: 50%;
+    width: 40%;
     float: left;
     color: white;
     padding: 0;
@@ -58,7 +61,7 @@ header {
 }
 
 .nav-links {
-    width: 50%;
+    width: 60%;
     align-items: center; /* Add this line */
     display: flex;
     justify-content: flex-end;
@@ -139,6 +142,9 @@ header {
 }
 
 @media (max-width: 700px) {
+    .navbar .logo {
+        width: 90%;
+    }
     .nav-links {
         display: none;
     }
