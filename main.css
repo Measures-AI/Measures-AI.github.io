@@ -9,8 +9,18 @@ body {
     /* font-weight: 400; */
 }
 
+.body-main
+{
+    position: fixed;
+    top: 69px;
+    overflow-y: scroll;
+    height: calc(100vh - 69px);
+    width: 100vw;
+}
+
 .content {
     width: 100%;
+    height: fit-content;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
@@ -85,7 +95,7 @@ header .content {
 
 /* jumbotrons */
 .jumbotron {
-    height: 100vh;
+    height: fit-content;
     margin: 0;
     padding: 0;
     display: flex;
@@ -135,6 +145,133 @@ header .content {
     text-align: center;
 }
 
+/* About Section Layout */
+.about-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* justify-content: space-between; */
+    height: 100%;
+}
+
+.about-text {
+    width: 50%;
+    padding-right: 20px;
+}
+
+.about-text h1 {
+    margin-bottom: 30px;
+}
+
+.about-text p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.about-text strong {
+    font-weight: 600;
+}
+
+.about-carousel {
+    width: 45%;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-title {
+    display: none;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 400;
+    color: #ccc;
+}
+
+.about-cta {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Carousel Styles */
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    animation: carousel 15s linear infinite;
+}
+
+.carousel-slide {
+    min-width: 150px;
+    height: 150px;
+    margin: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-slide img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    /* filter: brightness(0) invert(1); Makes all icons white */
+    transition: transform 0.3s ease;
+}
+
+.carousel-slide:hover img {
+    transform: scale(1.1);
+}
+
+@keyframes carousel {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-900px); /* Adjusted to account for more logos */
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .about-content {
+        flex-direction: column;
+        justify-content: baseline;
+    }
+    
+    .about-text, .about-carousel {
+        width: 100%;
+    }
+    
+    .about-text {
+        padding-right: 0;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    .about-carousel {
+        padding: 20px 0;
+        margin-bottom: 40px;
+    }
+    
+    .carousel-title {
+        display: block;
+    }
+    
+    .carousel-container {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .carousel-slide {
+        min-width: 120px;
+        height: 120px;
+        margin: 0 15px;
+    }
+}
+
 @media (min-width: 1400px) {
     /* #home h1 {
         /* font-size: 200px; 
@@ -150,5 +287,287 @@ header .content {
     }
     .jumbotron {
         font-size: 2vh;
+    }
+}
+
+/* Full-width image divider */
+.image-divider {
+    width: 100%;
+    background-color: #0f0f0f;
+    position: relative;
+    overflow: hidden;
+}
+
+.divider-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.divider-content {
+    width: 100%;
+    padding: 60px 5%;
+    background-color: rgba(15, 15, 15, 0.8);
+    z-index: 2;
+    color: white;
+}
+
+.divider-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.divider-content p {
+    font-size: 1.2rem;
+    max-width: 600px;
+}
+
+.divider-image {
+    width: 100%;
+    height: 200px; /* Set a fixed height for desktop*/
+    position: relative;
+    overflow: hidden;
+}
+
+.divider-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover ensures the image fills the container */
+    display: block;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 900px) {
+    .divider-container {
+        flex-direction: row; /* Change to horizontal layout on mobile */
+        height: 100px; /*Fixed height for the container on mobile*/
+    }
+    
+    .divider-content {
+        width: 100%; /* Take 60% of the width on mobile */
+        padding: 30px 5%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .divider-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .divider-content p {
+        font-size: 1rem;
+    }
+    
+    .divider-image {
+        width: 100%; /* Take 40% of the width on mobile */
+        height: 100%; /* Full height of the container on mobile */
+        position: relative;
+    }
+}
+
+/* For very small screens */
+@media (max-width: 600px) {
+    .divider-content {
+        width: 100%; /* More space for text on very small devices */
+    }
+    
+    .divider-image {
+        width: 100%; /* Less space for image on very small devices */
+    }
+}
+
+/* Clear section styling */
+.jumbotron#contact {
+    background-color: #0f0f0f;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 0;
+    overflow: hidden;
+    clear: both;
+}
+
+.jumbotron#contact .inner-content {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.jumbotron#contact h1 {
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+/* Team grid layout */
+.team-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.team-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.top-row {
+    justify-content: center;
+    gap: 60px;
+}
+
+.bottom-row {
+    justify-content: center;
+    gap: 30px;
+}
+
+.team-member {
+    text-align: center;
+    width: 200px;
+}
+
+.team-photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-name {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+    font-weight: 600;
+}
+
+.team-title {
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+    color: #ccc;
+}
+
+.team-cta {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.team-cta button {
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 30px;
+}
+
+/* Media queries for responsive behavior */
+@media (max-width: 900px) {
+    .jumbotron#contact {
+        padding: 60px 0;
+    }
+    
+    .team-grid {
+        max-width: 100%;
+    }
+    
+    .top-row, .bottom-row {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .team-member {
+        width: 180px;
+    }
+    
+    .team-photo {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .team-name {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .jumbotron#contact {
+        padding: 40px 0;
+    }
+    
+    .jumbotron#contact h1 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+    
+    .team-grid {
+        width: 100%;
+    }
+    
+    .team-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 0;
+    }
+    
+    .top-row {
+        margin-bottom: 30px;
+    }
+    
+    .team-member {
+        width: 100%;
+        max-width: 230px;
+        margin-bottom: 20px;
+    }
+    
+    .team-photo {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+/* Special mobile adjustments to prevent team members from being cut off */
+@media (max-width: 480px) {
+    .jumbotron#contact {
+        height: auto;
+        min-height: auto;
+        padding: 30px 0 50px;
+    }
+    
+    .team-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .team-member {
+        margin-bottom: 30px;
+    }
+    
+    .team-photo {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .team-name {
+        font-size: 1.4rem;
+    }
+    
+    .team-title {
+        font-size: 0.85rem;
     }
 }
