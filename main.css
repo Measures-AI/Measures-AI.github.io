@@ -9,8 +9,18 @@ body {
     /* font-weight: 400; */
 }
 
+.body-main
+{
+    position: fixed;
+    top: 69px;
+    overflow-y: scroll;
+    height: calc(100vh - 69px);
+    width: 100vw;
+}
+
 .content {
     width: 100%;
+    height: fit-content;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
@@ -85,7 +95,7 @@ header .content {
 
 /* jumbotrons */
 .jumbotron {
-    height: 100vh;
+    height: fit-content;
     margin: 0;
     padding: 0;
     display: flex;
