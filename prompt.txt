@@ -1,0 +1,20 @@
+Please generate a website with the following:
+
+A black background, white text everywhere with all text being in Montserrat of various weights. The logo is just "Measures AI" in Montserrat bold in the top right, the top left is a navigation bar with three sections: "Opportunity", "Inisght", "Process", "Mission", and a bold "Contact Us".
+
+This will be a one-page website. The header scrolls with the page and has a slight black translucent gradient (from totally transparent to not) background to accent it from the rest of the material as it scrolls. The jumbotron has a height of 105vh from the very top of the screen to below the bottom. There will be an animation here. Create a div for the animation that takes up the whole region. On top of this, put text in the center that, in big montserrat text, says "Why do people buy from you?" and below it in smaller text but still larger than normal says "Not just a sales problem, CFOs, CPOs, and CTOs also want to know. <br/> We measure everything to answer that very question."
+
+The animation, for now, is just going to be: the bottom of the div (bottom 20vh) is going to have vertical white lines of 10px width with 80px between them infinitely scrolling to the right (like a 2d conveyor belt) such that they go the full distance to the next line in 1s. No padding around this, it must look like it is coming from and going to off screen.
+
+Then below the jumbotron are the sections. Each will have a height of 60vh. Opportunity will have some text, currently lorem ipsum, with a title that says "Measure everything." This text will be left aligned with a graphic to the right (right now just make it a triangle with three nodes or something, some placeholder graphic). The line between this section and the next is also an animation. Similar to the lines before, these will have half as many, be twice as thick and a fourth as tall, centered in the middle (not going on and off the screen like before). The lines will have random heights and be randomly bouncing up and down inside of a 15vh vertical space.
+
+The next section should be a carousel of cards, slightly less black, that have a title like "This insight is profound", an image right above, and some brief text. Below this should be a tagline that says "Some important text about how we can really measure everything." The line between this section and the next won't be anything.
+
+This section is cool. It will have a ruler-like set of lines (similar to the first set but not as long) that are *horizontal* and go down the length of this section in the center. Then, divs sit on the left and right of this line describing steps 1-4. Step 1 is "Step 1" with some lipsum text, etc. The line between this section and the next is white squares slowly moving to the left like the first set, but moving much slower and the squares are 20x20px.
+
+The last section, mission, is a small text box in the middle with Lipsum text.
+
+Then add a footer with some temporary links.
+
+Please include all JS in a <script> tag at the end so that it can be easily moved to a different file.
+

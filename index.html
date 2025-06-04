@@ -1,201 +1,653 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Measures AI</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,600">
-
-    <link rel="stylesheet" href="./main.css">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+        }
+        
+        body {
+            background-color: black;
+            overflow-x: hidden;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+        }
+        
+        .logo {
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            font-weight: 400;
+        }
+        
+        nav ul li:last-child a {
+            font-weight: 700;
+        }
+        
+        .jumbotron {
+            height: 105vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .jumbotron-text {
+            position: absolute;
+            z-index: 10;
+            width: 80%;
+        }
+        
+        .jumbotron h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .jumbotron p {
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .animation-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20vh;
+            overflow: hidden;
+        }
+        
+        .scrolling-lines {
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            height: 100%;
+            animation: scrollRight 1s linear infinite;
+        }
+        
+        .line {
+            width: 5px;
+            height: 40vh;
+            background-color: white;
+            margin-right: 85px;
+        }
+        
+        @keyframes scrollRight {
+            0% {
+                transform: translateX(-45px);
+            }
+            100% {
+                transform: translateX(45px);
+            }
+        }
+        
+        section {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .opportunity {
+            height: 75vh;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: center;
+        }
+        
+        .opportunity-text {
+            width: 40%;
+        }
+        
+        .opportunity-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .opportunity-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .contact-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: white;
+            color: black;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        .graphic-placeholder {
+            width: 30%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 200px solid white;
+            position: relative;
+        }
+        
+        .node {
+            width: 20px;
+            height: 20px;
+            background-color: none;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .node:nth-child(1) {
+            top: -10px;
+            left: -10px;
+        }
+        
+        .node:nth-child(2) {
+            top: -10px;
+            right: -10px;
+        }
+        
+        .node:nth-child(3) {
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .bouncing-lines-container {
+            height: 15vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bouncing-lines {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .bouncing-line {
+            width: 20px;
+            height: 40px;
+            background-color: white;
+            margin: 0 40px;
+            animation: bounce 2s infinite ease-in-out;
+            animation-delay: var(--delay);
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(var(--bounce-height));
+            }
+        }
+        
+        .insight {
+            height: 60vh;
+        }
+        
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .card {
+            min-width: 300px;
+            margin: 0 15px;
+            padding: 20px;
+            background-color: #141414;
+            border-radius: 10px;
+        }
+        
+        .card img {
+            width: 100%;
+            height: 150px;
+            background-color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .card h3 {
+            margin-bottom: 10px;
+        }
+        
+        .insight-tagline {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+        
+        .process {
+            position: relative;
+        }
+        
+        .step-container {
+            display: flex;
+            margin-bottom: 50px;
+        }
+        
+        .step-container:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .step {
+            width: 40%;
+            padding: 20px;
+        }
+        
+        .step h3 {
+            margin-bottom: 10px;
+        }
+        
+        .vertical-line {
+            width: 40px;
+            height: 10px;
+            background-color: white;
+            margin: 20px auto;
+        }
+        
+        .moving-squares-container {
+            height: 15vh;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .moving-squares {
+            display: flex;
+            position: absolute;
+            height: 100%;
+            animation: scrollLeft 1s linear infinite;
+            white-space: nowrap;
+        }
+        
+        .square {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            margin-right: 80px;
+        }
+        
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(50px);
+            }
+            100% {
+                transform: translateX(-50px);
+            }
+        }
+        
+        .mission {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30vh;
+        }
+        
+        .mission-text {
+            width: 60%;
+            text-align: center;
+        }
+        
+        .mission-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .contact-form {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .contact-form h2 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        form {
+            width: 60%;
+            max-width: 600px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #141414;
+            border: 1px solid #333;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        button[type="submit"] {
+            padding: 12px 30px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        footer {
+            padding: 50px;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        
+        footer a {
+            margin: 0 15px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="content">
-            <nav class="navbar">
-                <div class="logo">
-                    <a href="#home" style="text-decoration: none; color: white;">
-                        <h2>Measures AI</h2>
-                    </a>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#about">The Opportunity</a></li>
-                    <li><a href="#capabilities">What We Do</a></li>
-                    <li><a href="#contact">Our Team</a></li>
-                </ul>
-            </nav>
-        </div>
+        <div class="logo">Measures AI</div>
+        <nav>
+            <ul>
+                <li><a href="#opportunity">Opportunity</a></li>
+                <li><a href="#insight">Insight</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#mission">Mission</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
     </header>
-    <div class="body-main">
-        <div class="jumbotron" style="height: 100vh"id="home">
-            <div class="graphic"></div>
-            <div class="content">
-                <div class="inner-content">
-                    <h1>Measure everything.</h1>
-                    <p>Most sales teams measure what's easy: money, time, and KPIs. <br> With AI, everything is easy to measure. <br><br> Turn your revenue operations into a firehose of information, and <br /> understand what matters in real-time.
-                    </p>
-                    <a href="https://calendly.com/beckett-measuresai" target="_blank"><button>Get in touch</button></a>
-                </div>
-            </div>
-        </div>
-        <div class="image-divider">
-            <div class="divider-container">
-                <div class="divider-image">
-                    <img src="./images/ruler.png" alt="Data visualization">
-                </div>
-            </div>
-        </div>
-        <div class="jumbotron animation2" style="height: 100vh" id="about">
-            <div class="content about-content">
-                <div class="about-text" style="padding: 0 20px;">
-                    <h1 style="margin-top: 100px">Your whole process is data.</h1>
-                    <p>Take advantage of your data, with no additional overhead.</p>
-                    <p>We take in all of your unstructured sales data:<br><br>
-                    Emails, Call transcripts, Slack messages, and more.</p>
-                    <p>Then output <strong>metrics</strong> about this data, providing deep insight
-                    into your product, sales strategy, and overall strategy.</p>
-                    <a href="https://calendly.com/beckett-measuresai" target="_blank" style="margin-bottom: 50px"><button>Get in touch</button></a>
-                </div>
-                <div class="about-carousel">
-                    <h3 class="carousel-title">Integrate with all your tools</h3>
-                    <div class="carousel-container">
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/2560px-Gmail_icon_%282020%29.svg.png" alt="Gmail">
-                            </div>
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Teams_%282018%E2%80%93present%29.svg.png" alt="Teams">
-                            </div>
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Slack_icon_2019.svg/2048px-Slack_icon_2019.svg.png" alt="Slack">
-                            </div>
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/1200px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png" alt="Outlook">
-                            </div>
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" alt="Telegram">
-                            </div>
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/767px-WhatsApp.svg.png" alt="WhatsApp">
-                            </div>
-                            <!-- <div class="carousel-slide">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Discord_logo.svg/2048px-Discord_logo.svg.png" alt="Discord">
-                            </div> -->
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Google_Calendar_icon_%282020%29.svg/1024px-Google_Calendar_icon_%282020%29.svg.png" alt="Google Calendar">
-                            </div>
-                            <div class="carousel-slide">
-                                <img height="96px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/1024px-Notion-logo.svg.png" alt="Notion">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="image-divider">
-            <div class="divider-container">
-                <div class="divider-image">
-                    <img src="./images/ruler.png" alt="Data visualization">
-                </div>
-            </div>
-        </div>
-        <div class="jumbotron animation3" style="height: 100vh" id="capabilities">
-            <div class="content">
-                <div class="inner-content">
-                    <h1>Our Implementation</h1>
-        
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-content left">
-                                <h2>Data Ingestion</h2>
-                                <p>We set up inside your premises, keeping your data from flowing out of your environment.</p>
-                                <p>We set up our ingestion tools in whichever data sources you choose to share, which are able to get automatic or manual data ingestion.</p>
-                            </div>
-                        </div>
 
-                        <div class="timeline-item">
-                            <div class="timeline-content right">
-                                <h2>Metric Curation</h2>
-                                <p>Our fine-tuned, hyper specific metric models then run analysis on your inputted data, decoding trends and picking out points that matter.</p>
-                                <p>All this without sending your data outside of your environment.</p>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-content left">
-                                <h2>Metric Visualization</h2>
-                                <p>Our dashboard then presents the resulting metrics, giving you the ability to see as many or as few as possible.</p>
-                                <p>If you decide to do analysis using your own tools, we provide the data for download and import to tools like PowerBI and Tableau.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="https://calendly.com/beckett-measuresai" target="_blank"><button>Get in touch</button></a>
-                </div>
+    <section class="jumbotron">
+        <div class="jumbotron-text">
+            <h1>Why do people buy from you?</h1>
+            <p>Not just a sales problem, CFOs, CPOs, and CTOs also want to know. <br/> We measure everything to answer that very question.</p>
+        </div>
+        <div class="animation-container">
+            <div class="scrolling-lines">
+                <!-- Lines will be added via JavaScript -->
             </div>
         </div>
-        <!-- <div class="image-divider">
-            <div class="divider-container">
-                <div class="divider-image">
-                    <img src="./images/ruler.png" alt="Data visualization">
-                </div>
+    </section>
+
+    <section id="opportunity" class="opportunity">
+        <div class="opportunity-text">
+            <h2>Measure everything.</h2>
+            <p>We help you understand why customers choose your products through comprehensive measurement and analytics. Our platform provides actionable insights that drive business growth.</p>
+            <a href="#contact" class="contact-btn">Contact Us</a>
+        </div>
+        <div class="graphic-placeholder">
+            <div class="triangle">
+                <div class="node"></div>
+                <div class="node"></div>
+                <div class="node"></div>
             </div>
-        </div> -->
-        <div class="footer">
-            2025 &copy; Measure Everything, Ltd. <br /> Boulder, Colorado, USA <br /> All rights reserved.
+        </div>
+    </section>
+
+    <div class="bouncing-lines-container">
+        <div class="bouncing-lines">
+            <!-- Bouncing lines will be added via JavaScript -->
         </div>
     </div>
+
+    <section id="insight" class="insight">
+        <div class="carousel-container">
+            <div class="carousel">
+                <!-- Cards will be added via JavaScript -->
+            </div>
+        </div>
+        <p class="insight-tagline">Some important text about how we can really measure everything.</p>
+    </section>
+
+    <section id="process" class="process">
+        <div class="step-container">
+            <div class="step">
+                <h3>Step 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</p>
+            </div>
+        </div>
+        
+        <div class="vertical-line"></div>
+        
+        <div class="step-container">
+            <div class="step">
+                <h3>Step 2</h3>
+                <p>Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus.</p>
+            </div>
+        </div>
+        
+        <div class="vertical-line"></div>
+        
+        <div class="step-container">
+            <div class="step">
+                <h3>Step 3</h3>
+                <p>Phasellus molestie magna non est bibendum non venenatis nisl tempor.</p>
+            </div>
+        </div>
+        
+        <div class="vertical-line"></div>
+        
+        <div class="step-container">
+            <div class="step">
+                <h3>Step 4</h3>
+                <p>Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor posuere.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="moving-squares-container">
+        <div class="moving-squares">
+            <!-- Squares will be added via JavaScript -->
+        </div>
+    </div>
+
+    <section id="mission" class="mission">
+        <div class="mission-text">
+            <h2>Our Mission</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-form">
+        <h2>Contact Us</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="company">Company</label>
+                <input type="text" id="company" name="company">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="contact-btn">Submit</button>
+        </form>
+    </section>
+
+    <footer>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </footer>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // Clone the slides to create the infinite loop effect
-        const carouselTrack = document.querySelector('.carousel-track');
-        const slides = document.querySelectorAll('.carousel-slide');
+        // Create scrolling lines in jumbotron
+        const scrollingLines = document.querySelector('.scrolling-lines');
+        const lineCount = Math.ceil(window.innerWidth / 90) + 1; // Make sure there are enough lines
         
-        // Clone each slide and append to the track
-        slides.forEach(slide => {
-            const clone = slide.cloneNode(true);
-            carouselTrack.appendChild(clone);
+        for (let i = 0; i < lineCount; i++) {
+            const line = document.createElement('div');
+            line.className = 'line';
+            scrollingLines.appendChild(line);
+        }
+
+        // Create bouncing lines
+        const bouncingLines = document.querySelector('.bouncing-lines');
+        const bouncingLineCount = Math.ceil(window.innerWidth / 160); // Half as many as the first
+        
+        for (let i = 0; i < bouncingLineCount; i++) {
+            const line = document.createElement('div');
+            line.className = 'bouncing-line';
+            // All lines have height of 40px now
+            line.style.setProperty('--height', '40px');
+            // Random bounce height but always staying within the container
+            const bounceHeight = Math.floor(Math.random() * 60);
+            line.style.setProperty('--bounce-height', `${bounceHeight}px`);
+            // Random delay for more natural movement
+            line.style.setProperty('--delay', `${Math.random() * 2}s`);
+            bouncingLines.appendChild(line);
+        }
+
+        // Create carousel cards
+        const carousel = document.querySelector('.carousel');
+        const cardData = [
+            { title: "This insight is profound", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+            { title: "Measure with precision", text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie." },
+            { title: "Data-driven decisions", text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor." },
+            { title: "Actionable intelligence", text: "Ut in nulla enim. Phasellus molestie magna non est bibendum." },
+            { title: "Strategic analytics", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+            { title: "Customer insights", text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie." },
+            { title: "Growth metrics", text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor." },
+            { title: "Business intelligence", text: "Ut in nulla enim. Phasellus molestie magna non est bibendum." }
+        ];
+        
+        // Create double the cards for smooth looping
+        const allCardData = [...cardData, ...cardData];
+        
+        allCardData.forEach(data => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            // Create triangle element for the card image
+            const triangleHTML = `
+                <div class="triangle" style="transform: scale(0.3);">
+                    <div class="node"></div>
+                    <div class="node"></div>
+                    <div class="node"></div>
+                </div>
+            `;
+            
+            card.innerHTML = `
+                <div class="img">${triangleHTML}</div>
+                <h3>${data.title}</h3>
+                <p>${data.text}</p>
+            `;
+            carousel.appendChild(card);
         });
+
+        // Create moving squares - make sure we have enough to loop seamlessly
+        const movingSquares = document.querySelector('.moving-squares');
+        const squareCount = 40; // More squares for seamless looping
         
-        // Adjust animation duration based on the number of slides
-        const totalSlides = slides.length;
-        const animationDuration = totalSlides * 2; // 2 seconds per slide
-        carouselTrack.style.animationDuration = `${animationDuration}s`;
+        for (let i = 0; i < squareCount; i++) {
+            const square = document.createElement('div');
+            square.className = 'square';
+            movingSquares.appendChild(square);
+        }
+
+        // Infinite carousel functionality
+        let currentIndex = 0;
+        const cards = document.querySelectorAll('.card');
+        const cardWidth = cards[0].offsetWidth + 30; // Include margin
+        const visibleCards = Math.floor(window.innerWidth / cardWidth);
+        const totalCards = cards.length;
+        const halfTotalCards = totalCards / 2;
         
-        // Adjust animation distance based on the number of slides in CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes carousel {
-                0% {
-                    transform: translateX(0);
-                }
-                100% {
-                    transform: translateX(-${totalSlides * 150 + totalSlides * 60}px);
-                }
+        function moveCarousel() {
+            currentIndex = (currentIndex + 1) % halfTotalCards;
+            carousel.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+            
+            // Reset to the beginning when we reach halfway
+            if (currentIndex === halfTotalCards - visibleCards) {
+                setTimeout(() => {
+                    carousel.style.transition = 'none';
+                    currentIndex = 0;
+                    carousel.style.transform = `translateX(0)`;
+                    setTimeout(() => {
+                        carousel.style.transition = 'transform 0.5s ease';
+                    }, 50);
+                }, 500);
             }
-        `;
-        document.head.appendChild(style);
+            
+            setTimeout(moveCarousel, 3000);
+        }
         
-        // Pause animation on hover
-        const carousel = document.querySelector('.carousel-container');
-        
-        carousel.addEventListener('mouseenter', () => {
-            carouselTrack.style.animationPlayState = 'paused';
-        });
-        
-        carousel.addEventListener('mouseleave', () => {
-            carouselTrack.style.animationPlayState = 'running';
-        });
-        
-        // Check all images and provide fallbacks if needed
-        document.querySelectorAll('.carousel-slide img').forEach(img => {
-            img.onerror = function() {
-                console.log('Image failed to load:', this.src);
-                // Set a generic icon as fallback
-                this.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Google_messages_logo.svg/768px-Google_messages_logo.svg.png';
-            };
-        });
-    });
+        setTimeout(moveCarousel, 3000);
     </script>
 </body>
-
 </html>
