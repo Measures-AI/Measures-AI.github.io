@@ -6,6 +6,9 @@
     <title>Measures AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* =========================
+           Global Styles & Resets
+        ========================= */
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +22,9 @@
             overflow-x: hidden;
         }
         
+        /* =========================
+           Header & Navigation
+        ========================= */
         header {
             position: fixed;
             top: 0;
@@ -55,6 +61,9 @@
             font-weight: 700;
         }
         
+        /* =========================
+           Jumbotron Section
+        ========================= */
         .jumbotron {
             height: 105vh;
             position: relative;
@@ -81,8 +90,14 @@
         .jumbotron p {
             font-size: 1.5rem;
             font-weight: 400;
+            margin-bottom: 3vh;
+        }
+
+        .jumbotron-buttons {
+            margin-bottom: 8vh;
         }
         
+        /* Jumbotron Animation: Scrolling Lines */
         .animation-container {
             position: absolute;
             bottom: 0;
@@ -116,6 +131,9 @@
             }
         }
         
+        /* =========================
+           Section Layouts
+        ========================= */
         section {
             padding: 50px;
             display: flex;
@@ -123,8 +141,11 @@
             justify-content: center;
         }
         
+        /* =========================
+           Opportunity Section
+        ========================= */
         .opportunity {
-            height: 75vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             flex-direction: row;
@@ -132,7 +153,7 @@
         }
         
         .opportunity-text {
-            width: 40%;
+            width: 35%;
         }
         
         .opportunity-text h2 {
@@ -158,13 +179,14 @@
         }
         
         .graphic-placeholder {
-            width: 30%;
-            height: 300px;
+            width: 35%;
+            height: 60vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         
+        /* SVG Triangle Graphic for Cards */
         .triangle {
             width: 0;
             height: 0;
@@ -198,6 +220,9 @@
             transform: translateX(-50%);
         }
         
+        /* =========================
+           Bouncing Lines Animation
+        ========================= */
         .bouncing-lines-container {
             height: 10vh;
             position: relative;
@@ -229,6 +254,9 @@
             }
         }
         
+        /* =========================
+           Insights Section & Carousel
+        ========================= */
         .insight {
             height: 70vh;
         }
@@ -283,11 +311,15 @@
         
         .insight-tagline {
             text-align: center;
-            margin-top: 100px;
+            margin-top: 50px;
+            margin-bottom: 50px;
             font-size: 1.6rem;
             font-weight: 500;
         }
         
+        /* =========================
+           Process Timeline Section
+        ========================= */
         .process {
             position: relative;
             margin: 50px 0;
@@ -311,6 +343,7 @@
             margin-bottom: 10px;
         }
         
+        /* Vertical timeline line */
         .vertical-line {
             width: 40px;
             height: 10px;
@@ -318,6 +351,9 @@
             margin: 20px auto;
         }
         
+        /* =========================
+           Moving Squares Animation
+        ========================= */
         .moving-squares-container {
             height: 20px;
             position: relative;
@@ -348,6 +384,9 @@
             }
         }
         
+        /* =========================
+           Mission & Vision Section
+        ========================= */
         .mission {
             display: flex;
             justify-content: center;
@@ -366,6 +405,9 @@
             margin-bottom: 20px;
         }
         
+        /* =========================
+           Contact Form Section
+        ========================= */
         .contact-form {
             padding: 50px;
             display: flex;
@@ -411,6 +453,9 @@
             cursor: pointer;
         }
         
+        /* =========================
+           Footer
+        ========================= */
         footer {
             padding: 50px;
             text-align: center;
@@ -428,9 +473,9 @@
         <div class="logo">Measures AI</div>
         <nav>
             <ul>
-                <li><a href="#opportunity">Opportunity</a></li>
-                <li><a href="#insight">Insight</a></li>
-                <li><a href="#process">Process</a></li>
+                <li><a href="#opportunity">About</a></li>
+                <li><a href="#insight">Our Insights</a></li>
+                <li><a href="#process">Our Process</a></li>
                 <li><a href="#mission">Mission & Vision</a></li>
                 <li><a href="#contact">Contact Us</a></li>
             </ul>
@@ -440,7 +485,11 @@
     <section class="jumbotron">
         <div class="jumbotron-text">
             <h1>Why do people buy from you?</h1>
-            <p>Not just a sales problem, CFOs, CPOs, and CTOs also want to know. <br/> We measure everything to answer that very question.</p>
+            <p>Not just a sales problem, CFOs, CPOs, and CTOs aslo need to know. <br/> Turn your sales pipeline into a cross-functional data engine.</p>
+            <div class="jumbotron-buttons">
+                <a href="#contact" class="contact-btn">Contact Us</a>
+                <a href="#opportunity" style="display: inline-block; padding: 12px 30px; background-color: transparent; color: white; text-decoration: none; border-radius: 50px; font-weight: 600; border: 2px solid white; margin-left: 15px;">Learn More</a>
+            </div>
         </div>
         <div class="animation-container">
             <div class="scrolling-lines">
@@ -452,15 +501,11 @@
     <section id="opportunity" class="opportunity">
         <div class="opportunity-text">
             <h2>Measure everything.</h2>
-            <p>We help you understand why customers choose your products through comprehensive measurement and analytics. Our platform provides actionable insights that drive business growth.</p>
+            <p>We turn your sales and support communications into measurements that drive decision-making. We go straight to the source, so you don't have to change your workflow. <br/><br/>Get real-time answers to key questions in our dashboard or familiar formats.</p>
             <a href="#contact" class="contact-btn">Contact Us</a>
         </div>
         <div class="graphic-placeholder">
-            <div class="triangle">
-                <div class="node"></div>
-                <div class="node"></div>
-                <div class="node"></div>
-            </div>
+            <img src="images/ConveyorBeltGraphic.svg" alt="Conveyor Belt Graphic" style="max-width: 100%; max-height: 100%;">
         </div>
     </section>
 
@@ -474,12 +519,13 @@
         <div class="insight-text">
             <h2>Our Insights</h2>
         </div>
+        <p class="insight-tagline">Real insights from real companies, no humans necessary.</p>
         <div class="carousel-container">
             <div class="carousel">
                 <!-- Cards will be added via JavaScript -->
             </div>
         </div>
-        <p class="insight-tagline">Some important text about how we can really measure everything.</p>
+        
     </section>
 
     <section id="process" class="process">
@@ -605,7 +651,9 @@
     </footer>
 
     <script>
-        // Create scrolling lines in jumbotron
+        // =========================
+        // Jumbotron: Scrolling Lines
+        // =========================
         const scrollingLines = document.querySelector('.scrolling-lines');
         const lineCount = Math.ceil(window.innerWidth / 90) + 1; // Make sure there are enough lines
         
@@ -615,7 +663,9 @@
             scrollingLines.appendChild(line);
         }
 
-        // Create bouncing lines
+        // =========================
+        // Bouncing Lines Animation
+        // =========================
         const bouncingLines = document.querySelector('.bouncing-lines');
         const bouncingLineCount = Math.ceil(window.innerWidth / 160); // Half as many as the first
         
@@ -632,20 +682,34 @@
             bouncingLines.appendChild(line);
         }
 
-        // Create carousel cards
+        // =========================
+        // Moving Squares Animation
+        // =========================
+        const movingSquares = document.querySelector('.moving-squares');
+        const squareCount = 40; // More squares for seamless looping
+        
+        for (let i = 0; i < squareCount; i++) {
+            const square = document.createElement('div');
+            square.className = 'square';
+            movingSquares.appendChild(square);
+        }
+
+        // =========================
+        // Insights Carousel Cards
+        // =========================
         const carousel = document.querySelector('.carousel');
         const cardData = [
-            { title: "This insight is profound", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-            { title: "Measure with precision", text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie." },
-            { title: "Data-driven decisions", text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor." },
-            { title: "Actionable intelligence", text: "Ut in nulla enim. Phasellus molestie magna non est bibendum." },
-            { title: "Strategic analytics", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-            { title: "Customer insights", text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie." },
-            { title: "Growth metrics", text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor." },
-            { title: "Business intelligence", text: "Ut in nulla enim. Phasellus molestie magna non est bibendum." }
+            { title: "Quality issues are impacting $XX,XXX in orders.", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+            { title: "Founder background drove $XXX,XXX in revenue last month.", text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie." },
+            { title: "Customized orders drive XX% more revenue per call.", text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor." },
+            { title: "Agents drive $XXX.XX in revenue per hour spent customizing orders.", text: "Ut in nulla enim. Phasellus molestie magna non est bibendum." },
+            { title: "Revenue from graduation events is up %X,XXX this month.", text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+            { title: "Product Y most frequently experiences delivery complaints.", text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie." },
+            { title: "Billing issues are impacting $XX,XXX in orders.", text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor." },
+            { title: "Emphasizing feature Y reduces close times by XX%.", text: "Ut in nulla enim. Phasellus molestie magna non est bibendum." }
         ];
         
-        // Create double the cards for smooth looping
+        // Duplicate cards for smooth infinite loop
         const allCardData = [...cardData, ...cardData];
         
         allCardData.forEach(data => {
@@ -669,23 +733,15 @@
             carousel.appendChild(card);
         });
 
-        // Create moving squares - make sure we have enough to loop seamlessly
-        const movingSquares = document.querySelector('.moving-squares');
-        const squareCount = 40; // More squares for seamless looping
-        
-        for (let i = 0; i < squareCount; i++) {
-            const square = document.createElement('div');
-            square.className = 'square';
-            movingSquares.appendChild(square);
-        }
-
-        // Infinite carousel functionality
+        // =========================
+        // Infinite Carousel Functionality
+        // =========================
         let currentIndex = 0;
         const cards = document.querySelectorAll('.card');
         const cardWidth = cards[0].offsetWidth + 30; // Include margin
         const visibleCards = Math.floor(window.innerWidth / cardWidth);
         const totalCards = cards.length;
-        const halfTotalCards = totalCards / 2;
+        const halfTotalCards = totalCards;
         
         function moveCarousel() {
             currentIndex = (currentIndex + 1) % halfTotalCards;

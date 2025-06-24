@@ -1,0 +1,17 @@
+import React from 'react';
+import styles from './Opportunity.module.css';
+
+const Opportunity = () => (
+  <section id="opportunity" className={styles.opportunity}>
+    <div className={styles.opportunityText}>
+      <h2>Measure everything.</h2>
+      <p>We turn your sales and support communications into measurements that drive decision-making. We go straight to the source, so you don't have to change your workflow. <br/><br/>Get real-time answers to key questions in our dashboard or familiar formats.</p>
+      <a href="#contact" className={styles.contactBtn}>Contact Us</a>
+    </div>
+    <div className={styles.graphicPlaceholder}>
+      <img src="/ConveyorBeltGraphic.svg" alt="Conveyor Belt Graphic" style={{maxWidth: '100%', maxHeight: '100%'}} />
+    </div>
+  </section>
+);
+
+export default Opportunity; 

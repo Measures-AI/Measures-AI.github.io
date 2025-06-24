@@ -1,0 +1,41 @@
+.process {
+    position: relative;
+    margin: 50px 0;
+}
+
+.timelineContainer {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+.verticalLine {
+    width: 40px;
+    height: 10px;
+    background-color: white;
+    margin: 20px auto;
+}
+
+.stepContainer {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.stepContainer:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.step {
+    width: 40%;
+    padding: 20px;
+}
+
+.step h3 {
+    margin-bottom: 10px;
+} 
