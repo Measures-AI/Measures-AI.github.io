@@ -34,15 +34,21 @@ const ProcessTimeline = () => {
 
   return (
     <section id="process" className={styles.process} ref={sectionRef}>
-      <div ref={timelineRef} className={styles.timelineContainer}></div>
-      {steps.map((step, idx) => (
-        <div className={styles.stepContainer} key={idx}>
-          <div className={styles.step}>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
+      <div className={styles.processText}>
+        <h2>Our Process</h2>
+        <p>Live results in as little as 2 weeks.</p>
+      </div>
+      <div id="process-timeline" className={styles.processTimeline}>
+        <div ref={timelineRef} className={styles.timelineContainer}></div>
+        {steps.map((step, idx) => (
+          <div className={styles.stepContainer} key={idx}>
+            <div className={styles.step}>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </section>
   );
 };
