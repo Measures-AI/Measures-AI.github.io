@@ -1,0 +1,29 @@
+.movingSquaresContainer {
+    height: 20px;
+    position: relative;
+    overflow: hidden;
+    margin: 100px 0;
+}
+
+.movingSquares {
+    display: flex;
+    position: absolute;
+    animation: scrollLeft 1s linear infinite;
+    white-space: nowrap;
+}
+
+.square {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    margin-right: 80px;
+}
+
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(50px);
+    }
+    100% {
+        transform: translateX(-50px);
+    }
+} 
