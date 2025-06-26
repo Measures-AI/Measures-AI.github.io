@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import styles from './ProcessTimeline.module.css';
 
 const steps = [
-  { title: 'Step 1', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.' },
-  { title: 'Step 2', text: 'Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus.' },
-  { title: 'Step 3', text: 'Phasellus molestie magna non est bibendum non venenatis nisl tempor.' },
-  { title: 'Step 4', text: 'Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor posuere.' },
+  { title: 'Step 1: Platform', text: 'We deploy a secure, single-tenant, isolated environment for your data and measures to sit.' },
+  { title: 'Step 2: Data', text: 'We establish live connections with the platforms you use to interact with customers.' },
+  { title: 'Step 3: Measurement', text: 'Our models ingest and measure the data, both historically and in real-time.' },
+  { title: 'Step 4: Insights', text: 'Notable insights are surfaced to you in a dashboard, with the ability to drill down or export as needed.' },
 ];
 
 const ProcessTimeline = () => {
@@ -15,21 +15,28 @@ const ProcessTimeline = () => {
   useEffect(() => {
     const timelineContainer = timelineRef.current;
     const processSection = sectionRef.current;
-    if (!timelineContainer || !processSection) return;
-    timelineContainer.innerHTML = '';
-    const sectionHeight = processSection.offsetHeight;
-    const numLines = Math.floor(sectionHeight / 50);
-    const spacing = 40;
-    for (let i = 0; i < numLines; i++) {
-      const line = document.createElement('div');
-      line.className = styles.verticalLine;
-      line.style.marginTop = i === 0 ? '0px' : `${spacing}px`;
-      line.style.marginBottom = 0;
-      if (i === 0 || i === numLines - 1) {
-        line.style.width = '80px';
+    function renderLines() {
+      if (!timelineContainer || !processSection) return;
+      timelineContainer.innerHTML = '';
+      const sectionHeight = processSection.offsetHeight;
+      const numLines = Math.floor(sectionHeight / 50);
+      const spacing = 40;
+      for (let i = 0; i < numLines; i++) {
+        const line = document.createElement('div');
+        line.className = styles.verticalLine;
+        line.style.marginTop = i === 0 ? '0px' : `${spacing}px`;
+        line.style.marginBottom = 0;
+        if (i === 0 || i === numLines - 1) {
+          line.style.width = '80px';
+        }
+        timelineContainer.appendChild(line);
       }
-      timelineContainer.appendChild(line);
     }
+    renderLines();
+    window.addEventListener('resize', renderLines);
+    return () => {
+      window.removeEventListener('resize', renderLines);
+    };
   }, []);
 
   return (

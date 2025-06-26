@@ -6,13 +6,21 @@ const MovingSquares = () => {
 
   useEffect(() => {
     const container = containerRef.current;
-    container.innerHTML = '';
-    const squareCount = 40;
-    for (let i = 0; i < squareCount; i++) {
-      const square = document.createElement('div');
-      square.className = styles.square;
-      container.appendChild(square);
+    function renderSquares() {
+      if (!container) return;
+      container.innerHTML = '';
+      const squareCount = Math.ceil(window.innerWidth / 100);
+      for (let i = 0; i < squareCount; i++) {
+        const square = document.createElement('div');
+        square.className = styles.square;
+        container.appendChild(square);
+      }
     }
+    renderSquares();
+    window.addEventListener('resize', renderSquares);
+    return () => {
+      window.removeEventListener('resize', renderSquares);
+    };
   }, []);
 
   return (

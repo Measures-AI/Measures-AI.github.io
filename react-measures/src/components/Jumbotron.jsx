@@ -6,14 +6,21 @@ const Jumbotron = () => {
 
   useEffect(() => {
     const container = scrollingLinesRef.current;
-    if (!container) return;
-    container.innerHTML = '';
-    const lineCount = Math.ceil(window.innerWidth / 90) + 1;
-    for (let i = 0; i < lineCount; i++) {
-      const line = document.createElement('div');
-      line.className = styles.line;
-      container.appendChild(line);
+    function renderLines() {
+      if (!container) return;
+      container.innerHTML = '';
+      const lineCount = Math.ceil(window.innerWidth / 90) + 1;
+      for (let i = 0; i < lineCount; i++) {
+        const line = document.createElement('div');
+        line.className = styles.line;
+        container.appendChild(line);
+      }
     }
+    renderLines();
+    window.addEventListener('resize', renderLines);
+    return () => {
+      window.removeEventListener('resize', renderLines);
+    };
   }, []);
 
   return (

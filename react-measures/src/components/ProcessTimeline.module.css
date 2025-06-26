@@ -19,6 +19,8 @@
 
 .processTimeline {
     position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .timelineContainer {
@@ -43,9 +45,10 @@
 .stepContainer {
     display: flex;
     margin-bottom: 50px;
+    padding: 0 30px;
 }
 
-.stepContainer:nth-child(even) {
+.stepContainer:nth-child(odd) {
     flex-direction: row-reverse;
 }
 
