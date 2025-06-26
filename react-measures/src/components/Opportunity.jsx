@@ -5,7 +5,7 @@ const Opportunity = () => (
   <section id="opportunity" className={styles.opportunity}>
     <div className={styles.opportunityText}>
       <h2>Measure everything.</h2>
-      <p>We turn your sales and support communications into measurements that drive decision-making. We go straight to the source, so you don't have to change your workflow. <br/><br/>Get real-time answers to key questions in our dashboard or familiar formats.</p>
+      <p>We turn your multi-channel sales and support communications into measurements that drive decision-making. We go straight to the source, so you don't have to change your workflow. <br/><br/>Get answers, set priorities, and justify spend in real-time.</p>
       <a href="#contact" className={styles.contactBtn}>Contact Us</a>
     </div>
     <div className={styles.graphicPlaceholder}>

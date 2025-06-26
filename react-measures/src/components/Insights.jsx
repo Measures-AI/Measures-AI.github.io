@@ -19,7 +19,9 @@ const cardData = [
       { name: 'Jun', value: 1876 },
       { name: 'Jul', value: 1765 },
       { name: 'Aug', value: 1654 }
-    ] }
+    ] },
+    source: "Extracted from Zendesk emails",
+    sourceLogo: "/external-logos/zendesk.png"
   },
   {
     title: "Churn risk: $XX,XXX in ARR at increased risk for 4 key accounts.",
@@ -33,7 +35,9 @@ const cardData = [
       { name: 'Q2', value: 6000 },
       { name: 'Q3', value: 4000 },
       { name: 'Q4', value: 7000 }
-    ] }
+    ] },
+    source: "Extracted from Google Workspace",
+    sourceLogo: "/external-logos/gmail.png"
   },
   {
     title: "Renewal negotiations: $XX,XXX in ARR at risk due to stalled contracts.",
@@ -47,11 +51,13 @@ const cardData = [
       { name: 'Feb', value: 2 },
       { name: 'Mar', value: 5 },
       { name: 'Apr', value: 4 }
-    ] }
+    ] },
+    source: "Extracted from Salesforce",
+    sourceLogo: "/external-logos/salesforce.png"
   },
   {
     title: "Feature adoption drives $XX,XXX in expansion revenue.",
-    text: "62% of users enabled Module Q, unlocking $XX,XXX in upsell opportunities.",
+    text: "62% of users requested Module Q, unlocking $XX,XXX in upsell opportunities.",
     bullets: [
       "Top 10 accounts show 80%+ enablement rate, correlating with $X,XXX in additional MRR.",
       "SMB segment lags at XX% adoption, leaving $Y,YYY in unrealized revenue."
@@ -60,7 +66,9 @@ const cardData = [
       { name: 'Enterprise', value: 8200 },
       { name: 'Mid-Market', value: 6800 },
       { name: 'SMB', value: 3700 }
-    ] }
+    ] },
+    source: "Extracted from Gong",
+    sourceLogo: "/external-logos/gong.png"
   },
   {
     title: "Billing errors: $X,XXX in disputed invoices this cycle.",
@@ -75,7 +83,9 @@ const cardData = [
       { name: 'Mar', value: 7000 },
       { name: 'Apr', value: 5000 },
       { name: 'May', value: 6000 }
-    ] }
+    ] },
+    source: "Extracted from HubSpot",
+    sourceLogo: "/external-logos/hubspot.png"
   },
   {
     title: "Support ticket surge: $X,XXX in potential churn flagged.",
@@ -89,7 +99,9 @@ const cardData = [
       { name: 'Q2', value: 42 },
       { name: 'Q3', value: 60 },
       { name: 'Q4', value: 85 }
-    ] }
+    ] },
+    source: "Extracted from Chorus",
+    sourceLogo: "/external-logos/chorus.png"
   },
   {
     title: "Pipeline drop-off: $XX,XXX in lost opportunities this month.",
@@ -103,7 +115,9 @@ const cardData = [
       { name: 'Week 2', value: 3 },
       { name: 'Week 3', value: 7 },
       { name: 'Week 4', value: 2 }
-    ] }
+    ] },
+    source: "Extracted from Salesforce",
+    sourceLogo: "/external-logos/salesforce.png"
   },
 ];
 
@@ -111,8 +125,8 @@ const Insights = () => (
   <section id="insight" className={styles.insight}>
     <div className={styles.insightText}>
       <h2>Our Insights</h2>
+      <p className={styles.insightTagline}>Real insights from real data, no humans necessary.</p>
     </div>
-    <p className={styles.insightTagline}>Real insights from real data, no humans necessary.</p>
     <div className={styles.carouselContainer}>
       <Carousel cards={cardData} />
     </div>

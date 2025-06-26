@@ -19,8 +19,8 @@ const Jumbotron = () => {
   return (
     <section className={styles.jumbotron}>
       <div className={styles.jumbotronText}>
-        <h1>Why do people buy from you?</h1>
-        <p>Not just a sales problem, CFOs, CPOs, and CTOs aslo need to know. <br /> Turn your sales pipeline into a cross-functional data engine.</p>
+        <h1>Turn sales and support into financial insight.</h1>
+        <p>Turn your customer communications into cross-functional data engines.<br />Accelerate decision-making and reduce ambiguity.</p>
         <div className={styles.jumbotronButtons}>
           <a href="#contact" className={styles.contactBtn}>Contact Us</a>
           <a href="#opportunity" className={styles.learnMoreBtn}>Learn More</a>
