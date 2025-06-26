@@ -6,16 +6,24 @@ const BouncingLines = () => {
 
   useEffect(() => {
     const container = containerRef.current;
-    container.innerHTML = '';
-    const bouncingLineCount = Math.ceil(window.innerWidth / 160);
-    for (let i = 0; i < bouncingLineCount; i++) {
-      const line = document.createElement('div');
-      line.className = styles.bouncingLine;
-      const bounceHeight = Math.floor(Math.random() * 60);
-      line.style.setProperty('--bounce-height', `${bounceHeight}px`);
-      line.style.setProperty('--delay', `${Math.random() * 2}s`);
-      container.appendChild(line);
+    function renderLines() {
+      if (!container) return;
+      container.innerHTML = '';
+      const bouncingLineCount = Math.ceil(window.innerWidth / 160);
+      for (let i = 0; i < bouncingLineCount; i++) {
+        const line = document.createElement('div');
+        line.className = styles.bouncingLine;
+        const bounceHeight = Math.floor(Math.random() * 60);
+        line.style.setProperty('--bounce-height', `${bounceHeight}px`);
+        line.style.setProperty('--delay', `${Math.random() * 2}s`);
+        container.appendChild(line);
+      }
     }
+    renderLines();
+    window.addEventListener('resize', renderLines);
+    return () => {
+      window.removeEventListener('resize', renderLines);
+    };
   }, []);
 
   return (
