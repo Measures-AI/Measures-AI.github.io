@@ -18,7 +18,7 @@ const ChartPreview = ({ data, theme }) => {
   if (!data) return null;
   if (data.type === 'line') {
     return (
-      <div style={{ width: '100%', height: 250, marginBottom: 10 }}>
+      <div className={styles.chartPreview}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data.values} margin={{ top: 10, right: 10, left: 0, bottom: 0 }} isAnimationActive={false}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={theme.grid} />
@@ -32,7 +32,7 @@ const ChartPreview = ({ data, theme }) => {
   }
   if (data.type === 'bar') {
     return (
-      <div style={{ width: '100%', height: 250, marginBottom: 10 }}>
+      <div className={styles.chartPreview}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data.values} margin={{ top: 10, right: 10, left: 0, bottom: 0 }} isAnimationActive={false}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={theme.grid} />
@@ -92,31 +92,53 @@ const Carousel = ({ cards }) => {
     }
   }, [cardsInView]);
 
-  // Scroll the carousel to the next card every 5 seconds and then go to one further, at which point (without a smooth transition) loop back to the start without the user noticing.
+  // Scroll the carousel to the next card every 3 seconds and then go to one further, at which point (without a smooth transition, so use useTransition) loop back to the start without the user noticing.
   useEffect(() => {
-    const interval = setInterval(() => {
-      console.log('currentIndex', currentIndex, cards.length);
-      if (currentIndex < (cards.length)) {
-        setCurrentIndex((prev) => prev + 1);
+    let interval1, interval2, interval3, interval4, interval5;
+    if (currentIndex < cards.length) {
+      interval1 = setInterval(() => {
+        setTransition('transform 0.5s cubic-bezier(0.4,0,0.2,1)');
+      }, 1000);
+      if (currentIndex === 0) {
+        interval2 = setInterval(() => {
+          setCurrentIndex(1);
+        }, 1500);
       } else {
-        setCurrentIndex(0);
+        interval2 = setInterval(() => {
+          setCurrentIndex((prevIndex) => {
+            return prevIndex + 1;
+          });
+        }, 3000);
       }
-    }, 3000);
-    return () => clearInterval(interval);
+    } else if (currentIndex >= cards.length) {
+      interval3 = setInterval(() => {
+        setTransition('none');
+      }, 1000);
+      interval4 = setInterval(() => {
+        setCurrentIndex(0);
+      }, 1500);
+    }
+    return () => {
+      clearInterval(interval1);
+      clearInterval(interval2);
+      clearInterval(interval3);
+      clearInterval(interval4);
+      clearInterval(interval5);
+    };
   }, [cards.length, currentIndex]);
 
 
   const offset = useMemo(() => {
-    return (currentIndex - Math.floor(cardsInView / 2)) * CARD_WIDTH;
+    console.log('offsetChange: ', (currentIndex - Math.floor(cardsInView / 2)) * CARD_WIDTH);
+
+    return (Math.floor(cardsInView / 2) - currentIndex) * CARD_WIDTH;
   }, [currentIndex, cardsInView]);
 
   
   const trackStyle = {
-    display: 'flex',
-    alignItems: 'center',
     willChange: 'transform',
     transition,
-    transform: `translateX(-${offset}px)`
+    transform: `translateX(${offset}px)`
   };
 
   return (
@@ -127,46 +149,43 @@ const Carousel = ({ cards }) => {
             className={styles.card}
             key={card.key}
           >
-            {/*
-              Vary the pastelThemes by picking a different one for each card.
-              We'll assume pastelThemes is an array of themes.
-              Use the card's index in allCards to select a theme.
-            */}
             <div className={styles.img}>
               <ChartPreview
                 data={card.data}
                 theme={pastelThemes[allCards.indexOf(card) % pastelThemes.length]}
               />
             </div>
-            <div style={{ margin: '32px 0 28px 0' }}>
-              <h3 style={{ margin: '0 0 16px 0' }}>{card.title}</h3>
-              <p style={{ margin: '0 0 18px 0' }}>{card.text}</p>
-              <ul
-                style={{
-                  listStylePosition: 'outside',
-                  paddingLeft: '28px',
-                  margin: '0 0 10px 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  // gap: '7px'
-                }}
-              >
-                {card.bullets.map((bullet, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      margin: 0,
-                      lineHeight: 1.6,
-                      textAlign: 'left',
-                      listStyleType: 'disc'
-                    }}
-                  >
-                    <span style={{ display: 'inline-block', verticalAlign: 'top' }}>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.cardContentMinHeight}>
+              <div className={styles.cardContent}>
+                <h3 className={styles.cardTitle}>{card.title}</h3>
+                <p className={styles.cardText}>{card.text}</p>
+                <ul className={styles.cardBullets}>
+                  {card.bullets.map((bullet, index) => (
+                    <li
+                      key={index}
+                      className={styles.cardBullet}
+                    >
+                      <span className={styles.cardBulletText}>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <p style={{ fontSize: '0.8em', color: '#888', margin: '8px 0 0 12px' }}>{card.key}</p>
+            <div className={styles.cardSourceRow}>
+              <p
+                className={styles.cardSource}
+                style={{ backgroundColor: pastelThemes[allCards.indexOf(card) % pastelThemes.length].axis }}
+              >
+                {card.source}
+              </p>
+              {card.sourceLogo && (
+                <img
+                  className={styles.cardSourceLogo}
+                  src={card.sourceLogo}
+                  alt={card.source + ' logo'}
+                />
+              )}
+            </div>
           </div>
         ))}
       </div>
