@@ -1,28 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styles from './Jumbotron.module.css';
+import ScrollingLines from './ScrollingLines';
 
 const Jumbotron = () => {
-  const scrollingLinesRef = useRef(null);
-
-  useEffect(() => {
-    const container = scrollingLinesRef.current;
-    function renderLines() {
-      if (!container) return;
-      container.innerHTML = '';
-      const lineCount = Math.ceil(window.innerWidth / 90) + 1;
-      for (let i = 0; i < lineCount; i++) {
-        const line = document.createElement('div');
-        line.className = styles.line;
-        container.appendChild(line);
-      }
-    }
-    renderLines();
-    window.addEventListener('resize', renderLines);
-    return () => {
-      window.removeEventListener('resize', renderLines);
-    };
-  }, []);
-
   return (
     <section className={styles.jumbotron}>
       <div className={styles.jumbotronText}>
@@ -33,9 +13,7 @@ const Jumbotron = () => {
           <a href="#opportunity" className={styles.learnMoreBtn}>Learn More</a>
         </div>
       </div>
-      <div className={styles.animationContainer}>
-        <div className={styles.scrollingLines} ref={scrollingLinesRef} />
-      </div>
+      <ScrollingLines />
     </section>
   );
 };

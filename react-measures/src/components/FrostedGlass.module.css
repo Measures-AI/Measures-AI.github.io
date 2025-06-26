@@ -1,0 +1,25 @@
+.frostedGlass {
+  position: absolute;
+  bottom: -8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px; /* Approximately 4 lines width (4 * 85px margin-right) */
+  height: 36vh; /* Extends above and below the 20vh scrolling lines container */
+  border: 1px solid white;
+  border-radius: 12px;
+  z-index: 5; /* Above the scrolling lines but below the text */
+  /* Use clip-path instead of border-radius to preserve blur */
+  /* You can add your blur effects here */
+  /* overflow: hidden; */
+} 
+
+.frostedGlassBackdrop {
+  position: absolute;
+  inset: 0;
+  height: 90%;
+  top: 5%;
+  width: 200%;
+  left: -50%;
+  backdrop-filter: blur(16px);
+  mask-image: linear-gradient(to left, transparent 0% 25%, black 25% 75%, transparent 75% 100%);
+}

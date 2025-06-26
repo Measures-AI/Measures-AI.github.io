@@ -1,0 +1,35 @@
+.animationContainer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20vh;
+    overflow: hidden;
+}
+
+.line {
+    width: 5px;
+    min-width: 5px;
+    height: 40vh;
+    min-height: 40vh;
+    background-color: white;
+    margin-right: 85px;
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(-45px);
+    }
+    100% {
+        transform: translateX(45px);
+    }
+}
+
+.scrollingLines {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    animation: scrollRight 1s linear infinite;
+} 
