@@ -4,83 +4,107 @@ import Carousel from './Carousel';
 
 const cardData = [
   {
-    title: "Quality issues are impacting $XX,XXX in orders.",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    title: "Website issues are impacting $XX,XXX in orders.",
+    text: "These are primarily affecting product Y. Some notes:",
+    bullets: [
+      "Most issues are related to payment issues and package tracking errors.",
+      "Customer complaints about website functionality have increased by 15% in the last quarter."
+    ],
     data: { type: 'line', values: [
-      { name: 'Jan', value: 10 },
-      { name: 'Feb', value: 15 },
-      { name: 'Mar', value: 8 },
-      { name: 'Apr', value: 20 },
-      { name: 'May', value: 12 }
+      { name: 'Jan', value: 1424 },
+      { name: 'Feb', value: 1532 },
+      { name: 'Mar', value: 878 },
+      { name: 'Apr', value: 2001 },
+      { name: 'May', value: 1987 },
+      { name: 'Jun', value: 1876 },
+      { name: 'Jul', value: 1765 },
+      { name: 'Aug', value: 1654 }
     ] }
   },
   {
-    title: "Founder background drove $XXX,XXX in revenue last month.",
-    text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie.",
+    title: "Churn risk: $XX,XXX in ARR at increased risk for 4 key accounts.",
+    text: "Communication frequency has dropped for enterprise clients in sector Z, risking $XX,XXX in annual revenue.",
+    bullets: [
+      "Interactions with enterprise clients in sector Z have dropped 23% since last renewal, impacting $X,XXX in monthly fees.",
+      "Support tickets for onboarding delays have doubled since March, threatening $Y,XXX in upsell potential."
+    ],
     data: { type: 'bar', values: [
-      { name: 'A', value: 30 },
-      { name: 'B', value: 22 },
-      { name: 'C', value: 18 },
-      { name: 'D', value: 27 }
+      { name: 'Q1', value: 8000 },
+      { name: 'Q2', value: 6000 },
+      { name: 'Q3', value: 4000 },
+      { name: 'Q4', value: 7000 }
     ] }
   },
   {
-    title: "Customized orders drive XX% more revenue per call.",
-    text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.",
+    title: "Renewal negotiations: $XX,XXX in ARR at risk due to stalled contracts.",
+    text: "Several key accounts have not responded to renewal outreach, and contract negotiations are delayed.",
+    bullets: [
+      "4 accounts have not replied to renewal emails sent in the last 30 days.",
+      "Legal review delays cited in 2 contracts, impacting $Y,YYY in potential renewals."
+    ],
     data: { type: 'line', values: [
-      { name: 'Q1', value: 5 },
-      { name: 'Q2', value: 9 },
-      { name: 'Q3', value: 7 },
-      { name: 'Q4', value: 14 }
+      { name: 'Jan', value: 3 },
+      { name: 'Feb', value: 2 },
+      { name: 'Mar', value: 5 },
+      { name: 'Apr', value: 4 }
     ] }
   },
   {
-    title: "Agents drive $XXX.XX in revenue per hour spent customizing orders.",
-    text: "Ut in nulla enim. Phasellus molestie magna non est bibendum.",
+    title: "Feature adoption drives $XX,XXX in expansion revenue.",
+    text: "62% of users enabled Module Q, unlocking $XX,XXX in upsell opportunities.",
+    bullets: [
+      "Top 10 accounts show 80%+ enablement rate, correlating with $X,XXX in additional MRR.",
+      "SMB segment lags at XX% adoption, leaving $Y,YYY in unrealized revenue."
+    ],
     data: { type: 'bar', values: [
-      { name: 'Agent 1', value: 12 },
-      { name: 'Agent 2', value: 19 },
-      { name: 'Agent 3', value: 8 }
+      { name: 'Enterprise', value: 8200 },
+      { name: 'Mid-Market', value: 6800 },
+      { name: 'SMB', value: 3700 }
     ] }
-  }
-  // },
-  // {
-  //   title: "Revenue from graduation events is up %X,XXX this month.",
-  //   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  //   data: { type: 'line', values: [
-  //     { name: '2019', value: 7 },
-  //     { name: '2020', value: 12 },
-  //     { name: '2021', value: 18 },
-  //     { name: '2022', value: 25 }
-  //   ] }
-  // },
-  // {
-  //   title: "Product Y most frequently experiences delivery complaints.",
-  //   text: "Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie.",
-  //   data: { type: 'bar', values: [
-  //     { name: 'Late', value: 14 },
-  //     { name: 'Damaged', value: 9 },
-  //     { name: 'Wrong Item', value: 6 }
-  //   ] }
-  // },
-  // {
-  //   title: "Billing issues are impacting $XX,XXX in orders.",
-  //   text: "Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.",
-  //   data: { type: 'line', values: [
-  //     { name: 'Week 1', value: 3 },
-  //     { name: 'Week 2', value: 7 },
-  //     { name: 'Week 3', value: 5 },
-  //     { name: 'Week 4', value: 11 }
-  //   ] }
-  // },
-  // {
-  //   title: "Emphasizing feature Y reduces close times by XX%.",
-  //   text: "Ut in nulla enim. Phasellus molestie magna non est bibendum.",
-  //   data: { type: 'bar', values: [
-  //     { name: 'Before', value: 20 },
-  //     { name: 'After', value: 12 }
-  //   ] }
-  // }
+  },
+  {
+    title: "Billing errors: $X,XXX in disputed invoices this cycle.",
+    text: "Disputes in usage-based plans are delaying $X,XXX in cash flow.",
+    bullets: [
+      "Automated reconciliation failed for X large customers, holding up $Y,YYY in payments.",
+      "Manual intervention required for X% of invoices, costing $Z,ZZZ in operational overhead."
+    ],
+    data: { type: 'line', values: [
+      { name: 'Jan', value: 2000 },
+      { name: 'Feb', value: 4000 },
+      { name: 'Mar', value: 7000 },
+      { name: 'Apr', value: 5000 },
+      { name: 'May', value: 6000 }
+    ] }
+  },
+  {
+    title: "Support ticket surge: $X,XXX in potential churn flagged.",
+    text: "A spike in support tickets from key accounts may indicate dissatisfaction and risk of churn.",
+    bullets: [
+      "Ticket volume from top 5 accounts increased 40% over the last quarter.",
+      "Most common topics: onboarding confusion and feature requests."
+    ],
+    data: { type: 'bar', values: [
+      { name: 'Q1', value: 30 },
+      { name: 'Q2', value: 42 },
+      { name: 'Q3', value: 60 },
+      { name: 'Q4', value: 85 }
+    ] }
+  },
+  {
+    title: "Pipeline drop-off: $XX,XXX in lost opportunities this month.",
+    text: "Several high-value prospects have dropped out of the sales pipeline after initial meetings.",
+    bullets: [
+      "3 enterprise prospects went dark after first call, representing $X,XXX in potential ARR.",
+      "Feedback cited: unclear pricing and delayed follow-up."
+    ],
+    data: { type: 'line', values: [
+      { name: 'Week 1', value: 5 },
+      { name: 'Week 2', value: 3 },
+      { name: 'Week 3', value: 7 },
+      { name: 'Week 4', value: 2 }
+    ] }
+  },
 ];
 
 const Insights = () => (
@@ -88,7 +112,7 @@ const Insights = () => (
     <div className={styles.insightText}>
       <h2>Our Insights</h2>
     </div>
-    <p className={styles.insightTagline}>Real insights from real companies, no humans necessary.</p>
+    <p className={styles.insightTagline}>Real insights from real data, no humans necessary.</p>
     <div className={styles.carouselContainer}>
       <Carousel cards={cardData} />
     </div>

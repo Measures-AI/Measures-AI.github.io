@@ -8,6 +8,7 @@
     width: 500px;
     min-width: 500px;
     max-width: 500px;
+    height: 650px;
     margin: 0 15px;
     padding: 20px;
     background-color: #141414;
@@ -26,6 +27,7 @@
 
 .card h3 {
     margin-bottom: 10px;
+    font-size: 1.4em;
 }
 
 .triangle {

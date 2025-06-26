@@ -8,7 +8,7 @@ const pastelThemes = [
   { line: '#a3e3a1', bar: '#a3e3a1', grid: '#eafbe7', axis: '#6fa86f' }, // green
   { line: '#ffb3b3', bar: '#ffb3b3', grid: '#ffeaea', axis: '#c97a7a' }, // red
   { line: '#cdb3ff', bar: '#cdb3ff', grid: '#f3eaff', axis: '#8a7ac9' }, // purple
-  { line: '#ffe6a3', bar: '#ffe6a3', grid: '#fff8e3', axis: '#c9b47a' }, // yellow
+  // { line: '#ffe6a3', bar: '#ffe6a3', grid: '#fff8e3', axis: '#c9b47a' }, // yellow
   { line: '#ffd6a3', bar: '#ffd6a3', grid: '#fff3e3', axis: '#c99b7a' }, // orange
   { line: '#b3fff6', bar: '#b3fff6', grid: '#e3fffd', axis: '#7ac9c9' }, // teal
   { line: '#ffb3e6', bar: '#ffb3e6', grid: '#ffe3f7', axis: '#c97aac' }, // pink
@@ -92,7 +92,7 @@ const Carousel = ({ cards }) => {
     }
   }, [cardsInView]);
 
-  // Scroll the carousel to the next card every 5 seconds and then loop back to the starting index after going through all cards.
+  // Scroll the carousel to the next card every 5 seconds and then go to one further, at which point (without a smooth transition) loop back to the start without the user noticing.
   useEffect(() => {
     const interval = setInterval(() => {
       console.log('currentIndex', currentIndex, cards.length);
@@ -127,10 +127,46 @@ const Carousel = ({ cards }) => {
             className={styles.card}
             key={card.key}
           >
-            <div className={styles.img}><ChartPreview data={card.data} theme={pastelThemes[0]} /></div>
-            <h3>{card.title}</h3>
-            <p>{card.text}<br/><br/></p>
-            <p>{card.key}</p>
+            {/*
+              Vary the pastelThemes by picking a different one for each card.
+              We'll assume pastelThemes is an array of themes.
+              Use the card's index in allCards to select a theme.
+            */}
+            <div className={styles.img}>
+              <ChartPreview
+                data={card.data}
+                theme={pastelThemes[allCards.indexOf(card) % pastelThemes.length]}
+              />
+            </div>
+            <div style={{ margin: '32px 0 28px 0' }}>
+              <h3 style={{ margin: '0 0 16px 0' }}>{card.title}</h3>
+              <p style={{ margin: '0 0 18px 0' }}>{card.text}</p>
+              <ul
+                style={{
+                  listStylePosition: 'outside',
+                  paddingLeft: '28px',
+                  margin: '0 0 10px 0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  // gap: '7px'
+                }}
+              >
+                {card.bullets.map((bullet, index) => (
+                  <li
+                    key={index}
+                    style={{
+                      margin: 0,
+                      lineHeight: 1.6,
+                      textAlign: 'left',
+                      listStyleType: 'disc'
+                    }}
+                  >
+                    <span style={{ display: 'inline-block', verticalAlign: 'top' }}>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p style={{ fontSize: '0.8em', color: '#888', margin: '8px 0 0 12px' }}>{card.key}</p>
           </div>
         ))}
       </div>
