@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Jumbotron.module.css';
-import ScrollingLines from './ScrollingLines';
+import ConveyorBelt from './ConveyorBelt';
 
 const Jumbotron = () => {
   return (
@@ -13,7 +13,7 @@ const Jumbotron = () => {
           <a href="#opportunity" className={styles.learnMoreBtn}>Learn More</a>
         </div>
       </div>
-      <ScrollingLines />
+      <ConveyorBelt />
     </section>
   );
 };

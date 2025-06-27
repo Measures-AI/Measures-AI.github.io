@@ -1,10 +1,10 @@
 .frostedGlass {
   position: absolute;
-  bottom: -8vh;
+  bottom: -6vh;
   left: 50%;
   transform: translateX(-50%);
-  width: 340px; /* Approximately 4 lines width (4 * 85px margin-right) */
-  height: 36vh; /* Extends above and below the 20vh scrolling lines container */
+  width: 32vh; /* Approximately 4 lines width (4 * 85px margin-right) */
+  height: 32vh; /* Extends above and below the 20vh scrolling lines container */
   border: 1px solid white;
   border-radius: 12px;
   z-index: 5; /* Above the scrolling lines but below the text */
