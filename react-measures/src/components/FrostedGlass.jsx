@@ -2,10 +2,21 @@ import React from 'react';
 import styles from './FrostedGlass.module.css';
 
 const FrostedGlass = () => {
-  return (
+  return (<>
+    
     <div className={styles.frostedGlass}>
-      <div className={styles.frostedGlassBackdrop}></div>
+    <div className={styles.outerFrame}></div>
+    <div className={styles.frostedGlassBackdrop}></div>
+      <div className={styles.machineFrame}>
+        <div className={styles.machineTop}></div>
+        <div className={styles.machineBottom}></div>
+        <div className={styles.machineLeft}></div>
+        <div className={styles.machineRight}></div>
+        <div className={styles.machineFront}></div>
+        <div className={styles.machineBack}></div>
+      </div>
     </div>
+    </>
   );
 };
 

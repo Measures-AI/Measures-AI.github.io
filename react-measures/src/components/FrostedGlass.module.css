@@ -1,12 +1,10 @@
 .frostedGlass {
   position: absolute;
-  bottom: -6vh;
+  bottom: -8vh;
   left: 50%;
   transform: translateX(-50%);
-  width: 32vh; /* Approximately 4 lines width (4 * 85px margin-right) */
-  height: 32vh; /* Extends above and below the 20vh scrolling lines container */
-  border: 1px solid white;
-  border-radius: 12px;
+  width: 36vh; /* Approximately 4 lines width (4 * 85px margin-right) */
+  height: 36vh; /* Extends above and below the 20vh scrolling lines container */
   z-index: 5; /* Above the scrolling lines but below the text */
   /* Use clip-path instead of border-radius to preserve blur */
   /* You can add your blur effects here */
@@ -22,4 +20,54 @@
   left: -50%;
   backdrop-filter: blur(16px);
   mask-image: linear-gradient(to left, transparent 0% 25%, black 25% 75%, transparent 75% 100%);
+  z-index: 6; /* Ensure backdrop is above transforming logos */
+}
+
+.outerFrame {
+  position: absolute;
+  inset: 0;
+  border: 1px solid white;
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.machineFrame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10; /* Ensure frame is above backdrop */
+}
+
+.machineTop, .machineBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+}
+
+.machineTop {
+  top: 0;
+}
+
+.machineBottom {
+  bottom: 0;
+}
+
+.machineLeft, .machineRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, white, transparent);
+}
+
+.machineLeft {
+  left: 0;
+}
+
+.machineRight {
+  right: 0;
 }
