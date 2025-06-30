@@ -83,6 +83,19 @@ const ConveyorBelt = () => {
     setLogos(initialLogos);
   }, [conveyorBeltWidth, createLogo]);
 
+  // Listen for tab visibility change and refresh conveyor belt when returning
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        renderConveyorBelt();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [renderConveyorBelt]);
+
   // LOGO UPDATES ================================================
   const updateLogos = useCallback(() => {
     setLogos(logos => {
