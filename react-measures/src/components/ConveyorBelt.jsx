@@ -36,7 +36,7 @@ const ConveyorBelt = () => {
   
   // Calculate conveyor belt width based on screen size
   const conveyorBeltWidth = useMemo(() => {
-    return Math.ceil(windowWidth / 90 * 1.5);
+    return Math.ceil(windowWidth / 90);
   }, [windowWidth]);
 
   // Memoized shift animation time calculation
@@ -75,7 +75,7 @@ const ConveyorBelt = () => {
 
     const initialLogos = []
     for (let i = 0; i < conveyorBeltWidth * 1.5; i++) {
-      initialLogos.push(createLogo((conveyorBeltWidth * 1.5 - i - .25 * conveyorBeltWidth) * 90, i > conveyorBeltWidth * 1.5 / 2));
+      initialLogos.push(createLogo((conveyorBeltWidth * 1.5 - i - .25 * conveyorBeltWidth) * 90, i > conveyorBeltWidth * .75));
     }
     setLogos(initialLogos);
   }, [conveyorBeltWidth, createLogo]);
@@ -96,12 +96,7 @@ const ConveyorBelt = () => {
   // LOGO UPDATES ================================================
   const updateLogos = useCallback(() => {
     setLogos(logos => {
-      let newLogos = [...logos];
-      if (Math.random() < 1) {
-        newLogos = [...logos, createLogo()];
-      } else {
-        newLogos = [...logos];
-      }
+      let newLogos = [...logos, createLogo()];
       // Remove maxLogos oldest
       const maxLogos = conveyorBeltWidth * 1.5;
       const filteredLogos = newLogos.slice(-maxLogos);
