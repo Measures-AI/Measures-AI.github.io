@@ -27,4 +27,15 @@
     50% {
         transform: translateY(var(--bounce-height));
     }
-} 
+}
+
+@media (max-width: 600px) {
+  .bouncingLinesContainer {
+    height: 100px;
+  }
+  .bouncingLine {
+    width: 16px;
+    height: 32px;
+    margin: 0 16px;
+  }
+}
