@@ -9,7 +9,12 @@ const BouncingLines = () => {
     function renderLines() {
       if (!container) return;
       container.innerHTML = '';
-      const bouncingLineCount = Math.ceil(window.innerWidth / 160);
+      let bouncingLineCount;
+      if (window.innerWidth <= 600) {
+        bouncingLineCount = Math.ceil(window.innerWidth / 70); // fewer lines for more whitespace
+      } else {
+        bouncingLineCount = Math.ceil(window.innerWidth / 160);
+      }
       for (let i = 0; i < bouncingLineCount; i++) {
         const line = document.createElement('div');
         line.className = styles.bouncingLine;
