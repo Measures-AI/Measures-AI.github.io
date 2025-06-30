@@ -113,6 +113,7 @@ const ConveyorBelt = () => {
   useEffect(() => {
     let animationFrame;
     const halfway = windowWidth * 0.5;
+    const transitionDuration = 1000; // 1s in ms
     const animate = () => {
       setLogos(prevLogos => {
         const now = performance.now();
@@ -122,9 +123,37 @@ const ConveyorBelt = () => {
           const endX = windowWidth * 1.25; // 150vw from -25vw
           const elapsed = (now - (logo.startTime || now)) / (shiftAnimationTime * 1000 * ((endX - startX) / (windowWidth * 1.5)));
           const currentX = startX + (endX - startX) * Math.min(elapsed, 1);
-          if (logo.isQualitative && currentX > halfway) {
-            return { ...logo, isQualitative: false };
+
+          // If not already transitioning and crosses halfway, start transition
+          if (logo.isQualitative && !logo.isTransitioning && currentX > halfway) {
+            return {
+              ...logo,
+              isTransitioning: true,
+              transitionStart: now,
+              transitionProgress: 0,
+            };
           }
+
+          // If in transition, update progress
+          if (logo.isTransitioning) {
+            const progress = Math.min((now - logo.transitionStart) / transitionDuration, 1);
+            if (progress >= 1) {
+              // End transition: switch to quantitative
+              return {
+                ...logo,
+                isQualitative: false,
+                isTransitioning: false,
+                transitionProgress: undefined,
+                transitionStart: undefined,
+              };
+            } else {
+              return {
+                ...logo,
+                transitionProgress: progress,
+              };
+            }
+          }
+
           return logo;
         });
       });
@@ -179,15 +208,46 @@ const ConveyorBelt = () => {
               animation: `shift ${shiftAnimationTime}s linear forwards`,
             }}
           >
-            <img 
-              src={logo.isQualitative ? logo.src : logo.nextSrc} 
-              alt="Logo" 
-              style={{
-                width: '52px',
-                height: '52px',
-                objectFit: 'contain',
-              }}
-            />
+            {/* Crossfade between qualitative and quantitative logos */}
+            {logo.isTransitioning ? (
+              <>
+                <img
+                  src={logo.src}
+                  alt="Logo"
+                  style={{
+                    width: '52px',
+                    height: '52px',
+                    objectFit: 'contain',
+                    position: 'relative',
+                    opacity: 1 - (logo.transitionProgress || 0),
+                    transition: 'opacity 0.1s linear',
+                  }}
+                />
+                <img
+                  src={logo.nextSrc}
+                  alt="Logo"
+                  style={{
+                    width: '52px',
+                    height: '52px',
+                    objectFit: 'contain',
+                    position: 'absolute',
+                    left: '-0%',
+                    opacity: logo.transitionProgress || 0,
+                    transition: 'opacity 0.1s linear',
+                  }}
+                />
+              </>
+            ) : (
+              <img
+                src={logo.isQualitative ? logo.src : logo.nextSrc}
+                alt="Logo"
+                style={{
+                  width: '52px',
+                  height: '52px',
+                  objectFit: 'contain',
+                }}
+              />
+            )}
           </div>
         ))}
       </div>
