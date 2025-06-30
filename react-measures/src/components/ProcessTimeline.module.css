@@ -42,21 +42,40 @@
     margin: 20px auto;
 }
 
+.stepsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 40px;
+    position: relative;
+    z-index: 2;
+}
+
 .stepContainer {
     display: flex;
-    margin-bottom: 50px;
+    justify-content: center;
     padding: 0 30px;
 }
 
-.stepContainer:nth-child(odd) {
-    flex-direction: row-reverse;
-}
 
 .step {
-    width: 40%;
     padding: 20px;
 }
 
 .step h3 {
     margin-bottom: 10px;
 } 
+
+@media (max-width: 600px) {
+    .processText h2 {
+        font-size: 2rem;
+    }
+    .processText p {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .stepsGrid {
+        grid-template-columns: 1fr;
+    }
+}
