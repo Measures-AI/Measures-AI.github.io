@@ -13,7 +13,12 @@ const qualitativeLogos = [
   '/external-logos/gong.png',
   '/external-logos/chorus.png',
   '/external-logos/twilio.png',
-  '/external-logos/zapier.png'
+  '/external-logos/zapier.png',
+  '/external-logos/salesforce.png',
+  '/external-logos/hubspot.png',
+  '/external-logos/pipedrive.png',
+  '/external-logos/netsuite.png',
+  '/external-logos/zoho.png'
 ];
 
 const quantitativeLogos = [
@@ -21,11 +26,6 @@ const quantitativeLogos = [
   '/external-logos/snowflake.png',
   '/external-logos/tableau.png',
   '/external-logos/powerbi.png',
-  '/external-logos/salesforce.png',
-  '/external-logos/hubspot.png',
-  '/external-logos/pipedrive.png',
-  '/external-logos/netsuite.png',
-  '/external-logos/zoho.png'
 ];
 
 const ConveyorBelt = () => {
