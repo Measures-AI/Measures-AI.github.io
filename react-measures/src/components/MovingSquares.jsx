@@ -9,7 +9,7 @@ const MovingSquares = () => {
     function renderSquares() {
       if (!container) return;
       container.innerHTML = '';
-      const squareCount = Math.ceil(window.innerWidth / 100);
+      const squareCount = Math.ceil(window.innerWidth / 50);
       for (let i = 0; i < squareCount; i++) {
         const square = document.createElement('div');
         square.className = styles.square;
