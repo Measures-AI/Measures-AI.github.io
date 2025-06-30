@@ -73,3 +73,11 @@
 .machineRight {
   right: 0;
 }
+
+@media (max-width: 600px) {
+  .frostedGlass {
+    width: 180px;
+    height: 180px;
+    bottom: -25px;
+  }
+}

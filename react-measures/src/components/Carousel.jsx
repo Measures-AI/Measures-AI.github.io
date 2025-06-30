@@ -129,7 +129,6 @@ const Carousel = ({ cards }) => {
 
 
   const offset = useMemo(() => {
-    console.log('offsetChange: ', (currentIndex - Math.floor(cardsInView / 2)) * CARD_WIDTH);
 
     return (Math.floor(cardsInView / 2) - currentIndex) * CARD_WIDTH;
   }, [currentIndex, cardsInView]);

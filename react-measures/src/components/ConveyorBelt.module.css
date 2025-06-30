@@ -90,3 +90,9 @@
         transform: translateX(150vw);
     }
 }
+
+@media (max-width: 600px) {
+    .animationContainer {
+        height: 130px;
+    }
+}

@@ -30,12 +30,14 @@ const quantitativeLogos = [
 
 const ConveyorBelt = () => {
   const conveyorBeltRef = useRef(null);
+  const [conveyorBeltHeight, setConveyorBeltHeight] = useState(window.innerHeight * 0.2);
   const [logos, setLogos] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const animationStartRef = useRef({}); // Track start times for each logo
   
   // Calculate conveyor belt width based on screen size
   const conveyorBeltWidth = useMemo(() => {
+    setConveyorBeltHeight(windowWidth > 600 ? window.innerHeight * 0.2 : 100);
     return Math.ceil(windowWidth / 90);
   }, [windowWidth]);
 
@@ -46,19 +48,20 @@ const ConveyorBelt = () => {
 
   // LOGO CREATION ================================================
   const createLogo = useCallback((initX = 0, isQualitative = true) => {
+    console.log('conveyorBeltHeight: ', conveyorBeltHeight);
     const now = performance.now();
     const logo = {
       id: Math.random(),
       src: qualitativeLogos[Math.floor(Math.random() * qualitativeLogos.length)],
       isQualitative: isQualitative,
       originalX: initX !== 0 ? initX : initX - .25 * windowWidth,
-      originalY: Math.random() * 10 + 2,
+      originalY: Math.random() * conveyorBeltHeight * .8,
       nextSrc: quantitativeLogos[Math.floor(Math.random() * quantitativeLogos.length)],
       startTime: now,
     };
     animationStartRef.current[logo.id] = now;
     return logo;
-  }, [windowWidth]);
+  }, [windowWidth, conveyorBeltHeight]);
 
   // RENDER CONVEYOR BELT + INITIAL LOGOS =================================================
   const renderConveyorBelt = useCallback(() => {
@@ -107,7 +110,7 @@ const ConveyorBelt = () => {
   // Track logo positions and update isQualitative when passing halfway
   useEffect(() => {
     let animationFrame;
-    const halfway = windowWidth * 0.5;
+    const halfway = windowWidth * 0.5 - 100;
     const transitionDuration = 1000; // 1s in ms
     const animate = () => {
       setLogos(prevLogos => {
@@ -198,7 +201,7 @@ const ConveyorBelt = () => {
             className={styles.logo}
             style={{
               left: `${logo.originalX}px`,
-              top: `${logo.originalY}vh`,
+              top: `${logo.originalY}px`,
               zIndex: 3, // All logos consistently below the glass
               animation: `shift ${shiftAnimationTime}s linear forwards`,
             }}
