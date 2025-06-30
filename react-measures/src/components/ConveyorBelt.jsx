@@ -51,9 +51,6 @@ const ConveyorBelt = () => {
       id: Math.random(),
       src: qualitativeLogos[Math.floor(Math.random() * qualitativeLogos.length)],
       isQualitative: isQualitative,
-      isTransforming: false,
-      transformProgress: 0, // TODO remove?
-      flashIntensity: 0, // TODO remove?
       originalX: initX !== 0 ? initX : initX - .25 * windowWidth,
       originalY: Math.random() * 10 + 2,
       nextSrc: quantitativeLogos[Math.floor(Math.random() * quantitativeLogos.length)],
@@ -180,7 +177,6 @@ const ConveyorBelt = () => {
               top: `${logo.originalY}vh`,
               zIndex: 3, // All logos consistently below the glass
               animation: `shift ${shiftAnimationTime}s linear forwards`,
-              border: logo.isQualitative ? '1px solid white' : 'none',
             }}
           >
             <img 
@@ -190,13 +186,6 @@ const ConveyorBelt = () => {
                 width: '52px',
                 height: '52px',
                 objectFit: 'contain',
-              }}
-            />
-            {/* White flash overlay */}
-            <div 
-              className={styles.flashOverlay}
-              style={{
-                opacity: logo.isTransforming ? logo.flashIntensity : 0,
               }}
             />
           </div>
