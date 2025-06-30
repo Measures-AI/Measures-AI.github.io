@@ -1,21 +1,40 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './ProcessTimeline.module.css';
+import { useState } from 'react';
 
 const steps = [
-  { title: 'Step 1: Platform', text: 'We deploy a secure, single-tenant, isolated environment for your data and measures to sit.' },
-  { title: 'Step 2: Data', text: 'We establish live connections with the platforms you use to interact with customers.' },
-  { title: 'Step 3: Measurement', text: 'Our models ingest and measure the data, both historically and in real-time.' },
-  { title: 'Step 4: Insights', text: 'Notable insights are surfaced to you in a dashboard, with the ability to drill down or export as needed.' },
+  { 
+    title: 'Step 1: Platform', 
+    text: 'We deploy a secure, single-tenant, isolated environment for your data and measures to sit.',
+    image: '/platform-graphic.svg'
+  },
+  { 
+    title: 'Step 2: Data', 
+    text: 'We establish live connections with the platforms you use to interact with customers.',
+    image: '/data-graphic.svg'
+  },
+  { 
+    title: 'Step 3: Measurement', 
+    text: 'Our models ingest and measure the data, both historically and in real-time.',
+    image: '/measurement-graphic.svg'
+  },
+  { 
+    title: 'Step 4: Insights', 
+    text: 'Notable insights are surfaced to you in a dashboard, with the ability to drill down or export as needed.',
+    image: '/insights-graphic.svg'
+  },
 ];
 
 const ProcessTimeline = () => {
   const timelineRef = useRef(null);
   const sectionRef = useRef(null);
+  const [isLargeMobile, setIsLargeMobile] = useState(window.innerWidth > 900);
 
   useEffect(() => {
     const timelineContainer = timelineRef.current;
     const processSection = sectionRef.current;
     function renderLines() {
+      setIsLargeMobile(window.innerWidth > 900);
       if (!timelineContainer || !processSection) return;
       timelineContainer.innerHTML = '';
       const sectionHeight = processSection.offsetHeight;
@@ -49,12 +68,47 @@ const ProcessTimeline = () => {
         <div ref={timelineRef} className={styles.timelineContainer}></div>
         <div className={styles.stepsGrid}>
           {steps.map((step, idx) => (
-            <div className={styles.stepContainer} key={idx}>
-              <div className={styles.step}>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-            </div>
+            <React.Fragment key={idx}>
+              {idx % 2 === 0 || !isLargeMobile ? (
+                <>
+                  <div className={styles.stepContainer}>
+                    <div className={styles.step}>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </div>
+                  </div>
+                  <div className={styles.imageContainer}>
+                    <img 
+                      src={step.image} 
+                      alt={`${step.title} illustration`}
+                      className={styles.stepImage}
+                      // onError={(e) => {
+                      //   e.target.style.display = 'none';
+                      // }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className={styles.imageContainer}>
+                    <img 
+                      src={step.image} 
+                      alt={`${step.title} illustration`}
+                      className={styles.stepImage}
+                      // onError={(e) => {
+                      //   e.target.style.display = 'none';
+                      // }}
+                    />
+                  </div>
+                  <div className={styles.stepContainer}>
+                    <div className={styles.step}>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </React.Fragment>
           ))}
         </div>
       </div>

@@ -1,0 +1,26 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="platformGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Cloud base -->
+  <ellipse cx="100" cy="140" rx="60" ry="25" fill="url(#platformGradient)" opacity="0.8"/>
+  
+  <!-- Cloud layers -->
+  <ellipse cx="80" cy="120" rx="35" ry="20" fill="url(#platformGradient)" opacity="0.6"/>
+  <ellipse cx="120" cy="110" rx="30" ry="18" fill="url(#platformGradient)" opacity="0.7"/>
+  <ellipse cx="60" cy="100" rx="25" ry="15" fill="url(#platformGradient)" opacity="0.5"/>
+  
+  <!-- Security shield -->
+  <path d="M100 60 L120 70 L120 90 Q120 110 100 120 Q80 110 80 90 L80 70 Z" fill="white" opacity="0.9"/>
+  <path d="M100 70 L110 75 L110 85 Q110 95 100 100 Q90 95 90 85 L90 75 Z" fill="url(#platformGradient)"/>
+  
+  <!-- Connection dots -->
+  <circle cx="40" cy="80" r="3" fill="white" opacity="0.7"/>
+  <circle cx="160" cy="90" r="3" fill="white" opacity="0.7"/>
+  <circle cx="50" cy="160" r="3" fill="white" opacity="0.7"/>
+  <circle cx="150" cy="170" r="3" fill="white" opacity="0.7"/>
+</svg> 
