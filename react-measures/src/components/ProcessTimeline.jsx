@@ -46,7 +46,7 @@ const ProcessTimeline = () => {
         line.style.marginTop = i === 0 ? '0px' : `${spacing}px`;
         line.style.marginBottom = 0;
         if (i === 0 || i === numLines - 1) {
-          line.style.width = '80px';
+          line.classList.add(styles.verticalLineLarge);
         }
         timelineContainer.appendChild(line);
       }

@@ -41,6 +41,10 @@
     margin: 20px auto;
 }
 
+.verticalLineLarge {
+    width: 80px;
+}
+
 .stepsGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -116,12 +120,17 @@
         left: 0;
         transform: none;
         width: 60px;
+        align-items: flex-start;
     }
     
     .verticalLine {
         width: 30px;
         height: 8px;
         margin: 15px 0;
+    }
+
+    .verticalLineLarge {
+        width: 40px;
     }
     
     .stepsGrid {
@@ -133,12 +142,14 @@
     .stepContainer {
         grid-column: span 1;
         padding: 0 20px;
+        padding-left: 0;
         justify-content: flex-start;
     }
     
     .imageContainer {
         grid-column: span 1;
         padding: 0 20px;
+        padding-left: 0;
         justify-content: flex-start;
     }
     
