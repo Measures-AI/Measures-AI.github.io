@@ -127,3 +127,15 @@
     flex-shrink: 0;
     margin-left: auto;
 } 
+
+@media (max-width: 600px) {
+    .card {
+        width: 90vw;
+        min-width: 90vw;
+        max-width: 90vw;
+        margin: 0 10px;
+    }
+    .cardContentMinHeight {
+        min-height: 400px;
+    }
+}
