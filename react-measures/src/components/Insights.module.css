@@ -31,3 +31,12 @@
     overflow: hidden;
     position: relative;
 } 
+
+@media (max-width: 600px) {
+    .insightText h2 {
+        font-size: 2rem;
+    }
+    .insightText p {
+        font-size: 1.2rem;
+    }
+}

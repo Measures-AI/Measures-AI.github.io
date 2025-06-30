@@ -47,7 +47,13 @@ const ChartPreview = ({ data, theme }) => {
   return null;
 };
 
-const CARD_WIDTH = 500 + 30; // 500px + 2*15px margin
+const getCardWidth = () => {
+  if (typeof window !== 'undefined' && window.innerWidth < 600) {
+    return window.innerWidth * 0.9 + 20;
+  }
+  return 500 + 30; // 500px + 2*15px margin
+};
+const CARD_WIDTH = getCardWidth();
 
 const Carousel = ({ cards }) => {
   const containerRef = useRef(null);
