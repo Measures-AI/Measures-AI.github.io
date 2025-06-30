@@ -32,6 +32,7 @@ const ConveyorBelt = () => {
   const conveyorBeltRef = useRef(null);
   const [logos, setLogos] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const animationStartRef = useRef({}); // Track start times for each logo
   
   // Calculate conveyor belt width based on screen size
   const conveyorBeltWidth = useMemo(() => {
@@ -45,6 +46,7 @@ const ConveyorBelt = () => {
 
   // LOGO CREATION ================================================
   const createLogo = useCallback((initX = 0, isQualitative = true) => {
+    const now = performance.now();
     const logo = {
       id: Math.random(),
       src: qualitativeLogos[Math.floor(Math.random() * qualitativeLogos.length)],
@@ -52,13 +54,14 @@ const ConveyorBelt = () => {
       isTransforming: false,
       transformProgress: 0, // TODO remove?
       flashIntensity: 0, // TODO remove?
-      originalX: initX - .25 * windowWidth,
+      originalX: initX !== 0 ? initX : initX - .25 * windowWidth,
       originalY: Math.random() * 10 + 2,
       nextSrc: quantitativeLogos[Math.floor(Math.random() * quantitativeLogos.length)],
-      enteredMachine: false
+      startTime: now,
     };
+    animationStartRef.current[logo.id] = now;
     return logo;
-  }, []);
+  }, [windowWidth]);
 
   // RENDER CONVEYOR BELT + INITIAL LOGOS =================================================
   const renderConveyorBelt = useCallback(() => {
@@ -74,8 +77,8 @@ const ConveyorBelt = () => {
     }
 
     const initialLogos = []
-    for (let i = 0; i < conveyorBeltWidth; i++) {
-      initialLogos.push(createLogo((conveyorBeltWidth - i) * 90, i > conveyorBeltWidth / 2));
+    for (let i = 0; i < conveyorBeltWidth * 1.5; i++) {
+      initialLogos.push(createLogo((conveyorBeltWidth * 1.5 - i - .25 * conveyorBeltWidth) * 90, i > conveyorBeltWidth * 1.5 / 2));
     }
     setLogos(initialLogos);
   }, [conveyorBeltWidth, createLogo]);
@@ -89,11 +92,37 @@ const ConveyorBelt = () => {
       } else {
         newLogos = [...logos];
       }
-      const maxLogos = conveyorBeltWidth;
+      // Remove maxLogos oldest
+      const maxLogos = conveyorBeltWidth * 1.5;
       const filteredLogos = newLogos.slice(-maxLogos);
       return filteredLogos;
     });
   }, [createLogo, conveyorBeltWidth]);
+
+  // Track logo positions and update isQualitative when passing halfway
+  useEffect(() => {
+    let animationFrame;
+    const halfway = windowWidth * 0.5;
+    const animate = () => {
+      setLogos(prevLogos => {
+        const now = performance.now();
+        return prevLogos.map(logo => {
+          // Calculate progress (0 to 1)
+          const startX = logo.originalX;
+          const endX = windowWidth * 1.25; // 150vw from -25vw
+          const elapsed = (now - (logo.startTime || now)) / (shiftAnimationTime * 1000 * ((endX - startX) / (windowWidth * 1.5)));
+          const currentX = startX + (endX - startX) * Math.min(elapsed, 1);
+          if (logo.isQualitative && currentX > halfway) {
+            return { ...logo, isQualitative: false };
+          }
+          return logo;
+        });
+      });
+      animationFrame = requestAnimationFrame(animate);
+    };
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [windowWidth, shiftAnimationTime]);
 
   useEffect(() => {
     // Handle window resize
