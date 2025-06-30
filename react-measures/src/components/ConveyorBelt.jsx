@@ -55,7 +55,7 @@ const ConveyorBelt = () => {
       src: qualitativeLogos[Math.floor(Math.random() * qualitativeLogos.length)],
       isQualitative: isQualitative,
       originalX: initX !== 0 ? initX : initX - .25 * windowWidth,
-      originalY: Math.random() * conveyorBeltHeight * .8,
+      originalY: Math.random() * conveyorBeltHeight * .6 + conveyorBeltHeight * .1,
       nextSrc: quantitativeLogos[Math.floor(Math.random() * quantitativeLogos.length)],
       startTime: now,
     };
