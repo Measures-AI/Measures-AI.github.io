@@ -48,7 +48,6 @@ const ConveyorBelt = () => {
 
   // LOGO CREATION ================================================
   const createLogo = useCallback((initX = 0, isQualitative = true) => {
-    console.log('conveyorBeltHeight: ', conveyorBeltHeight);
     const now = performance.now();
     const logo = {
       id: Math.random(),
