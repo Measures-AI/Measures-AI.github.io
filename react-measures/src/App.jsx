@@ -21,7 +21,7 @@ function App() {
       <Insights />
       <ProcessTimeline />
       <MovingSquares />
-      <MissionVision />
+      {/* <MissionVision /> */}
       <GetStarted />
       <Footer />
     </>
