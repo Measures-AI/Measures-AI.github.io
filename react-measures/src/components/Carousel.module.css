@@ -117,6 +117,14 @@
     text-align: left;
     display: inline-block;
     margin-right: 18px;
+    transition: box-shadow 0.2s, background 0.2s, color 0.2s;
+}
+
+.cardSource:hover, .cardSource:focus {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    background: #fff !important;
+    color: #222;
+    outline: none;
 }
 
 .cardSourceLogo {

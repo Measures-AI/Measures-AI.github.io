@@ -7,5 +7,5 @@ export { default as Carousel } from './Carousel';
 export { default as ProcessTimeline } from './ProcessTimeline';
 export { default as MovingSquares } from './MovingSquares';
 export { default as MissionVision } from './MissionVision';
-export { default as ContactForm } from './ContactForm';
+export { default as GetStarted } from './GetStarted';
 export { default as Footer } from './Footer'; 
