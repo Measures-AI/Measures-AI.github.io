@@ -23,6 +23,14 @@
   backdrop-filter: blur(16px);
   mask-image: linear-gradient(to left, transparent 0% 25%, black 25% 75%, transparent 75% 100%);
   z-index: 6; /* Ensure backdrop is above transforming logos */
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.platformLogo {
+  height: 50%;
+  object-fit: contain;
 }
 
 .outerFrame {
