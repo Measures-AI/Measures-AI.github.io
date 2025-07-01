@@ -8,7 +8,7 @@ import Insights from './components/Insights';
 import ProcessTimeline from './components/ProcessTimeline';
 import MovingSquares from './components/MovingSquares';
 import MissionVision from './components/MissionVision';
-import ContactForm from './components/ContactForm';
+import GetStarted from './components/GetStarted';
 import Footer from './components/Footer';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
       <ProcessTimeline />
       <MovingSquares />
       <MissionVision />
-      <ContactForm />
+      <GetStarted />
       <Footer />
     </>
   );

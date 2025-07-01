@@ -68,6 +68,11 @@
     grid-column: span 2;
 }
 
+.imageContainer img {
+    /* max-height: 180px; */
+    padding: 20px 0;
+}
+
 /* Desktop alternating pattern */
 .step1 { grid-column: 1 / 3; }
 .image1 { grid-column: 3 / 5; }

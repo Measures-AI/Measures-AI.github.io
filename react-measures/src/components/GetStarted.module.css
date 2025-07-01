@@ -1,0 +1,26 @@
+.gettingStartedForm {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 700px) {
+    .gettingStartedForm {
+        padding: 24px 8px;
+        max-width: 98vw;
+    }
+}
+
+.gettingStarted h2 {
+    text-align: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: #fff;
+    letter-spacing: 1px;
+    font-family: 'Montserrat', sans-serif;
+}
