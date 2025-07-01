@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import styles from './Carousel.module.css';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from 'recharts';
+import GetStartedForm from './ContactForm.jsx';
 
 // Pastel color themes
 const pastelThemes = [
@@ -55,12 +56,69 @@ const getCardWidth = () => {
 };
 const CARD_WIDTH = getCardWidth();
 
+const ArrowIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginLeft: 8, verticalAlign: 'middle', position: 'relative', top: '1px'}}>
+    <path d="M7 5l5 5-5 5" stroke="#333" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const Modal = ({ open, onClose, card }) => {
+  if (!open || !card) return null;
+  return (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+      background: 'rgba(0,0,0,0.3)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      overflowY: 'auto', // allow scroll on mobile
+    }} onClick={onClose}>
+      <div
+        style={{
+          background: '#242424',
+          padding: 32,
+          borderRadius: 12,
+          maxWidth: 600,
+          width: '100%',
+          margin: '0 20px',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.2)',
+          position: 'relative',
+          textAlign: 'center',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <button onClick={onClose} style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}>&times;</button>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16, marginBottom: 20, width: '100%' }}>
+          <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 32, letterSpacing: 1, color: 'white', textAlign: 'center' }}>Measures</span>
+          <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 32, color: 'white' }}>+</span>
+          {card.sourceLogo && (
+            <img src={card.sourceLogo} alt={card.source + ' logo'} style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: 8, background: '#fff2' }} />
+          )}
+        </div>
+        <div style={{ marginBottom: 12, color: 'white', fontSize: 20, fontWeight: 600 }}>
+          Get insights from {card.source.replace('Extracted from ', '')} automatically!
+        </div>
+        <div style={{ marginBottom: 24, color: '#ccc', fontSize: 15, fontWeight: 400 }}>
+          We connect directly to your {card.source.replace('Extracted from ', '')} data, measure it in real time, and surface actionable insights—no manual work required.
+        </div>
+        <div style={{ width: '100%', maxWidth: 500, alignSelf: 'center' }}>
+          <GetStartedForm />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Carousel = ({ cards }) => {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const [cardsInView, setCardsInView] = useState(3);
   const [currentIndex, setCurrentIndex] = useState(0); // Will be set after bufferCount is known
   const [transition, setTransition] = useState('transform 0.5s cubic-bezier(0.4,0,0.2,1)');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalCard, setModalCard] = useState(null);
 
   // Determine how many cards fit in the viewport whenver the window is resized.
   useEffect(() => {
@@ -147,54 +205,60 @@ const Carousel = ({ cards }) => {
   };
 
   return (
-    <div className={styles.carouselContainer} ref={containerRef}>
-      <div className={styles.carouselTrack} ref={trackRef} style={trackStyle}>
-        {allCards.map((card) => (
-          <div
-            className={styles.card}
-            key={card.key}
-          >
-            <div className={styles.img}>
-              <ChartPreview
-                data={card.data}
-                theme={pastelThemes[allCards.indexOf(card) % pastelThemes.length]}
-              />
-            </div>
-            <div className={styles.cardContentMinHeight}>
-              <div className={styles.cardContent}>
-                <h3 className={styles.cardTitle}>{card.title}</h3>
-                <p className={styles.cardText}>{card.text}</p>
-                <ul className={styles.cardBullets}>
-                  {card.bullets.map((bullet, index) => (
-                    <li
-                      key={index}
-                      className={styles.cardBullet}
-                    >
-                      <span className={styles.cardBulletText}>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
+    <>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} card={modalCard} />
+      <div className={styles.carouselContainer} ref={containerRef}>
+        <div className={styles.carouselTrack} ref={trackRef} style={trackStyle}>
+          {allCards.map((card) => (
+            <div
+              className={styles.card}
+              key={card.key}
+            >
+              <div className={styles.img}>
+                <ChartPreview
+                  data={card.data}
+                  theme={pastelThemes[allCards.indexOf(card) % pastelThemes.length]}
+                />
+              </div>
+              <div className={styles.cardContentMinHeight}>
+                <div className={styles.cardContent}>
+                  <h3 className={styles.cardTitle}>{card.title}</h3>
+                  <p className={styles.cardText}>{card.text}</p>
+                  <ul className={styles.cardBullets}>
+                    {card.bullets.map((bullet, index) => (
+                      <li
+                        key={index}
+                        className={styles.cardBullet}
+                      >
+                        <span className={styles.cardBulletText}>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className={styles.cardSourceRow}>
+                <button
+                  className={styles.cardSource}
+                  style={{ backgroundColor: pastelThemes[allCards.indexOf(card) % pastelThemes.length].axis, display: 'flex', alignItems: 'center', border: 'none', cursor: 'pointer' }}
+                  onClick={() => { setModalCard(card); setModalOpen(true); }}
+                  type="button"
+                >
+                  {card.source}
+                  <ArrowIcon />
+                </button>
+                {card.sourceLogo && (
+                  <img
+                    className={styles.cardSourceLogo}
+                    src={card.sourceLogo}
+                    alt={card.source + ' logo'}
+                  />
+                )}
               </div>
             </div>
-            <div className={styles.cardSourceRow}>
-              <p
-                className={styles.cardSource}
-                style={{ backgroundColor: pastelThemes[allCards.indexOf(card) % pastelThemes.length].axis }}
-              >
-                {card.source}
-              </p>
-              {card.sourceLogo && (
-                <img
-                  className={styles.cardSourceLogo}
-                  src={card.sourceLogo}
-                  alt={card.source + ' logo'}
-                />
-              )}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

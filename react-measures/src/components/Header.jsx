@@ -31,7 +31,7 @@ const Header = () => {
           <li><a href="#insight">Our Insights</a></li>
           <li><a href="#process">Our Process</a></li>
           <li><a href="#mission">Mission & Vision</a></li>
-          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#contact">Get Started</a></li>
         </ul>
       </nav>
     </header>
