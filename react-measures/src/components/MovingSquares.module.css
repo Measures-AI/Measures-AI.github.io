@@ -3,6 +3,7 @@
     position: relative;
     overflow: hidden;
     /* margin: 250px 0; */
+    margin-bottom: 100px;
 }
 
 .movingSquares {

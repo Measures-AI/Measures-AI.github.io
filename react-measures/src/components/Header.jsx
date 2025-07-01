@@ -30,7 +30,7 @@ const Header = () => {
           <li><a href="#opportunity">About</a></li>
           <li><a href="#insight">Our Insights</a></li>
           <li><a href="#process">Our Process</a></li>
-          <li><a href="#mission">Mission & Vision</a></li>
+          {/* <li><a href="#mission">Mission & Vision</a></li> */}
           <li><a href="#contact">Get Started</a></li>
         </ul>
       </nav>
