@@ -56,6 +56,9 @@ const getCardWidth = () => {
 };
 const CARD_WIDTH = getCardWidth();
 
+// Add this constant near the top, after CARD_WIDTH
+const AUTO_SCROLL_INTERVAL = 6000; // ms, controls how often the carousel auto-scrolls
+
 const ArrowIcon = () => (
   <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginLeft: 8, verticalAlign: 'middle', position: 'relative', top: '1px'}}>
     <path d="M7 5l5 5-5 5" stroke="#333" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -172,7 +175,7 @@ const Carousel = ({ cards }) => {
           setCurrentIndex((prevIndex) => {
             return prevIndex + 1;
           });
-        }, 3000);
+        }, AUTO_SCROLL_INTERVAL); // Use the constant here
       }
     } else if (currentIndex >= cards.length) {
       interval3 = setInterval(() => {
