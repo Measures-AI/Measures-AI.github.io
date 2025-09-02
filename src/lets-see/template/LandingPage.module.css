@@ -1,7 +1,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 36px;
   padding: 48px 24px;
   max-width: 1200px;
   margin: 0 auto;
@@ -32,15 +32,44 @@
   gap: 16px;
 }
 
+.story {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 .headline {
-  font-size: 40px;
-  line-height: 1.2;
+  font-size: 36px;
+  line-height: 1.3;
   font-weight: 700;
 }
 
 .subheadline {
   font-size: 18px;
   opacity: 0.9;
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.point {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 14px;
+}
+
+.demoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .demoCard {
@@ -74,18 +103,46 @@
   opacity: 0.8;
 }
 
-.points {
+.section {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
-.point {
+.sectionTitle {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.cardList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
-  padding: 16px;
-  font-size: 14px;
+  padding: 14px;
+}
+
+.cardImage {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.bottomCta {
+  background: linear-gradient(180deg, rgba(79,70,229,0.2), rgba(79,70,229,0.05));
+  border: 1px solid rgba(79,70,229,0.3);
+  border-radius: 14px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .footer {
@@ -98,4 +155,7 @@
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
   .points { grid-template-columns: 1fr; }
+  .section { grid-template-columns: 1fr; }
+  .cardList { grid-template-columns: 1fr; }
+  .bottomCta { grid-template-columns: 1fr; }
 }
