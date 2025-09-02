@@ -2,6 +2,11 @@ import React from 'react';
 import styles from './LandingPage.module.css';
 import { LeadForm } from '../components/LeadForm';
 import { TrackingProvider } from '../components/TrackingProvider';
+import { Benefits3 } from '../sections/Benefits3';
+import { Quote } from '../sections/Quote';
+import { CenteredForm } from '../sections/CenteredForm';
+import { FeatureRows } from '../sections/FeatureRows';
+import { LogoCloud } from '../sections/LogoCloud';
 
 export const LandingPage = ({ config }) => {
   const {
@@ -20,8 +25,29 @@ export const LandingPage = ({ config }) => {
     testimonials,
     useCases,
     faqs,
-    bottomCta
+    bottomCta,
+    typedSections
   } = config || {};
+
+  const topHeadline = story || headline || 'Measure everything that matters.';
+  const topSub = subheadline || 'Operational intelligence tailored for your team.';
+
+  const renderTypedSection = (s, idx) => {
+    switch (s.type) {
+      case 'benefits3':
+        return <Benefits3 key={idx} title={s.title} subtitle={s.subtitle} items={s.items} />;
+      case 'quote':
+        return <Quote key={idx} text={s.text} author={s.author} role={s.role} />;
+      case 'centeredForm':
+        return <CenteredForm key={idx} title={s.title} subtitle={s.subtitle} role={role} industry={industry} cta={s.cta || cta} />;
+      case 'featureRows':
+        return <FeatureRows key={idx} title={s.title} subtitle={s.subtitle} rows={s.rows} />;
+      case 'logoCloud':
+        return <LogoCloud key={idx} title={s.title} subtitle={s.subtitle} logos={s.logos} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <TrackingProvider>
@@ -32,15 +58,8 @@ export const LandingPage = ({ config }) => {
 
         <section className={styles.hero}>
           <div className={styles.heroText}>
-            <div className={styles.headline}>
-              {headline || 'Measure everything that matters.'}
-            </div>
-            <div className={styles.subheadline}>
-              {subheadline || 'Operational intelligence tailored for your team.'}
-            </div>
-            {story ? (
-              <div className={styles.story}>{story}</div>
-            ) : null}
+            <div className={styles.headline}>{topHeadline}</div>
+            <div className={styles.subheadline}>{topSub}</div>
 
             <div className={styles.points}>
               {(points || []).map((p, idx) => (
@@ -68,13 +87,13 @@ export const LandingPage = ({ config }) => {
           <LeadForm role={role} industry={industry} cta={cta} />
         </section>
 
+        {Array.isArray(typedSections) && typedSections.map(renderTypedSection)}
+
         {Array.isArray(sections) && sections.length > 0 && (
           sections.map((sec, idx) => (
-            <section className={styles.section} key={idx}>
-              <div>
-                <div className={styles.sectionTitle}>{sec.title}</div>
-                <div>{sec.copy}</div>
-              </div>
+            <section className={styles.sectionWrap} key={idx}>
+              <div className={styles.sectionTitle}>{sec.title}</div>
+              <div className={styles.sectionSubtitle}>{sec.copy}</div>
               {Array.isArray(sec.cards) && (
                 <div className={styles.cardList}>
                   {sec.cards.map((c, i) => (
@@ -91,11 +110,9 @@ export const LandingPage = ({ config }) => {
         )}
 
         {Array.isArray(problems) && problems.length > 0 && (
-          <section className={styles.section}>
-            <div>
-              <div className={styles.sectionTitle}>The challenge</div>
-              <div>What stands in your way today.</div>
-            </div>
+          <section className={styles.sectionWrap}>
+            <div className={styles.sectionTitle}>The challenge</div>
+            <div className={styles.sectionSubtitle}>What stands in your way today.</div>
             <div className={styles.cardList}>
               {problems.map((c, i) => (
                 <div className={styles.card} key={i}>
@@ -108,11 +125,9 @@ export const LandingPage = ({ config }) => {
         )}
 
         {Array.isArray(solutions) && solutions.length > 0 && (
-          <section className={styles.section}>
-            <div>
-              <div className={styles.sectionTitle}>How we solve it</div>
-              <div>What you get on day one.</div>
-            </div>
+          <section className={styles.sectionWrap}>
+            <div className={styles.sectionTitle}>How we solve it</div>
+            <div className={styles.sectionSubtitle}>What you get on day one.</div>
             <div className={styles.cardList}>
               {solutions.map((c, i) => (
                 <div className={styles.card} key={i}>
@@ -126,11 +141,9 @@ export const LandingPage = ({ config }) => {
         )}
 
         {Array.isArray(integrations) && integrations.length > 0 && (
-          <section className={styles.section}>
-            <div>
-              <div className={styles.sectionTitle}>Works with your stack</div>
-              <div>Connect data from the tools you already use.</div>
-            </div>
+          <section className={styles.sectionWrap}>
+            <div className={styles.sectionTitle}>Works with your stack</div>
+            <div className={styles.sectionSubtitle}>Connect data from the tools you already use.</div>
             <div className={styles.cardList}>
               {integrations.map((c, i) => (
                 <div className={styles.card} key={i}>
@@ -144,11 +157,9 @@ export const LandingPage = ({ config }) => {
         )}
 
         {Array.isArray(testimonials) && testimonials.length > 0 && (
-          <section className={styles.section}>
-            <div>
-              <div className={styles.sectionTitle}>What leaders say</div>
-              <div>Proof from teams like yours.</div>
-            </div>
+          <section className={styles.sectionWrap}>
+            <div className={styles.sectionTitle}>What leaders say</div>
+            <div className={styles.sectionSubtitle}>Proof from teams like yours.</div>
             <div className={styles.cardList}>
               {testimonials.map((c, i) => (
                 <div className={styles.card} key={i}>
@@ -161,11 +172,9 @@ export const LandingPage = ({ config }) => {
         )}
 
         {Array.isArray(useCases) && useCases.length > 0 && (
-          <section className={styles.section}>
-            <div>
-              <div className={styles.sectionTitle}>Use cases</div>
-              <div>Where Measures AI makes an impact fast.</div>
-            </div>
+          <section className={styles.sectionWrap}>
+            <div className={styles.sectionTitle}>Use cases</div>
+            <div className={styles.sectionSubtitle}>Where Measures AI makes an impact fast.</div>
             <div className={styles.cardList}>
               {useCases.map((c, i) => (
                 <div className={styles.card} key={i}>
@@ -178,19 +187,13 @@ export const LandingPage = ({ config }) => {
         )}
 
         {Array.isArray(faqs) && faqs.length > 0 && (
-          <section className={styles.section}>
-            <div>
-              <div className={styles.sectionTitle}>FAQs</div>
-              <div>Answers to common questions.</div>
-            </div>
-            <div className={styles.cardList}>
-              {faqs.map((c, i) => (
-                <div className={styles.card} key={i}>
-                  {c.q ? <div style={{fontWeight:600, marginBottom: 6}}>{c.q}</div> : null}
-                  {c.a ? <div>{c.a}</div> : null}
-                </div>
-              ))}
-            </div>
+          <section className={styles.sectionWrap + ' ' + styles.faq}>
+            {faqs.map((c, i) => (
+              <div className={styles.faqItem} key={i}>
+                {c.q ? <div className={styles.faqQ}>{c.q}</div> : null}
+                {c.a ? <div>{c.a}</div> : null}
+              </div>
+            ))}
           </section>
         )}
 

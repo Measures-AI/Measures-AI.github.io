@@ -31,14 +31,59 @@ export const exampleConfigs = {
       'Automated investor-ready dashboards',
       'Reliable, audit-friendly data lineage',
     ],
+    typedSections: [
+      {
+        type: 'benefits3',
+        title: 'Numbers you can defend',
+        subtitle: 'Be board-ready every month—without spreadsheets.',
+        items: [
+          { title: 'ARR you can trust', text: 'Cohorts, expansions, and downgrades tracked precisely.' },
+          { title: 'Forecasting clarity', text: 'What-if scenarios on revenue and runway.' },
+          { title: 'Audit trail', text: 'Lineage and definitions for every KPI.' },
+        ],
+      },
+      {
+        type: 'featureRows',
+        title: 'From question to answer',
+        subtitle: 'Investigate anomalies with traceable lineage.',
+        rows: [
+          { image: '/insights-graphic.svg', title: 'Drill into segments', text: 'Spot which region or plan moved your NRR.' },
+          { image: '/measurement-graphic.svg', title: 'Standard metric definitions', text: 'No more “which spreadsheet is right?” debates.' },
+        ],
+      },
+      {
+        type: 'logoCloud',
+        title: 'Connect your stack',
+        subtitle: 'ERP, CRM, billing, and warehouse ready.',
+        logos: [
+          '/external-logos/salesforce.png',
+          '/external-logos/netsuite.png',
+          '/external-logos/snowflake.png',
+          '/external-logos/powerbi.png',
+          '/external-logos/zapier.png',
+          '/external-logos/slack.png',
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'We cut our board prep from a week to a day.',
+        author: 'Alex M.',
+        role: 'VP Finance',
+      },
+      {
+        type: 'centeredForm',
+        title: 'See your finance metrics in hours',
+        subtitle: 'We’ll tailor a walkthrough to your sources and model.',
+      },
+    ],
     sections: [
       {
         title: 'Your board will ask sooner or later',
         copy: 'Get to ARR, NRR, gross margin, and burn multiples with confidence. No more CSV gymnastics.',
         cards: [
-          { image: '/public/platform-graphic.svg', title: 'ARR & Cohorts', text: 'Instant cohort and retention views by plan, segment, and region.' },
-          { image: '/public/measurement-graphic.svg', title: 'Forecasting', text: 'Scenario-based outlooks for hiring, runway, and growth investments.' },
-          { image: '/public/insights-graphic.svg', title: 'Data Lineage', text: 'See exactly how a KPI was calculated and by which source.' },
+          { image: '/platform-graphic.svg', title: 'ARR & Cohorts', text: 'Instant cohort and retention views by plan, segment, and region.' },
+          { image: '/measurement-graphic.svg', title: 'Forecasting', text: 'Scenario-based outlooks for hiring, runway, and growth investments.' },
+          { image: '/insights-graphic.svg', title: 'Data Lineage', text: 'See exactly how a KPI was calculated and by which source.' },
         ],
       },
     ],
@@ -48,14 +93,14 @@ export const exampleConfigs = {
       { title: 'Audit anxiety', text: 'Explainability gaps create risk with investors and auditors.' },
     ],
     solutions: [
-      { image: '/public/data-graphic.svg', title: 'Unified sources', text: 'ERP, CRM, billing, and product usage stitched and deduped.' },
-      { image: '/public/platform.svg', title: 'Metrics as code', text: 'Standardized, versioned KPIs you can trust release after release.' },
-      { image: '/public/insights-graphic.svg', title: 'Proactive alerts', text: 'Get notified when anomalies cross thresholds you define.' },
+      { image: '/data-graphic.svg', title: 'Unified sources', text: 'ERP, CRM, billing, and product usage stitched and deduped.' },
+      { image: '/platform.svg', title: 'Metrics as code', text: 'Standardized, versioned KPIs you can trust release after release.' },
+      { image: '/insights-graphic.svg', title: 'Proactive alerts', text: 'Get notified when anomalies cross thresholds you define.' },
     ],
     integrations: [
-      { image: '/public/external-logos/salesforce.png', title: 'Salesforce', text: 'Pipeline and bookings synced daily.' },
-      { image: '/public/external-logos/netsuite.png', title: 'NetSuite', text: 'GL and subledgers mapped to metrics.' },
-      { image: '/public/external-logos/snowflake.png', title: 'Snowflake', text: 'Warehouse-native models where you need them.' },
+      { image: '/external-logos/salesforce.png', title: 'Salesforce', text: 'Pipeline and bookings synced daily.' },
+      { image: '/external-logos/netsuite.png', title: 'NetSuite', text: 'GL and subledgers mapped to metrics.' },
+      { image: '/external-logos/snowflake.png', title: 'Snowflake', text: 'Warehouse-native models where you need them.' },
     ],
     testimonials: [
       { text: 'We cut our board prep from a week to a day.', author: 'Alex M.', role: 'VP Finance' },
@@ -97,15 +142,49 @@ export const exampleConfigs = {
       'Spot bottlenecks with queue analytics',
       'Automated alerts for SLA breaches',
     ],
-    sections: [
+    typedSections: [
       {
-        title: 'One view across channels',
-        copy: 'Stop hopping tools. See every conversation in one place with real-time health.',
-        cards: [
-          { image: '/public/platform-graphic.svg', title: 'Omnichannel', text: 'Chat, email, social, SMS—one queue, shared SLAs.' },
-          { image: '/public/measurement-graphic.svg', title: 'Deflection', text: 'Find the top intents to automate with workflows and help center.' },
-          { image: '/public/insights-graphic.svg', title: 'Quality', text: 'Coach with evidence—QA rubrics, macros, and outcomes in one view.' },
+        type: 'benefits3',
+        title: 'Get ahead of the queue',
+        subtitle: 'Real-time health and deflection insights.',
+        items: [
+          { title: 'One queue', text: 'Chat, email, social, SMS—all in one view.' },
+          { title: 'Deflect smartly', text: 'Automate high-volume intents without hurting CSAT.' },
+          { title: 'Coach faster', text: 'QA rubrics with outcomes and examples.' },
         ],
+      },
+      {
+        type: 'featureRows',
+        title: 'Visibility without the swivel chair',
+        subtitle: 'One place to see what’s working and what’s not.',
+        rows: [
+          { image: '/platform-graphic.svg', title: 'Omnichannel routing', text: 'Keep SLAs even during spikes.' },
+          { image: '/measurement-graphic.svg', title: 'Intent analytics', text: 'Discover what to automate next.' },
+        ],
+      },
+      {
+        type: 'logoCloud',
+        title: 'Works with your tools',
+        subtitle: 'Bring your support stack—no rip-and-replace.',
+        logos: [
+          '/external-logos/zendesk.png',
+          '/external-logos/slack.png',
+          '/external-logos/powerbi.png',
+          '/external-logos/zapier.png',
+          '/external-logos/teams.png',
+          '/external-logos/gmail.png',
+        ],
+      },
+      {
+        type: 'quote',
+        text: 'Queues finally feel predictable. We plan staffing with confidence.',
+        author: 'Sofia R.',
+        role: 'Director of CX',
+      },
+      {
+        type: 'centeredForm',
+        title: 'See your support metrics in hours',
+        subtitle: 'We’ll tailor a walkthrough to your channels and data.',
       },
     ],
     problems: [
@@ -114,14 +193,14 @@ export const exampleConfigs = {
       { title: 'Blind spots', text: 'Leaders can’t see where deflection works—or fails.' },
     ],
     solutions: [
-      { image: '/public/data-graphic.svg', title: 'Routing analytics', text: 'Measure handle time, reassigns, and backlog by team.' },
-      { image: '/public/platform.svg', title: 'Intent analytics', text: 'Identify high-volume topics perfect for automation.' },
-      { image: '/public/insights-graphic.svg', title: 'SLA guardrails', text: 'Heads-up alerts when queues spike in real time.' },
+      { image: '/data-graphic.svg', title: 'Routing analytics', text: 'Measure handle time, reassigns, and backlog by team.' },
+      { image: '/platform.svg', title: 'Intent analytics', text: 'Identify high-volume topics perfect for automation.' },
+      { image: '/insights-graphic.svg', title: 'SLA guardrails', text: 'Heads-up alerts when queues spike in real time.' },
     ],
     integrations: [
-      { image: '/public/external-logos/zendesk.png', title: 'Zendesk', text: 'Tickets, tags, and CSAT synced.' },
-      { image: '/public/external-logos/slack.png', title: 'Slack', text: 'Notify channels on SLA risks.' },
-      { image: '/public/external-logos/powerbi.png', title: 'Power BI', text: 'Share performance with leadership.' },
+      { image: '/external-logos/zendesk.png', title: 'Zendesk', text: 'Tickets, tags, and CSAT synced.' },
+      { image: '/external-logos/slack.png', title: 'Slack', text: 'Notify channels on SLA risks.' },
+      { image: '/external-logos/powerbi.png', title: 'Power BI', text: 'Share performance with leadership.' },
     ],
     testimonials: [
       { text: 'Queues finally feel predictable. We plan staffing with confidence.', author: 'Sofia R.', role: 'Director of CX' },
