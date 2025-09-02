@@ -10,8 +10,13 @@ import MovingSquares from './components/MovingSquares';
 import MissionVision from './components/MissionVision';
 import GetStarted from './components/GetStarted';
 import Footer from './components/Footer';
+import LandingRouter from './lets-see';
 
 function App() {
+  const pathStartsWithLetsSee = typeof window !== 'undefined' && window.location.pathname.startsWith('/lets-see');
+  if (pathStartsWithLetsSee) {
+    return <LandingRouter />;
+  }
   return (
     <>
       <Header />
