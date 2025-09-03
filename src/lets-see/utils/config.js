@@ -13,10 +13,10 @@ export const exampleConfigs = {
     slug: 'cfo-saas',
     role: 'CFO',
     industry: 'B2B SaaS',
-    headline: 'Financial clarity for SaaS leaders',
-    subheadline: 'Automate metrics, reduce manual reporting, and accelerate board readiness.',
-    story: 'This $100k bug cost $10k to fix. Because data triage took hours, not days. Finance flagged the anomaly before it spiraled—root cause was traced in minutes, not weeks.',
-    cta: 'Request your SaaS finance demo',
+    headline: 'Find $100k bugs that cost $10k to fix.',
+    // subheadline: 'Automate metrics, reduce manual reporting, and accelerate board readiness.',
+    story: 'Because data triage took hours, not days. Finance flagged the anomaly before it spiraled—root cause was traced in minutes, not weeks.',
+    cta: 'Request a demo on your data',
     demoData: {
       title: 'SaaS Metrics Snapshot',
       bullets: [
@@ -124,9 +124,9 @@ export const exampleConfigs = {
     slug: 'head-of-support-retail',
     role: 'Head of Support',
     industry: 'B2C Retail',
-    headline: 'Happier customers, faster resolutions',
-    subheadline: 'Measure response times, deflection, and CSAT across every channel.',
-    story: 'This report reached the boardroom. A single queue view highlighted delays in social DMs. The fix cut first response by 40%—and churn followed.',
+    headline: 'This report reached the boardroom.',
+    // subheadline: 'Measure response times, deflection, and CSAT across every channel.',
+    story: 'A single queue view highlighted delays in social DMs. The fix cut first response by 40%—and churn followed.',
     cta: 'See retail support analytics',
     demoData: {
       title: 'Support Ops Snapshot',

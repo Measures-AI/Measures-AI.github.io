@@ -29,8 +29,8 @@ export const LandingPage = ({ config }) => {
     typedSections
   } = config || {};
 
-  const topHeadline = story || headline || 'Measure everything that matters.';
-  const topSub = subheadline || 'Operational intelligence tailored for your team.';
+  const topHeadline = headline || story || 'Measure everything that matters.';
+  const topSub = subheadline || story || 'Operational intelligence tailored for your team.';
 
   const renderTypedSection = (s, idx) => {
     switch (s.type) {
