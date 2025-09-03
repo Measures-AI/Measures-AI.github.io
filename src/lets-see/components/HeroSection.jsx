@@ -1,0 +1,59 @@
+import React from 'react';
+import styles from './HeroSection.module.css';
+import { LeadForm } from './LeadForm';
+import { DemoCard } from './DemoCard';
+
+export const HeroSection = ({ 
+  headline, 
+  story, 
+  points, 
+  belowPoints, 
+  fields, 
+  demoData, 
+  role, 
+  industry, 
+  cta 
+}) => {
+  return (
+    <section className={styles.hero}>
+      <div className={styles.content}>
+        <div className={styles.heroGrid}>
+          <div className={styles.leftContent}>
+            <h1 className={styles.headline}>{headline}</h1>
+            <p className={styles.story}>{story}</p>
+            
+            {points && points.length > 0 && (
+              <div className={styles.points}>
+                {points.map((point, index) => (
+                  <div key={index} className={styles.point}>
+                    {point}
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className={styles.formSection}>
+              {belowPoints && (
+                <p className={styles.belowPoints}>{belowPoints}</p>
+              )}
+              <div className={styles.formContainer}>
+                <LeadForm 
+                  role={role} 
+                  industry={industry} 
+                  cta={cta}
+                  fields={fields}
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className={styles.rightContent}>
+            <DemoCard demoData={demoData} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HeroSection;

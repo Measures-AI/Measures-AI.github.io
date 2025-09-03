@@ -7,8 +7,22 @@ const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SER
 const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
 const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
-export const LeadForm = ({ role, industry, cta }) => {
-  const [form, setForm] = useState({ name: '', company: '', email: '' });
+export const LeadForm = ({ role, industry, cta, fields }) => {
+  // Initialize form state based on provided fields or defaults
+  const defaultFields = [
+    { title: 'name', type: 'text', placeholder: 'Your name' },
+    { title: 'company', type: 'text', placeholder: 'Your company' },
+    { title: 'email', type: 'email', placeholder: 'Your email' }
+  ];
+  
+  const formFields = fields && fields.length > 0 ? fields : defaultFields;
+  
+  const initialFormState = formFields.reduce((acc, field) => {
+    acc[field.title] = '';
+    return acc;
+  }, {});
+  
+  const [form, setForm] = useState(initialFormState);
   const [status, setStatus] = useState('idle');
   const tracking = useTracking();
 
@@ -26,9 +40,7 @@ export const LeadForm = ({ role, industry, cta }) => {
     setStatus('submitting');
     try {
       const templateParams = {
-        name: form.name,
-        company: form.company,
-        email: form.email,
+        ...form,
         role: role || '',
         industry: industry || '',
       };
@@ -50,22 +62,30 @@ export const LeadForm = ({ role, industry, cta }) => {
   return (
     <form className={styles.formCard} onSubmit={onSubmit}>
       <div className={styles.title}>{cta || 'Get your tailored demo'}</div>
-      <div className={styles.row}>
-        <label className={styles.label} htmlFor="name">Full name</label>
-        <input className={styles.input} id="name" name="name" type="text" required value={form.name} onChange={onChange} placeholder="Jane Doe" />
-      </div>
-      <div className={styles.row}>
-        <label className={styles.label} htmlFor="company">Company name</label>
-        <input className={styles.input} id="company" name="company" type="text" required value={form.company} onChange={onChange} placeholder="Acme Inc." />
-      </div>
-      <div className={styles.row}>
-        <label className={styles.label} htmlFor="email">Work email</label>
-        <input className={styles.input} id="email" name="email" type="email" required value={form.email} onChange={onChange} placeholder="jane@acme.com" />
-      </div>
+      {formFields.map((field) => (
+        <div key={field.title} className={styles.row}>
+          <label className={styles.label} htmlFor={field.title}>
+            {field.title === 'name' ? 'Full name' :
+             field.title === 'company' ? 'Company name' :
+             field.title === 'email' ? 'Work email' :
+             field.title.charAt(0).toUpperCase() + field.title.slice(1)}
+          </label>
+          <input 
+            className={styles.input} 
+            id={field.title} 
+            name={field.title} 
+            type={field.type} 
+            required 
+            value={form[field.title] || ''} 
+            onChange={onChange} 
+            placeholder={field.placeholder}
+          />
+        </div>
+      ))}
       <button className={styles.button} type="submit" disabled={isDisabled}>
-        {status === 'submitting' ? 'Submitting…' : 'Request demo'}
+        {status === 'submitting' ? 'Submitting…' : (cta || 'Request demo')}
       </button>
-      <div className={styles.hint}>We’ll only use this to contact you about your demo.</div>
+      <div className={styles.hint}>We'll only use this to contact you about your demo.</div>
     </form>
   );
 };

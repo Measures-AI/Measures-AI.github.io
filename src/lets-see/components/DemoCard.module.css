@@ -1,0 +1,128 @@
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: fit-content;
+  min-height: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.chartContainer {
+  height: 200px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.chartPreview {
+  width: 100%;
+  height: 100%;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.cardTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.3;
+  color: white;
+  margin: 0;
+}
+
+.cardText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.cardBullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardBullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cardBullet::before {
+  content: '•';
+  color: #7ecbff;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.cardBulletText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leftText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .card {
+    min-height: 400px;
+    padding: 20px;
+  }
+  
+  .cardTitle {
+    font-size: 24px;
+  }
+  
+  .chartContainer {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    min-height: 350px;
+    padding: 16px;
+  }
+  
+  .cardTitle {
+    font-size: 20px;
+  }
+  
+  .chartContainer {
+    height: 140px;
+  }
+}

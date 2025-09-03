@@ -1,0 +1,199 @@
+.process {
+  width: 100%;
+  padding: 80px 0;
+  background: transparent;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.processHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.2;
+  color: white;
+  margin: 0 0 16px 0;
+}
+
+.subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.processTimeline {
+  position: relative;
+  display: flex;
+  gap: 40px;
+}
+
+.timelineContainer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.verticalLine {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  border-radius: 1px;
+}
+
+.verticalLineLarge {
+  width: 4px;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 60px;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.stepContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+.step {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 400px;
+  backdrop-filter: blur(10px);
+}
+
+.stepTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.3;
+  color: white;
+  margin: 0 0 16px 0;
+}
+
+.stepText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+
+.stepImage {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 900px) {
+  .processTimeline {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .timelineContainer {
+    display: none;
+  }
+  
+  .stepsGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .stepContainer {
+    justify-content: center;
+    padding-right: 0;
+  }
+  
+  .step {
+    max-width: 100%;
+  }
+  
+  .imageContainer {
+    justify-content: center;
+    padding-left: 0;
+  }
+  
+  .stepImage {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 0 20px;
+  }
+  
+  .title {
+    font-size: 32px;
+  }
+  
+  .subtitle {
+    font-size: 16px;
+  }
+  
+  .step {
+    padding: 24px;
+  }
+  
+  .stepTitle {
+    font-size: 20px;
+  }
+  
+  .stepText {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 28px;
+  }
+  
+  .step {
+    padding: 20px;
+  }
+  
+  .stepImage {
+    max-width: 200px;
+  }
+}
