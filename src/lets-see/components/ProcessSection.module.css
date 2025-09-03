@@ -88,6 +88,7 @@
   padding: 32px;
   max-width: 400px;
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .stepTitle {
@@ -119,9 +120,11 @@
   max-width: 300px;
   height: auto;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 @media (max-width: 900px) {

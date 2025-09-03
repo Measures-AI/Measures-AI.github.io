@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './BottomCTA.module.css';
 import { LeadForm } from './LeadForm';
 
-export const BottomCTA = ({ title, copy, role, industry, cta }) => {
+export const BottomCTA = ({ title, copy, role, industry, cta, themeColor }) => {
   return (
     <section className={styles.bottomCTA}>
       <div className={styles.content}>
@@ -16,7 +16,7 @@ export const BottomCTA = ({ title, copy, role, industry, cta }) => {
             </p>
           </div>
           <div className={styles.formSection}>
-            <LeadForm role={role} industry={industry} cta={cta} />
+            <LeadForm role={role} industry={industry} cta={cta} themeColor={themeColor} />
           </div>
         </div>
       </div>

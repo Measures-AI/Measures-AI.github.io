@@ -12,12 +12,13 @@ export const exampleConfigs = {
   'head-of-support-retail': {
     role: 'Head of Support',
     industry: 'B2C Retail',
+    themeColor: '#7ecbff',
     headline: 'What\'s your problem?',
     story: 'NPS gives you a score, not the “why”. Find your why and put a price on it, so support drives your decision-making.',
     points: [
-      'Integrate with most communication platforms',
-      'Spot and value your biggest problems',
-      'Get reports weekly, monthly, and quarterly',
+      { text: 'Integrate with most communication platforms', icon: 'plug' },
+      { text: 'Spot and value your biggest problems', icon: 'search-dollar' },
+      { text: 'Get reports weekly, monthly, and quarterly', icon: 'chart-line' },
     ],
     belowPoints: 'Stop reading transcripts, start reading results.',
     fields: [
@@ -72,9 +73,9 @@ export const exampleConfigs = {
       },
       {
         type: 'caseStudy',
-        leftImage: '/platform-graphic.svg',
-        logoImage: '/external-logos/zendesk.png',
-        logoAlt: 'Zendesk',
+        leftImage: '/boardroom.png',
+        logoImage: '/external-logos/slack.png',
+        logoAlt: 'Slack',
         headline: 'SusieCakes reduced the cost of support by 30%.',
         story: 'SusieCakes used our platform to identify key pain points and improve the customer experience. Everything was broken down by product and location automatically. The CEO used our dashboard to make decisions with the company\'s board.',
         quote: '“It is now essential to the way our customer support team operates daily, and the way our company makes decisions.” - Chad Kilpatrick, CFO',
@@ -85,9 +86,9 @@ export const exampleConfigs = {
         type: 'featureRows',
         title: 'Peace of mind without the spreadsheet',
         rows: [
-          { image: '/platform-graphic.svg', title: 'SOC 2 Compliance', text: 'Data is stored in a secure, single-tenant, isolated environment.' },
-          { image: '/measurement-graphic.svg', title: 'Secure Connections', text: 'Connections are established with secure credentials and are encrypted in transit.' },
-          { image: '/insights-graphic.svg', title: 'Data Lineage', text: 'We track the data from source to destination, so you can see exactly where it came from and where it went.' },
+          { image: '/boardroom.png', title: 'SOC 2 Compliance', text: 'Data is stored in a secure, single-tenant, isolated environment.' },
+          { image: '/boardroom.png', title: 'Secure Connections', text: 'Connections are established with secure credentials and are encrypted in transit.' },
+          { image: '/boardroom.png', title: 'Data Lineage', text: 'We track the data from source to destination, so you can see exactly where it came from and where it went.' },
         ],
         mobile: false,
       },

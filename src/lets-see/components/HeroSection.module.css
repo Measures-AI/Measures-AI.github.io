@@ -47,29 +47,33 @@
 }
 
 .points {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px 0;
 }
 
 .point {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.9);
-  text-align: center;
-  backdrop-filter: blur(10px);
-  transition: all 0.2s ease;
+  padding: 16px 0;
 }
 
-.point:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
+.pointIcon {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.pointText {
+  flex: 1;
 }
 
 .formSection {
@@ -80,19 +84,16 @@
 
 .belowPoints {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 20px;
   color: white;
   margin: 0;
+  padding: 24px 0;
 }
 
 .formContainer {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 8px;
-  backdrop-filter: blur(10px);
-  max-width: 400px;
+  max-width: 500px;
+  width: 100%;
 }
 
 .rightContent {

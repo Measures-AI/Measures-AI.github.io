@@ -6,7 +6,7 @@ export const QuoteSection = ({ text, author, role }) => {
     <section className={styles.quoteSection}>
       <div className={styles.content}>
         <blockquote className={styles.quote}>
-          "{text}"
+          {text}
         </blockquote>
         {(author || role) && (
           <div className={styles.attribution}>

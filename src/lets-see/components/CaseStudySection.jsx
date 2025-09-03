@@ -12,7 +12,8 @@ export const CaseStudySection = ({
   link,
   role,
   industry,
-  cta
+  cta,
+  themeColor
 }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -72,6 +73,7 @@ export const CaseStudySection = ({
                 <button 
                   onClick={handleCtaClick}
                   className={styles.ctaButton}
+                  style={{ backgroundColor: themeColor || '#4f46e5' }}
                 >
                   {cta || 'Schedule a demo'}
                 </button>
@@ -91,7 +93,7 @@ export const CaseStudySection = ({
             >
               ×
             </button>
-            <LeadForm role={role} industry={industry} cta={cta} />
+            <LeadForm role={role} industry={industry} cta={cta} themeColor={themeColor} />
           </div>
         </div>
       )}

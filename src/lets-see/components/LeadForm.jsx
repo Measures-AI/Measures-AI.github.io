@@ -7,7 +7,7 @@ const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SER
 const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
 const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
-export const LeadForm = ({ role, industry, cta, fields }) => {
+export const LeadForm = ({ role, industry, cta, fields, themeColor }) => {
   // Initialize form state based on provided fields or defaults
   const defaultFields = [
     { title: 'name', type: 'text', placeholder: 'Your name' },
@@ -61,7 +61,6 @@ export const LeadForm = ({ role, industry, cta, fields }) => {
 
   return (
     <form className={styles.formCard} onSubmit={onSubmit}>
-      <div className={styles.title}>{cta || 'Get your tailored demo'}</div>
       {formFields.map((field) => (
         <div key={field.title} className={styles.row}>
           <label className={styles.label} htmlFor={field.title}>
@@ -82,7 +81,12 @@ export const LeadForm = ({ role, industry, cta, fields }) => {
           />
         </div>
       ))}
-      <button className={styles.button} type="submit" disabled={isDisabled}>
+      <button 
+        className={styles.button} 
+        type="submit" 
+        disabled={isDisabled}
+        style={{ backgroundColor: themeColor || '#4f46e5' }}
+      >
         {status === 'submitting' ? 'Submitting…' : (cta || 'Request demo')}
       </button>
       <div className={styles.hint}>We'll only use this to contact you about your demo.</div>

@@ -23,7 +23,8 @@ export const LandingPage = ({ config }) => {
     demoData,
     logos,
     typedSections,
-    bottomCta
+    bottomCta,
+    themeColor
   } = config || {};
 
   const [isMobile, setIsMobile] = useState(false);
@@ -70,6 +71,7 @@ export const LandingPage = ({ config }) => {
             role={role}
             industry={industry}
             cta={cta}
+            themeColor={themeColor}
           />
         );
       
@@ -113,6 +115,7 @@ export const LandingPage = ({ config }) => {
           role={role}
           industry={industry}
           cta={cta}
+          themeColor={themeColor}
         />
         
         {logos && logos.length > 0 && (

@@ -12,7 +12,8 @@ export const HeroSection = ({
   demoData, 
   role, 
   industry, 
-  cta 
+  cta,
+  themeColor 
 }) => {
   return (
     <section className={styles.hero}>
@@ -26,7 +27,12 @@ export const HeroSection = ({
               <div className={styles.points}>
                 {points.map((point, index) => (
                   <div key={index} className={styles.point}>
-                    {point}
+                    {point.icon && (
+                      <i className={`fas fa-${point.icon} ${styles.pointIcon}`}></i>
+                    )}
+                    <span className={styles.pointText}>
+                      {point.text || point}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -42,13 +48,14 @@ export const HeroSection = ({
                   industry={industry} 
                   cta={cta}
                   fields={fields}
+                  themeColor={themeColor}
                 />
               </div>
             </div>
           </div>
           
           <div className={styles.rightContent}>
-            <DemoCard demoData={demoData} />
+            <DemoCard demoData={demoData} themeColor={themeColor} />
           </div>
         </div>
       </div>

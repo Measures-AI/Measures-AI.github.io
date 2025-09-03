@@ -49,10 +49,16 @@ const ChartPreview = ({ data, theme }) => {
   return null;
 };
 
-export const DemoCard = ({ demoData }) => {
+export const DemoCard = ({ demoData, themeColor }) => {
   if (!demoData) return null;
 
-  const theme = pastelThemes[0]; // Use first theme for consistency
+  // Use theme color if provided, otherwise default to blue
+  const theme = themeColor ? {
+    line: themeColor,
+    bar: themeColor,
+    grid: themeColor + '33', // Add transparency
+    axis: themeColor + 'CC'  // Slightly transparent
+  } : pastelThemes[0];
 
   return (
     <div className={styles.card}>
@@ -60,7 +66,9 @@ export const DemoCard = ({ demoData }) => {
         <ChartPreview data={demoData.data} theme={theme} />
       </div>
       <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{demoData.title}</h3>
+        <h3 className={styles.cardTitle} style={{ color: themeColor || '#7ecbff' }}>
+          {demoData.title}
+        </h3>
         <p className={styles.cardText}>{demoData.subtext}</p>
         <ul className={styles.cardBullets}>
           {(demoData.bullets || []).map((bullet, index) => (
@@ -71,7 +79,9 @@ export const DemoCard = ({ demoData }) => {
         </ul>
       </div>
       <div className={styles.cardFooter}>
-        <span className={styles.leftText}>{demoData.leftText}</span>
+        <span className={styles.leftText} style={{ color: themeColor || '#7ecbff' }}>
+          {demoData.leftText}
+        </span>
       </div>
     </div>
   );
