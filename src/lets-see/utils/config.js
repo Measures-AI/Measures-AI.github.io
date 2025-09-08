@@ -12,36 +12,70 @@ export const exampleConfigs = {
   'head-of-support-retail': {
     role: 'Head of Support',
     industry: 'B2C Retail',
-    themeColor: '#7ecbff',
-    headline: 'What\'s your problem?',
-    story: 'NPS gives you a score, not the “why”. Find your why and put a price on it, so support drives your decision-making.',
+    themeColors: ['#7ecbff', '#a3e3a1', '#ffb3b3'],
+    backgroundColor: '#0a0a0a',
+    fontColor: '#ffffff',
+    headline: 'What\'s the problem?',
+    story: ['NPS scores are just a number, not the "why".', 'Find your why so support drives ', 'your decision-making.'],
     points: [
-      { text: 'Integrate with most communication platforms', icon: 'plug' },
+      { text: 'Integrate with your platforms', icon: 'plug' },
       { text: 'Spot and value your biggest problems', icon: 'search-dollar' },
-      { text: 'Get reports weekly, monthly, and quarterly', icon: 'chart-line' },
+      { text: 'Easily export reports for other teams', icon: 'chart-line' },
     ],
-    belowPoints: 'Stop reading transcripts, start reading results.',
+    belowPoints: '',
     fields: [
       { title: 'name', type: 'text', placeholder: 'Your name' },
       { title: 'company', type: 'text', placeholder: 'Your company' },
       { title: 'email', type: 'email', placeholder: 'Your email' },
     ],
-    cta: 'Schedule a demo',
-    demoData: {
-      title: 'Pipeline drop-off: $XX,XXX in lost opportunities this month.',
-      subtext: 'Several high-value prospects have dropped out of the sales pipeline after initial meetings.',
-      bullets: [
-        '3 enterprise prospects went dark after first call, representing $X,XXX in potential ARR.',
-        'Feedback cited: unclear pricing and delayed follow-up.'
-      ],
-      data: { type: 'bar', values: [
-        { name: 'Q1', value: 30 },
-        { name: 'Q2', value: 42 },
-        { name: 'Q3', value: 60 },
-        { name: 'Q4', value: 85 }
-      ] },
-      leftText: 'A real customer result',
-    },
+    cta: 'Never read a transcript again.',
+    demoData: [
+      {
+        title: 'Battery life contributed to $36,434 in Q2 churn.',
+        subtext: '232 users\' subscriptions lapsed after complaining to support, 14% of users who did so.',
+        bullets: [
+          'This represents a 2x increase in battery-related complaints from Q1.',
+          'This is the most common complaint brought up, and will likely lead to $54,651 in Q3 churn.'
+        ],
+        data: { type: 'bar', values: [
+          { name: 'Q1', value: 30 },
+          { name: 'Q2', value: 42 },
+          { name: 'Q3', value: 60 },
+          { name: 'Q4', value: 85 }
+        ] },
+        leftText: 'A real customer result',
+      },
+      {
+        title: 'Feature requests drove $28,921 in new revenue.',
+        subtext: '156 customers requested premium features after support interactions, 23% conversion rate.',
+        bullets: [
+          'Premium upgrade requests increased 40% after implementing suggested features.',
+          'Customer satisfaction scores improved by 18% following feature rollouts.'
+        ],
+        data: { type: 'line', values: [
+          { name: 'Q1', value: 15 },
+          { name: 'Q2', value: 28 },
+          { name: 'Q3', value: 35 },
+          { name: 'Q4', value: 42 }
+        ] },
+        leftText: 'Revenue impact analysis',
+      },
+      {
+        title: 'Response time optimization saved $19,847 in retention.',
+        subtext: '89 at-risk customers were retained through faster support response times.',
+        bullets: [
+          'Average response time decreased from 4.2 hours to 1.8 hours.',
+          'Customer retention rate improved by 12% in the following quarter.'
+        ],
+        data: { type: 'bar', values: [
+          { name: 'Jan', value: 4.2 },
+          { name: 'Feb', value: 3.1 },
+          { name: 'Mar', value: 2.4 },
+          { name: 'Apr', value: 1.8 }
+        ] },
+        leftText: 'Operational efficiency',
+      }
+    ],
     logos: [
       { image: '/external-logos/zendesk.png', alt: 'Zendesk' },
       { image: '/external-logos/slack.png', alt: 'Slack' },

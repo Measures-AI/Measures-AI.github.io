@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 32px 0;
+  padding: 8px 0;
 }
 
 .point {
@@ -62,7 +62,7 @@
   font-size: 16px;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.9);
-  padding: 16px 0;
+  padding: 4px 0;
 }
 
 .pointIcon {
@@ -88,12 +88,20 @@
   font-size: 20px;
   color: white;
   margin: 0;
-  padding: 24px 0;
+  padding: 12px 0;
 }
 
 .formContainer {
-  max-width: 500px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(79, 70, 229, 0.05));
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: 20px;
+  padding: 40px;
+  gap: 60px;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.1);
   width: 100%;
+  max-width: 500px;
 }
 
 .rightContent {
@@ -101,6 +109,14 @@
   align-items: flex-start;
   justify-content: center;
   padding-top: 20px;
+}
+
+.cardStack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
 }
 
 @media (max-width: 900px) {
@@ -112,6 +128,10 @@
   .rightContent {
     order: -1;
     padding-top: 0;
+  }
+  
+  .cardStack {
+    max-width: 100%;
   }
   
   .leftContent {

@@ -24,6 +24,10 @@ export const LandingPage = ({ config }) => {
     logos,
     typedSections,
     bottomCta,
+    themeColors,
+    backgroundColor,
+    fontColor,
+    // Keep backward compatibility
     themeColor
   } = config || {};
 
@@ -71,7 +75,7 @@ export const LandingPage = ({ config }) => {
             role={role}
             industry={industry}
             cta={cta}
-            themeColor={themeColor}
+            themeColor={themeColors?.[0] || themeColor}
           />
         );
       
@@ -102,7 +106,13 @@ export const LandingPage = ({ config }) => {
 
   return (
     <TrackingProvider>
-      <div className={styles.page}>
+      <div 
+        className={styles.page}
+        style={{
+          backgroundColor: backgroundColor || '#0a0a0a',
+          color: fontColor || '#ffffff'
+        }}
+      >
         <Header />
         
         <HeroSection
@@ -115,6 +125,10 @@ export const LandingPage = ({ config }) => {
           role={role}
           industry={industry}
           cta={cta}
+          themeColors={themeColors}
+          backgroundColor={backgroundColor}
+          fontColor={fontColor}
+          // Backward compatibility
           themeColor={themeColor}
         />
         
@@ -130,6 +144,7 @@ export const LandingPage = ({ config }) => {
           role={role}
           industry={industry}
           cta={cta}
+          themeColor={themeColors?.[0] || themeColor}
         />
         
         <footer className={styles.footer}>

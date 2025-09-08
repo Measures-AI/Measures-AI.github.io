@@ -2,6 +2,18 @@ import React, { useState } from 'react';
 import styles from './CaseStudySection.module.css';
 import { LeadForm } from './LeadForm';
 
+const renderStory = (story) => {
+  if (Array.isArray(story)) {
+    return story.map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        {index < story.length - 1 && <br />}
+      </React.Fragment>
+    ));
+  }
+  return story;
+};
+
 export const CaseStudySection = ({ 
   leftImage, 
   logoImage, 
@@ -51,7 +63,7 @@ export const CaseStudySection = ({
               
               <h2 className={styles.headline}>{headline}</h2>
               
-              <p className={styles.story}>{story}</p>
+              <p className={styles.story}>{renderStory(story)}</p>
               
               {quote && (
                 <blockquote className={styles.quote}>

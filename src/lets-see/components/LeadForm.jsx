@@ -63,12 +63,12 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor }) => {
     <form className={styles.formCard} onSubmit={onSubmit}>
       {formFields.map((field) => (
         <div key={field.title} className={styles.row}>
-          <label className={styles.label} htmlFor={field.title}>
-            {field.title === 'name' ? 'Full name' :
+          {/* <label className={styles.label} htmlFor={field.title}>
+            {field.title === 'name' ? 'Your name' :
              field.title === 'company' ? 'Company name' :
              field.title === 'email' ? 'Work email' :
              field.title.charAt(0).toUpperCase() + field.title.slice(1)}
-          </label>
+          </label> */}
           <input 
             className={styles.input} 
             id={field.title} 
@@ -85,11 +85,11 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor }) => {
         className={styles.button} 
         type="submit" 
         disabled={isDisabled}
-        style={{ backgroundColor: themeColor || '#4f46e5' }}
+        style={{ backgroundColor: themeColor || '#4f46e5', color: '#000' }}
       >
         {status === 'submitting' ? 'Submitting…' : (cta || 'Request demo')}
       </button>
-      <div className={styles.hint}>We'll only use this to contact you about your demo.</div>
+      <div className={styles.hint}>We'll only use this to contact you about a demo.</div>
     </form>
   );
 };

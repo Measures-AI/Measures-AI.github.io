@@ -3,6 +3,18 @@ import styles from './HeroSection.module.css';
 import { LeadForm } from './LeadForm';
 import { DemoCard } from './DemoCard';
 
+const renderStory = (story) => {
+  if (Array.isArray(story)) {
+    return story.map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        {index < story.length - 1 && <br />}
+      </React.Fragment>
+    ));
+  }
+  return story;
+};
+
 export const HeroSection = ({ 
   headline, 
   story, 
@@ -13,6 +25,10 @@ export const HeroSection = ({
   role, 
   industry, 
   cta,
+  themeColors,
+  backgroundColor,
+  fontColor,
+  // Backward compatibility
   themeColor 
 }) => {
   return (
@@ -21,7 +37,7 @@ export const HeroSection = ({
         <div className={styles.heroGrid}>
           <div className={styles.leftContent}>
             <h1 className={styles.headline}>{headline}</h1>
-            <p className={styles.story}>{story}</p>
+            <p className={styles.story}>{renderStory(story)}</p>
             
             {points && points.length > 0 && (
               <div className={styles.points}>
@@ -48,14 +64,30 @@ export const HeroSection = ({
                   industry={industry} 
                   cta={cta}
                   fields={fields}
-                  themeColor={themeColor}
+                  themeColor={themeColors?.[0] || themeColor}
                 />
               </div>
             </div>
           </div>
           
           <div className={styles.rightContent}>
-            <DemoCard demoData={demoData} themeColor={themeColor} />
+            {Array.isArray(demoData) ? (
+              <div className={styles.cardStack}>
+                {demoData.map((cardData, index) => (
+                  <DemoCard 
+                    key={index}
+                    demoData={cardData} 
+                    themeColor={themeColors?.[index] || themeColor || '#7ecbff'} 
+                  />
+                ))}
+              </div>
+            ) : (
+              // Backward compatibility for single card
+              <DemoCard 
+                demoData={demoData} 
+                themeColor={themeColors?.[0] || themeColor} 
+              />
+            )}
           </div>
         </div>
       </div>
