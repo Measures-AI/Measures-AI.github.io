@@ -3,7 +3,9 @@
   min-height: 90vh;
   padding: 60px 0 80px 0;
   background: transparent;
+  position: relative;
 }
+
 
 .content {
   max-width: 1200px;
@@ -24,6 +26,33 @@
   flex-direction: column;
   gap: 32px;
   padding-top: 40px;
+  transition: all 0.3s ease;
+}
+
+.leftContent.frozen {
+  position: fixed;
+  top: 0;
+  left: calc(50% - 600px); /* Center within max-width container */
+  width: 720px; /* 1200px * 1.2fr / 2fr = 720px */
+  height: 100vh;
+  padding: 100px 24px 60px 24px;
+  z-index: 10;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
+}
+
+/* For screens smaller than max-width */
+@media (max-width: 1248px) {
+  .leftContent.frozen {
+    left: 0;
+    width: 60%;
+  }
+  
+  .heroGrid.frozenLayout .rightContent {
+    margin-left: 60%;
+    width: 40%;
+  }
 }
 
 .headline {
@@ -55,7 +84,7 @@
 
 .point {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
@@ -68,8 +97,9 @@
 .pointIcon {
   width: 20px;
   height: 20px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--point-color, rgba(255, 255, 255, 0.8));
   flex-shrink: 0;
+  margin-top: 2px; /* Shift icon down slightly relative to text */
 }
 
 .pointText {
@@ -111,12 +141,29 @@
   padding-top: 20px;
 }
 
+/* Adjust layout when content is frozen */
+.heroGrid.frozenLayout .rightContent {
+  margin-left: 720px; /* Match frozen left width */
+  width: 480px; /* 1200px * 0.8fr / 2fr = 480px */
+}
+
 .cardStack {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
   max-width: 400px;
+  min-height: 200vh; /* Height for scroll effects */
+}
+
+.cardWrapper {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .hiddenOnMobile {
+    display: none;
+  }
 }
 
 @media (max-width: 900px) {
@@ -126,20 +173,40 @@
   }
   
   .rightContent {
-    order: -1;
+    order: 1; /* Cards come after text on mobile */
     padding-top: 0;
+    justify-content: center; /* Center cards on mobile */
+  }
+  
+  .leftContent {
+    order: -1; /* Text comes before cards on mobile */
+    padding-top: 20px;
+    position: static !important; /* Disable frozen effect on mobile */
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    transform: none !important;
   }
   
   .cardStack {
     max-width: 100%;
-  }
-  
-  .leftContent {
-    padding-top: 20px;
+    min-height: auto; /* Remove extended height on mobile */
+    width: 100%;
   }
   
   .headline {
     font-size: 48px;
+  }
+  
+  .heroGrid.frozenLayout {
+    grid-template-columns: 1fr; /* Reset grid on mobile */
+  }
+  
+  .heroGrid.frozenLayout .rightContent {
+    justify-content: center; /* Center on mobile */
+    margin-left: 0;
+    width: auto;
   }
 }
 

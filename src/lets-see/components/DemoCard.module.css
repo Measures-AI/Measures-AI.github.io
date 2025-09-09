@@ -102,6 +102,8 @@
   .card {
     min-height: 400px;
     padding: 20px;
+    width: 100%; /* Fix mobile card width */
+    max-width: 100%;
   }
   
   .cardTitle {

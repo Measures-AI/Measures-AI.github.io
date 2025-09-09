@@ -128,7 +128,7 @@ export const exampleConfigs = {
       },
       {
         type: 'quote',
-        text: '“It is now essential to the way our customer support team operates daily, and the way our company makes decisions.”',
+        text: 'It is now essential to the way our customer support team operates daily, and the way our company makes decisions.',
         author: 'Chad Kilpatrick',
         role: 'CFO',
         mobile: false,
