@@ -45,7 +45,7 @@
   flex-direction: column;
   gap: 20px;
   justify-content: center;
-  padding-right: 40px;
+  padding-right: 60px;
 }
 
 .logoContainer {
@@ -81,18 +81,31 @@
   margin: 0;
 }
 
+.quoteContainer {
+  margin: 20px 0;
+}
+
 .quote {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 18px;
   line-height: 1.5;
   color: white;
-  margin: 20px 0;
+  margin: 0 0 10px 0;
   padding: 20px;
   background: rgba(255, 255, 255, 0.08);
   border-left: 4px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
   font-style: normal;
+}
+
+.quoteAttribution {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 20px;
+  font-style: italic;
 }
 
 .buttonContainer {
@@ -219,6 +232,10 @@
     font-size: 16px;
   }
   
+  .quoteAttribution {
+    font-size: 13px;
+  }
+  
   .buttonContainer {
     flex-direction: column;
     align-items: stretch;
@@ -250,5 +267,9 @@
   .quote {
     font-size: 15px;
     padding: 16px;
+  }
+  
+  .quoteAttribution {
+    font-size: 12px;
   }
 }

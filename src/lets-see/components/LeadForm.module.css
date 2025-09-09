@@ -36,11 +36,12 @@
 .button {
   background: #4f46e5;
   border: none;
-  color: #fff;
+  color: #000;
   border-radius: 8px;
   padding: 12px 14px;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 5px;
 }
 
 .hint {

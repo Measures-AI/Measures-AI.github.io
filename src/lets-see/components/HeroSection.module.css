@@ -50,19 +50,19 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 32px 0;
+  padding: 20px 0 30px;
 }
 
 .point {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.9);
-  padding: 16px 0;
+  padding: 10px 0;
 }
 
 .pointIcon {
@@ -92,6 +92,13 @@
 }
 
 .formContainer {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(79, 70, 229, 0.05));
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: 20px;
+  padding: 60px;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.1);
   max-width: 500px;
   width: 100%;
 }

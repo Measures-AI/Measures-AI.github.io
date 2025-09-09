@@ -10,6 +10,7 @@ export const LogosBanner = ({ logos }) => {
 
   return (
     <section className={styles.logosBanner}>
+      <div className={styles.logoLabel}>integrates with all your platforms</div>
       <div className={styles.logosContainer}>
         <div className={styles.logoRow}>
           {firstRow.map((logo, index) => (

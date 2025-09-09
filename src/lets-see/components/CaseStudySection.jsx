@@ -8,7 +8,9 @@ export const CaseStudySection = ({
   logoAlt, 
   headline, 
   story, 
-  quote, 
+  quote,
+  author,
+  quoteRole,
   link,
   role,
   industry,
@@ -54,9 +56,16 @@ export const CaseStudySection = ({
               <p className={styles.story}>{story}</p>
               
               {quote && (
-                <blockquote className={styles.quote}>
-                  "{quote}"
-                </blockquote>
+                <div className={styles.quoteContainer}>
+                  <blockquote className={styles.quote}>
+                    "{quote}"
+                  </blockquote>
+                  {(author || quoteRole) && (
+                    <div className={styles.quoteAttribution}>
+                      — {author}{quoteRole ? `, ${quoteRole}` : ''}
+                    </div>
+                  )}
+                </div>
               )}
               
               <div className={styles.buttonContainer}>

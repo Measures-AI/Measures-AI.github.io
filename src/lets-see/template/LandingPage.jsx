@@ -67,6 +67,8 @@ export const LandingPage = ({ config }) => {
             headline={section.headline}
             story={section.story}
             quote={section.quote}
+            author={section.author}
+            quoteRole={section.role}
             link={section.link}
             role={role}
             industry={industry}
@@ -130,6 +132,7 @@ export const LandingPage = ({ config }) => {
           role={role}
           industry={industry}
           cta={cta}
+          themeColor={themeColor}
         />
         
         <footer className={styles.footer}>
