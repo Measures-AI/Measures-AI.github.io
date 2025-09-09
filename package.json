@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",
-    "deploy": "echo 'measuresai.com' > ./build/CNAME && gh-pages -d dist",
-    "build": "vite build",
+    "deploy": "echo 'measuresai.com' > ./dist/CNAME && gh-pages -d dist",
+    "build": "vite build && node scripts/generate-static-pages.js",
+    "build:vite": "vite build",
+    "generate:pages": "node scripts/generate-static-pages.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

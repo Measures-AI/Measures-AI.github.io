@@ -4,6 +4,14 @@ import { getLandingConfigFromPath } from './utils/config';
 
 export const LandingRouter = () => {
   const { pathname, search } = window.location;
-  const config = useMemo(() => getLandingConfigFromPath(pathname, search), [pathname, search]);
+  
+  // Check if we have a preloaded configuration from SSR
+  const preloadedConfig = typeof window !== 'undefined' ? window.__PRELOADED_CONFIG__ : null;
+  
+  const config = useMemo(() => {
+    // Use preloaded config if available, otherwise fallback to dynamic loading
+    return preloadedConfig || getLandingConfigFromPath(pathname, search);
+  }, [pathname, search, preloadedConfig]);
+  
   return <LandingPage config={config} />;
 };
