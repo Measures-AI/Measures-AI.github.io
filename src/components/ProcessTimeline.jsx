@@ -6,22 +6,22 @@ const steps = [
   { 
     title: 'Step 1: Platform', 
     text: 'We deploy a secure, single-tenant, isolated environment for your data and measures to sit.',
-    image: '/platform-graphic.svg'
+    image: '/img/platform-graphic.svg'
   },
   { 
     title: 'Step 2: Data', 
     text: 'We establish live connections with the platforms you use to interact with customers.',
-    image: '/data-graphic.svg'
+    image: '/img/data-graphic.svg'
   },
   { 
     title: 'Step 3: Measurement', 
     text: 'Our models ingest and measure the data, both historically and in real-time.',
-    image: '/measurement-graphic.svg'
+    image: '/img/measurement-graphic.svg'
   },
   { 
     title: 'Step 4: Insights', 
     text: 'Notable insights are surfaced to you in a dashboard, with the ability to drill down or export as needed.',
-    image: '/insights-graphic.svg'
+    image: '/img/insights-graphic.svg'
   },
 ];
 

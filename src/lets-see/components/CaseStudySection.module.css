@@ -142,7 +142,7 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: white;
+  color: black;
   background: #4f46e5;
   border: none;
   border-radius: 50px;
@@ -223,6 +223,18 @@
     padding: 30px;
   }
   
+  .caseContent {
+    padding-right: 0;
+  }
+  
+  .caseContent .imageContainer {
+    margin-bottom: 20px;
+  }
+  
+  .caseContent .imageContainer .caseImage {
+    min-height: 200px;
+  }
+  
   .headline {
     font-size: 28px;
     max-width: 100%;
@@ -248,6 +260,16 @@
   
   .modalContent {
     padding: 24px;
+  }
+  
+  .closeButton {
+    width: 44px;
+    height: 44px;
+    font-size: 28px;
+    top: 12px;
+    right: 12px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 }
 

@@ -21,7 +21,7 @@ const cardData = [
       { name: 'Aug', value: 1654 }
     ] },
     source: "Extracted from Zendesk emails",
-    sourceLogo: "/external-logos/zendesk.png"
+    sourceLogo: "/img/external-logos/zendesk.png"
   },
   {
     title: "Churn risk: $XX,XXX in ARR at increased risk for 4 key accounts.",
@@ -37,7 +37,7 @@ const cardData = [
       { name: 'Q4', value: 7000 }
     ] },
     source: "Extracted from Google Workspace",
-    sourceLogo: "/external-logos/gmail.png"
+    sourceLogo: "/img/external-logos/gmail.png"
   },
   {
     title: "Renewal negotiations: $XX,XXX in ARR at risk due to stalled contracts.",
@@ -53,7 +53,7 @@ const cardData = [
       { name: 'Apr', value: 4 }
     ] },
     source: "Extracted from Salesforce",
-    sourceLogo: "/external-logos/salesforce.png"
+    sourceLogo: "/img/external-logos/salesforce.png"
   },
   {
     title: "Feature adoption drives $XX,XXX in expansion revenue.",
@@ -68,7 +68,7 @@ const cardData = [
       { name: 'SMB', value: 3700 }
     ] },
     source: "Extracted from Gong",
-    sourceLogo: "/external-logos/gong.png"
+    sourceLogo: "/img/external-logos/gong.png"
   },
   {
     title: "Billing errors: $X,XXX in disputed invoices this cycle.",
@@ -85,7 +85,7 @@ const cardData = [
       { name: 'May', value: 6000 }
     ] },
     source: "Extracted from HubSpot",
-    sourceLogo: "/external-logos/hubspot.png"
+    sourceLogo: "/img/external-logos/hubspot.png"
   },
   {
     title: "Support ticket surge: $X,XXX in potential churn flagged.",
@@ -101,7 +101,7 @@ const cardData = [
       { name: 'Q4', value: 85 }
     ] },
     source: "Extracted from Chorus",
-    sourceLogo: "/external-logos/chorus.png"
+    sourceLogo: "/img/external-logos/chorus.png"
   },
   {
     title: "Pipeline drop-off: $XX,XXX in lost opportunities this month.",
@@ -117,7 +117,7 @@ const cardData = [
       { name: 'Week 4', value: 2 }
     ] },
     source: "Extracted from Salesforce",
-    sourceLogo: "/external-logos/salesforce.png"
+    sourceLogo: "/img/external-logos/salesforce.png"
   },
 ];
 

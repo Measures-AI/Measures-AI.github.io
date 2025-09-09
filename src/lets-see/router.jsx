@@ -13,5 +13,10 @@ export const LandingRouter = () => {
     return preloadedConfig || getLandingConfigFromPath(pathname, search);
   }, [pathname, search, preloadedConfig]);
   
+  // Handle redirect case (config will be null)
+  if (!config) {
+    return null;
+  }
+  
   return <LandingPage config={config} />;
 };

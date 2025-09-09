@@ -9,7 +9,7 @@ const Opportunity = () => (
       <a href="#contact" className={styles.contactBtn}>Get Started</a>
     </div>
     <div className={styles.graphicPlaceholder}>
-      <img src="/ConveyorBeltGraphic.svg" alt="Conveyor Belt Graphic" style={{maxWidth: '100%', maxHeight: '100%'}} />
+      <img src="/img/ConveyorBeltGraphic.svg" alt="Conveyor Belt Graphic" style={{maxWidth: '100%', maxHeight: '100%'}} />
     </div>
   </section>
 );

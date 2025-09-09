@@ -4,28 +4,28 @@ import styles from './ConveyorBelt.module.css';
 
 // Logo lists - qualitative (text/communication) vs quantitative (data/analytics)
 const qualitativeLogos = [
-  '/external-logos/gmail.png',
-  '/external-logos/outlook.png',
-  '/external-logos/slack.png',
-  '/external-logos/teams.png',
-  '/external-logos/zendesk.png',
-  '/external-logos/activecampaign.png',
-  '/external-logos/gong.png',
-  '/external-logos/chorus.png',
-  '/external-logos/twilio.png',
-  '/external-logos/zapier.png',
-  '/external-logos/salesforce.png',
-  '/external-logos/hubspot.png',
-  '/external-logos/pipedrive.png',
-  '/external-logos/netsuite.png',
-  '/external-logos/zoho.png'
+  '/img/external-logos/gmail.png',
+  '/img/external-logos/outlook.png',
+  '/img/external-logos/slack.png',
+  '/img/external-logos/teams.png',
+  '/img/external-logos/zendesk.png',
+  '/img/external-logos/activecampaign.png',
+  '/img/external-logos/gong.png',
+  '/img/external-logos/chorus.png',
+  '/img/external-logos/twilio.png',
+  '/img/external-logos/zapier.png',
+  '/img/external-logos/salesforce.png',
+  '/img/external-logos/hubspot.png',
+  '/img/external-logos/pipedrive.png',
+  '/img/external-logos/netsuite.png',
+  '/img/external-logos/zoho.png'
 ];
 
 const quantitativeLogos = [
-  '/external-logos/excel.png',
-  '/external-logos/snowflake.png',
-  '/external-logos/tableau.png',
-  '/external-logos/powerbi.png',
+  '/img/external-logos/excel.png',
+  '/img/external-logos/snowflake.png',
+  '/img/external-logos/tableau.png',
+  '/img/external-logos/powerbi.png',
 ];
 
 const ConveyorBelt = () => {

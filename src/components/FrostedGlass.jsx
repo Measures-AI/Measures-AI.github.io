@@ -7,7 +7,7 @@ const FrostedGlass = () => {
     <div className={styles.frostedGlass}>
       <div className={styles.outerFrame}></div>
       <div className={styles.frostedGlassBackdrop}>
-        <img src="/platform.svg" alt="Measures Platform Logo" className={styles.platformLogo} />
+        <img src="/img/platform.svg" alt="Measures Platform Logo" className={styles.platformLogo} />
       </div>
       <div className={styles.machineFrame}>
         <div className={styles.machineTop}></div>
