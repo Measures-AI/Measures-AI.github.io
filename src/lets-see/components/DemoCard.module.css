@@ -102,6 +102,7 @@
   .card {
     min-height: 400px;
     padding: 20px;
+    width: 100%;
   }
   
   .cardTitle {
@@ -117,6 +118,7 @@
   .card {
     min-height: 350px;
     padding: 16px;
+    width: 100%;
   }
   
   .cardTitle {

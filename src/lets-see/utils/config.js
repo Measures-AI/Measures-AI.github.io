@@ -28,11 +28,11 @@ export const exampleConfigs = {
     ],
     cta: 'Schedule a demo',
     demoData: {
-      title: 'Pipeline drop-off: $XX,XXX in lost opportunities this month.',
-      subtext: 'Several high-value prospects have dropped out of the sales pipeline after initial meetings.',
+      title: 'Battery life contributed to $36,434 in Q2 churn.',
+      subtext: '232 users\' subscriptions lapsed after complaining to support, 14% of users who did so.',
       bullets: [
-        '3 enterprise prospects went dark after first call, representing $X,XXX in potential ARR.',
-        'Feedback cited: unclear pricing and delayed follow-up.'
+        'This represents a 2x increase in battery-related complaints from Q1.',
+        'This is the most common complaint brought up, and will likely lead to $54,651 in Q3 churn.'
       ],
       data: { type: 'bar', values: [
         { name: 'Q1', value: 30 },

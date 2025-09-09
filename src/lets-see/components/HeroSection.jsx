@@ -21,16 +21,32 @@ export const HeroSection = ({
         <div className={styles.heroGrid}>
           <div className={styles.leftContent}>
             <h1 className={styles.headline}>{headline}</h1>
-            <p className={styles.story}>{story}</p>
+            <div className={styles.story}>
+              {Array.isArray(story) 
+                ? story.map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      {index < story.length - 1 && <br />}
+                    </React.Fragment>
+                  ))
+                : story
+              }
+            </div>
             
             {points && points.length > 0 && (
               <div className={styles.points}>
                 {points.map((point, index) => (
                   <div key={index} className={styles.point}>
                     {point.icon && (
-                      <i className={`fas fa-${point.icon} ${styles.pointIcon}`}></i>
+                      <i 
+                        className={`fas fa-${point.icon} ${styles.pointIcon}`}
+                        style={{ color: themeColor || '#7ecbff' }}
+                      ></i>
                     )}
-                    <span className={styles.pointText}>
+                    <span 
+                      className={styles.pointText}
+                      style={{ color: themeColor || '#7ecbff' }}
+                    >
                       {point.text || point}
                     </span>
                   </div>
@@ -51,6 +67,10 @@ export const HeroSection = ({
                   themeColor={themeColor}
                 />
               </div>
+            </div>
+            
+            <div className={styles.mobileCard}>
+              <DemoCard demoData={demoData} themeColor={themeColor} />
             </div>
           </div>
           
