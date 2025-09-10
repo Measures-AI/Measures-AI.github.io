@@ -13,7 +13,7 @@ export const LandingRouter = () => {
     return preloadedConfig || getLandingConfigFromPath(pathname, search);
   }, [pathname, search, preloadedConfig]);
   
-  // Handle redirect case (config will be null)
+  // Handle redirect case (config will be null) - this happens for invalid slugs
   if (!config) {
     return null;
   }

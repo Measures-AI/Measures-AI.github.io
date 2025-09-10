@@ -15,7 +15,10 @@ export const CaseStudySection = ({
   role,
   industry,
   cta,
-  themeColor
+  themeColor,
+  pageHeadline,
+  pageStory,
+  slug
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -146,7 +149,15 @@ export const CaseStudySection = ({
             >
               ×
             </button>
-            <LeadForm role={role} industry={industry} cta={cta} themeColor={themeColor} />
+            <LeadForm 
+              role={role} 
+              industry={industry} 
+              cta={cta} 
+              themeColor={themeColor}
+              headline={pageHeadline}
+              story={pageStory}
+              slug={slug}
+            />
           </div>
         </div>
       )}

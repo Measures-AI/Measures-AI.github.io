@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './LandingPage.module.css';
 import { TrackingProvider } from '../components/TrackingProvider';
 import { Header } from '../components/Header';
@@ -28,6 +28,13 @@ export const LandingPage = ({ config }) => {
   } = config || {};
 
   const [isMobile, setIsMobile] = useState(false);
+
+  // Extract slug from current URL
+  const slug = useMemo(() => {
+    const pathname = window.location.pathname;
+    const parts = pathname.split('/').filter(Boolean);
+    return parts.length > 1 ? parts[1] : '';
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -74,6 +81,9 @@ export const LandingPage = ({ config }) => {
             industry={industry}
             cta={cta}
             themeColor={themeColor}
+            pageHeadline={headline}
+            pageStory={story}
+            slug={slug}
           />
         );
       
@@ -118,6 +128,7 @@ export const LandingPage = ({ config }) => {
           industry={industry}
           cta={cta}
           themeColor={themeColor}
+          slug={slug}
         />
         
         {logos && logos.length > 0 && (
@@ -133,6 +144,9 @@ export const LandingPage = ({ config }) => {
           industry={industry}
           cta={cta}
           themeColor={themeColor}
+          headline={headline}
+          story={story}
+          slug={slug}
         />
         
         <footer className={styles.footer}>

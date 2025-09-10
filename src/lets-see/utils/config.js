@@ -217,7 +217,7 @@ export const exampleConfigs = {
     headline: 'NPS that speaks in dollars.',
     story: 'Scores don’t hit the P&L. We connect detractor themes to churn and expansion so you can rank fixes by cash impact.',
     points: [
-      { text: 'Map detractor themes to churn risk', icon: 'target' },
+      { text: 'Map detractor themes to churn risk', icon: 'bullseye' },
       { text: 'Forecast ARR at risk and upside', icon: 'chart-line' },
       { text: 'Prioritize fixes by ROI to the business', icon: 'calculator' },
     ],
@@ -486,7 +486,7 @@ export const exampleConfigs = {
         quote: 'It is now essential to the way our customer support team operates daily, and the way our company makes decisions.',
         author: 'Chad Kilpatrick',
         role: 'CFO',
-        link: 'https://www.susiecakes.com/',
+        // link: 'https://www.susiecakes.com/',
         mobile: true,
       },
       {
@@ -1137,7 +1137,8 @@ export function getLandingConfigFromPath(pathname, search) {
   const query = parseQuery(search);
 
   if (root !== 'lets-see') {
-    return exampleConfigs['cfo-saas'];
+    // For non-lets-see paths, return a special flag to indicate 404
+    return { isNotFound: true };
   }
   
   // If no slug is provided, redirect to root
@@ -1146,7 +1147,14 @@ export function getLandingConfigFromPath(pathname, search) {
     return null;
   }
   
-  const base = exampleConfigs[slug] || exampleConfigs['head-of-support-retail'];
+  // Check if the slug exists in our configs
+  if (!exampleConfigs[slug]) {
+    // Invalid lets-see slug should redirect to home
+    window.location.href = '/';
+    return null;
+  }
+  
+  const base = exampleConfigs[slug];
   return buildConfig(base, {
     role: query.role,
     industry: query.industry,

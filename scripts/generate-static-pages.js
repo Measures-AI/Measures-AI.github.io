@@ -99,17 +99,33 @@ Object.entries(exampleConfigs).forEach(([slug, config]) => {
   console.log(`Generated: /lets-see/${slug}/index.html`);
 });
 
-// Generate main lets-see index page
-const defaultConfig = exampleConfigs['head-of-support-retail'];
-const mainPageHtml = template
-  .replace(/<title>.*?<\/title>/, '<title>Measures AI - Landing Pages</title>')
-  .replace(/<div id="root"><\/div>/, `<div id="root">${generateSSRContent(defaultConfig)}</div>`)
-  .replace(/<script type="text\/javascript">/, `<script>
-    window.__PRELOADED_CONFIG__ = ${JSON.stringify(defaultConfig)};
-  </script>
-  <script type="text/javascript">`);
+// Generate main lets-see index page with redirect
+const redirectPageHtml = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/img/platform.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <meta http-equiv="refresh" content="0; url=/" />
+    <script>
+      // JavaScript redirect as fallback
+      window.location.href = '/';
+    </script>
+  </head>
+  <body>
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a0a; color: #ffffff; font-family: 'Montserrat', sans-serif;">
+      <div style="text-align: center; max-width: 800px; padding: 2rem;">
+        <h1 style="font-size: 2rem; margin-bottom: 1rem;">Redirecting...</h1>
+        <p style="font-size: 1rem; opacity: 0.8;">
+          If you are not redirected automatically, <a href="/" style="color: #4f46e5;">click here</a>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`;
 
-fs.writeFileSync(path.join(letsSeeDir, 'index.html'), mainPageHtml);
-console.log('Generated: /lets-see/index.html');
+fs.writeFileSync(path.join(letsSeeDir, 'index.html'), redirectPageHtml);
+console.log('Generated: /lets-see/index.html (redirect)');
 
 console.log(`\nGenerated ${Object.keys(exampleConfigs).length + 1} static pages successfully!`);

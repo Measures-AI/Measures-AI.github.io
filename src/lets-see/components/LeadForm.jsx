@@ -5,9 +5,10 @@ import { useTracking } from './TrackingProvider';
 
 const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SERVICE_ID || (window.__ENV && window.__ENV.EMAILJS_SERVICE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_SERVICE_ID);
 const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
+const EMAILJS_LANDING_PAGES_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_LANDING_PAGES_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_LANDING_PAGES_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_LANDING_PAGES_TEMPLATE_ID);
 const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
-export const LeadForm = ({ role, industry, cta, fields, themeColor }) => {
+export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, story, slug, onSuccess }) => {
   // Initialize form state based on provided fields or defaults
   const defaultFields = [
     { title: 'name', type: 'text', placeholder: 'Your name' },
@@ -43,13 +44,19 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor }) => {
         ...form,
         role: role || '',
         industry: industry || '',
+        headline: headline || '',
+        story: Array.isArray(story) ? story.join(' ') : (story || ''),
+        slug: slug || '',
+        cta: cta || '',
       };
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, {
+      
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
         publicKey: EMAILJS_PUBLIC_KEY,
       });
       setStatus('success');
       if (tracking) tracking('lead_submit', templateParams);
       alert('Thanks! We will be in touch.');
+      if (onSuccess) onSuccess();
     } catch (err) {
       setStatus('error');
       if (tracking) tracking('lead_submit_error', { message: String(err) });
