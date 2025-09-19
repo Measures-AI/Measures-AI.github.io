@@ -3,6 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { buildConfig } from '../config/build.js';
+import { generateGTMScripts } from '../config/gtm.js';
 
 // Import the Node.js-compatible loader to get configurations
 async function loadConfigs() {
@@ -28,9 +30,9 @@ if (!fs.existsSync(letsSeeDir)) {
 
 // Generate meta tags for a page
 function generateMetaTags(config, slug) {
-  const title = `${config.headline} - Measures AI`;
-  const description = config.story || 'Turn customer conversations into actionable insights with Measures AI.';
-  const url = `https://measuresai.com/lets-see/${slug}`;
+  const title = `${config.headline} - ${buildConfig.site.name}`;
+  const description = config.story || buildConfig.site.description;
+  const url = `https://${buildConfig.domain}/lets-see/${slug}`;
   
   return {
     title,
@@ -94,12 +96,12 @@ async function generatePages() {
       <meta property="og:url" content="${url}" />`)
       // Replace the root div content with SSR content
       .replace(/<div id="root"><\/div>/, `<div id="root">${ssrContent}</div>`)
-      // Add preloaded configuration
-      .replace(/<script type="text\/javascript">/, `<script>
+      // Add preloaded configuration before the first script tag
+      .replace(/<script type="module"/, `<script>
         // Pre-load the configuration for this page
         window.__PRELOADED_CONFIG__ = ${JSON.stringify(config)};
       </script>
-      <script type="text/javascript">`);
+      <script type="module"`);
     
     // Write the HTML file
     fs.writeFileSync(path.join(pageDir, 'index.html'), pageHtml);
@@ -108,13 +110,15 @@ async function generatePages() {
   });
 
   // Generate main lets-see index page with redirect
+  const gtmScripts = generateGTMScripts();
   const redirectPageHtml = `<!doctype html>
 <html lang="en">
   <head>
+    ${gtmScripts.headScript}
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/platform.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Measures AI - Landing Pages</title>
+    <title>${buildConfig.site.name} - Landing Pages</title>
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -140,6 +144,7 @@ async function generatePages() {
     </script>
   </head>
   <body>
+    ${gtmScripts.bodyScript}
     <div class="container">
       <p>
         Redirecting to home page...

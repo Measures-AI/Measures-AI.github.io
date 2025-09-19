@@ -10,6 +10,8 @@
     "build": "vite build && node scripts/generate-static-pages.js",
     "build:vite": "vite build",
     "generate:pages": "node scripts/generate-static-pages.js",
+    "update:templates": "node scripts/update-templates.js",
+    "config:update": "npm run update:templates && npm run generate:pages",
     "lint": "eslint .",
     "preview": "vite preview"
   },
