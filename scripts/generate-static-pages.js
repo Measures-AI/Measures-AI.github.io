@@ -3,7 +3,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { exampleConfigs } from '../src/lets-see/utils/config.js';
+
+// Import the Node.js-compatible loader to get configurations
+async function loadConfigs() {
+  const { testPageLoader } = await import('../src/lets-see/utils/nodeTestLoader.js');
+  const result = await testPageLoader();
+  return result.configs;
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,13 +26,10 @@ if (!fs.existsSync(letsSeeDir)) {
   fs.mkdirSync(letsSeeDir, { recursive: true });
 }
 
-// Function to generate meta tags and title from config
+// Generate meta tags for a page
 function generateMetaTags(config, slug) {
-  const title = config.role && config.industry 
-    ? `${config.role} - ${config.industry} | Measures AI`
-    : 'Measures AI - Measure Everything';
-  
-  const description = config.story || 'Measure everything with Measures AI';
+  const title = `${config.headline} - Measures AI`;
+  const description = config.story || 'Turn customer conversations into actionable insights with Measures AI.';
   const url = `https://measuresai.com/lets-see/${slug}`;
   
   return {
@@ -34,98 +37,122 @@ function generateMetaTags(config, slug) {
     description,
     url,
     metaTags: `
-    <title>${title}</title>
     <meta name="description" content="${description}" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${url}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${title}" />
+    <meta name="twitter:description" content="${description}" />
     `
   };
 }
 
-// Function to generate server-side rendered content
+// Generate server-side rendered content
 function generateSSRContent(config) {
-  const storyLines = Array.isArray(config.story) 
-    ? config.story 
-    : [config.story];
-  
-  return `<div data-landing-page="${config.role || 'Unknown'}" data-industry="${config.industry || 'Unknown'}">
-    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a0a; color: #ffffff;">
-      <div style="text-align: center; max-width: 800px; padding: 2rem;">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem;">${config.headline || 'Welcome to Measures AI'}</h1>
-        <div style="font-size: 1.2rem; opacity: 0.8;">
-          ${storyLines.map(line => `<p>${line}</p>`).join('')}
-        </div>
+  return `
+    <div class="landing-page" data-theme="${config.themeColor}">
+      <div class="hero-section">
+        <h1>${config.headline}</h1>
+        <p>${config.story}</p>
       </div>
-    </div>
-  </div>`;
+      <div class="loading-indicator">
+        <p>Loading personalized content...</p>
+      </div>
+    </div>`;
 }
 
-// Generate pages for each configuration
-Object.entries(exampleConfigs).forEach(([slug, config]) => {
-  const pageDir = path.join(letsSeeDir, slug);
-  
-  // Create directory for this page
-  if (!fs.existsSync(pageDir)) {
-    fs.mkdirSync(pageDir, { recursive: true });
-  }
-  
-  const { title, description, url, metaTags } = generateMetaTags(config, slug);
-  const ssrContent = generateSSRContent(config);
-  
-  // Create the HTML content by replacing parts of the template
-  let pageHtml = template
-    // Replace title and meta tags
-    .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
-    .replace(/<meta name="viewport".*?>/, `<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="${description}" />
-    <meta property="og:title" content="${title}" />
-    <meta property="og:description" content="${description}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="${url}" />`)
-    // Replace the root div content with SSR content
-    .replace(/<div id="root"><\/div>/, `<div id="root">${ssrContent}</div>`)
-    // Add preloaded configuration
-    .replace(/<script type="text\/javascript">/, `<script>
-      // Pre-load the configuration for this page
-      window.__PRELOADED_CONFIG__ = ${JSON.stringify(config)};
-    </script>
-    <script type="text/javascript">`);
-  
-  // Write the HTML file
-  fs.writeFileSync(path.join(pageDir, 'index.html'), pageHtml);
-  
-  console.log(`Generated: /lets-see/${slug}/index.html`);
-});
+// Main async function to generate pages
+async function generatePages() {
+  // Load configurations using Node.js loader
+  console.log('Loading page configurations...');
+  const configs = await loadConfigs();
+  console.log(`Loaded ${Object.keys(configs).length} configurations\n`);
 
-// Generate main lets-see index page with redirect
-const redirectPageHtml = `<!doctype html>
+  // Generate pages for each configuration
+  Object.entries(configs).forEach(([slug, config]) => {
+    const pageDir = path.join(letsSeeDir, slug);
+    
+    // Create directory for this page
+    if (!fs.existsSync(pageDir)) {
+      fs.mkdirSync(pageDir, { recursive: true });
+    }
+    
+    const { title, description, url, metaTags } = generateMetaTags(config, slug);
+    const ssrContent = generateSSRContent(config);
+    
+    // Create the HTML content by replacing parts of the template
+    let pageHtml = template
+      // Replace title and meta tags
+      .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
+      .replace(/<meta name="viewport".*?>/, `<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="${description}" />
+      <meta property="og:title" content="${title}" />
+      <meta property="og:description" content="${description}" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="${url}" />`)
+      // Replace the root div content with SSR content
+      .replace(/<div id="root"><\/div>/, `<div id="root">${ssrContent}</div>`)
+      // Add preloaded configuration
+      .replace(/<script type="text\/javascript">/, `<script>
+        // Pre-load the configuration for this page
+        window.__PRELOADED_CONFIG__ = ${JSON.stringify(config)};
+      </script>
+      <script type="text/javascript">`);
+    
+    // Write the HTML file
+    fs.writeFileSync(path.join(pageDir, 'index.html'), pageHtml);
+    
+    console.log(`Generated: /lets-see/${slug}/index.html`);
+  });
+
+  // Generate main lets-see index page with redirect
+  const redirectPageHtml = `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/platform.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0; url=/" />
+    <title>Measures AI - Landing Pages</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: #000000;
+        color: white;
+      }
+      .container {
+        text-align: center;
+        max-width: 500px;
+        padding: 2rem;
+      }
+      h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+      p { font-size: 1.2rem; opacity: 0.9; }
+    </style>
     <script>
-      // JavaScript redirect as fallback
+      // Immediate redirect to home page
       window.location.href = '/';
     </script>
   </head>
   <body>
-    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a0a; color: #ffffff; font-family: 'Montserrat', sans-serif;">
-      <div style="text-align: center; max-width: 800px; padding: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">Redirecting...</h1>
-        <p style="font-size: 1rem; opacity: 0.8;">
-          If you are not redirected automatically, <a href="/" style="color: #4f46e5;">click here</a>.
-        </p>
-      </div>
+    <div class="container">
+      <p>
+        Redirecting to home page...
+      </p>
     </div>
   </body>
 </html>`;
 
-fs.writeFileSync(path.join(letsSeeDir, 'index.html'), redirectPageHtml);
-console.log('Generated: /lets-see/index.html (redirect)');
+  fs.writeFileSync(path.join(letsSeeDir, 'index.html'), redirectPageHtml);
+  console.log('Generated: /lets-see/index.html (redirect)');
 
-console.log(`\nGenerated ${Object.keys(exampleConfigs).length + 1} static pages successfully!`);
+  console.log(`\nGenerated ${Object.keys(configs).length + 1} static pages successfully!`);
+}
+
+// Run the async function
+generatePages().catch(console.error);

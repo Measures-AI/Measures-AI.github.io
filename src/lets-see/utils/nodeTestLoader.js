@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Node.js-specific page configuration loader for testing purposes only
+ * Node.js-specific page configuration loader for build scripts and testing
  * This file is separate from the main pageLoader.js to avoid browser compatibility issues
  */
 
