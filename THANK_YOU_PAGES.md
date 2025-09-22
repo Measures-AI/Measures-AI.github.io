@@ -33,49 +33,61 @@ The thank-you page extracts this data and:
 2. Shows a summary of their information
 3. Pre-fills the Calendly widget with their email and name
 
-## Customizing the Calendly URL
+## Customizing the Cal.com Integration
 
-To customize the Calendly integration, edit the `calendlyUrl` in `/src/lets-see/template/ThankYouPage.jsx`:
+The thank-you pages now use Cal.com for meeting booking. To customize the integration, update the environment variables:
 
-```javascript
-// Current default URL
-const calendlyUrl = 'https://calendly.com/measures-ai/demo';
+### Environment Variables
 
-// You can customize this to your own Calendly link:
-const calendlyUrl = 'https://calendly.com/your-username/meeting-type';
+Add these to your `.env` file or environment configuration:
+
+```bash
+# Cal.com configuration
+VITE_CALCOM_USERNAME=measures-ai
+VITE_CALCOM_EVENT_SLUG=demo
 ```
 
-### Per-Page Calendly URLs
+### Per-Page Cal.com URLs
 
-If you want different Calendly URLs for different landing pages, you can make it configurable by:
+If you want different Cal.com event types for different landing pages, you can make it configurable by:
 
-1. Adding a `calendlyUrl` field to each page configuration in `/src/lets-see/utils/pages/`
-2. Using that URL in the ThankYouPage component:
+1. Adding Cal.com fields to each page configuration in `/src/lets-see/utils/pages/`
+2. Using those values in the ThankYouPage component:
 
 ```javascript
 // In the page config (e.g., head-of-support-nps.js)
 export const config = {
   // ... existing config
-  calendlyUrl: 'https://calendly.com/your-username/support-demo'
+  calcomUsername: 'measures-ai',
+  calcomEventSlug: 'support-demo'
 };
 
 // In ThankYouPage.jsx
-const calendlyUrl = config.calendlyUrl || 'https://calendly.com/measures-ai/demo';
+const calcomUsername = config.calcomUsername || CALCOM_USERNAME;
+const calcomEventSlug = config.calcomEventSlug || CALCOM_EVENT_SLUG;
 ```
+
+## Alternative Email Button
+
+The thank-you page now includes a styled email button as a fallback option:
+- Text: "Having trouble with the calendar?"
+- Button: "Send us an email instead" 
+- Email: info@measuresai.com
+- Button matches the theme color of each landing page
 
 ## Alternative Booking Providers
 
-If you prefer to use a different booking provider instead of Calendly:
+If you prefer to use a different booking provider instead of Cal.com:
 
-1. Replace the Calendly script loading in `ThankYouPage.jsx`
+1. Replace the Cal.com script loading in `ThankYouPage.jsx`
 2. Update the widget initialization code
 3. Modify the CSS classes as needed
 
 Popular alternatives include:
+- Calendly
 - Acuity Scheduling
 - Appointlet  
 - Hubspot Meetings
-- Cal.com
 
 ## Generating Static Pages
 
