@@ -88,4 +88,9 @@ export const config = {
     title: 'Get your support pipeline in black and white.',
     copy: 'Schedule a demo to see how our platform can help you.',
   },
+  tracking: {
+    leadValue: 120,
+    leadType: 'Demo Request',
+    formVariant: 'A'
+  }
 }; 

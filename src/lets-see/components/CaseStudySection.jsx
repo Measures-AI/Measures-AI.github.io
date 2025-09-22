@@ -18,7 +18,8 @@ export const CaseStudySection = ({
   themeColor,
   pageHeadline,
   pageStory,
-  slug
+  slug,
+  pageConfig = {}
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -157,6 +158,7 @@ export const CaseStudySection = ({
               headline={pageHeadline}
               story={pageStory}
               slug={slug}
+              pageConfig={pageConfig}
             />
           </div>
         </div>

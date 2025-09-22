@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styles from './LeadForm.module.css';
 import emailjs from '@emailjs/browser';
 import { useTracking } from './TrackingProvider';
+import { pushLeadToDataLayer, addAttributionToForm, getLeadType, getLeadValue, getFormVariant } from '../utils/dataLayer';
 
 const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SERVICE_ID || (window.__ENV && window.__ENV.EMAILJS_SERVICE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_SERVICE_ID);
 const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
 const EMAILJS_LANDING_PAGES_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_LANDING_PAGES_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_LANDING_PAGES_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_LANDING_PAGES_TEMPLATE_ID);
 const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
-export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, story, slug, onSuccess }) => {
+export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, story, slug, onSuccess, pageConfig = {} }) => {
   // Initialize form state based on provided fields or defaults
   const defaultFields = [
     { title: 'name', type: 'text', placeholder: 'Your name' },
@@ -40,8 +41,11 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, st
     e.preventDefault();
     setStatus('submitting');
     try {
+      // Add attribution data to form
+      const formWithAttribution = addAttributionToForm(form);
+      
       const templateParams = {
-        ...form,
+        ...formWithAttribution,
         role: role || '',
         industry: industry || '',
         headline: headline || '',
@@ -49,6 +53,28 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, st
         slug: slug || '',
         cta: cta || '',
       };
+      
+      // Push to data layer before email submission
+      const currentPageConfig = {
+        ...pageConfig,
+        role: role || pageConfig.role,
+        industry: industry || pageConfig.industry,
+        slug: slug || pageConfig.slug,
+        cta: cta || pageConfig.cta
+      };
+      
+      pushLeadToDataLayer({
+        leadType: getLeadType(currentPageConfig),
+        userData: form,
+        formData: {
+          id: `lead-form-${slug}`,
+          name: `${slug}_demo`,
+          variant: getFormVariant(currentPageConfig)
+        },
+        value: getLeadValue(currentPageConfig),
+        currency: 'USD',
+        pageConfig: currentPageConfig
+      });
       
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
         publicKey: EMAILJS_PUBLIC_KEY,

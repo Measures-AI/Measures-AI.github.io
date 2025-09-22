@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ContactForm.module.css';
 import emailjs from '@emailjs/browser';
+import { pushLeadToDataLayer, addAttributionToForm, getFormVariant } from '../lets-see/utils/dataLayer';
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
@@ -23,10 +24,30 @@ const GetStartedForm = () => {
     e.preventDefault();
     setStatus('');
     try {
+      // Add attribution data to form
+      const formWithAttribution = addAttributionToForm(form);
+      
+      // Push to data layer before email submission
+      pushLeadToDataLayer({
+        leadType: 'Contact',
+        userData: form,
+        formData: {
+          id: 'main-contact-form',
+          name: 'homepage_contact',
+          variant: getFormVariant({})
+        },
+        value: parseInt(import.meta.env.VITE_DEFAULT_LEAD_VALUE || '100', 10),
+        currency: 'USD',
+        pageConfig: {
+          slug: 'homepage',
+          cta: 'Contact Us'
+        }
+      });
+      
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
-        form,
+        formWithAttribution,
         PUBLIC_KEY
       );
       setStatus('Message sent! We will follow up soon.');

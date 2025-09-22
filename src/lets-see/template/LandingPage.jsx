@@ -84,6 +84,7 @@ export const LandingPage = ({ config }) => {
             pageHeadline={headline}
             pageStory={story}
             slug={slug}
+            pageConfig={config}
           />
         );
       
@@ -129,6 +130,7 @@ export const LandingPage = ({ config }) => {
           cta={cta}
           themeColor={themeColor}
           slug={slug}
+          pageConfig={config}
         />
         
         {logos && logos.length > 0 && (
@@ -147,6 +149,7 @@ export const LandingPage = ({ config }) => {
           headline={headline}
           story={story}
           slug={slug}
+          pageConfig={config}
         />
         
         <footer className={styles.footer}>

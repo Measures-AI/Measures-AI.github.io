@@ -200,5 +200,10 @@ export const config = {
   "bottomCta": {
     "title": "Get your support pipeline in black and white.",
     "copy": "Schedule a demo to see how our platform can help you."
+  },
+  "tracking": {
+    "leadValue": 150,
+    "leadType": "Demo Request",
+    "formVariant": "A"
   }
 };

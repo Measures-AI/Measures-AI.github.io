@@ -14,7 +14,8 @@ export const HeroSection = ({
   industry, 
   cta,
   themeColor,
-  slug 
+  slug,
+  pageConfig = {}
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -77,6 +78,7 @@ export const HeroSection = ({
                     headline={headline}
                     story={story}
                     slug={slug}
+                    pageConfig={pageConfig}
                   />
                 </div>
                 
@@ -122,6 +124,7 @@ export const HeroSection = ({
               headline={headline}
               story={story}
               slug={slug}
+              pageConfig={pageConfig}
               onSuccess={closeModal}
             />
           </div>
