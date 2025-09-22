@@ -63,18 +63,22 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, st
         cta: cta || pageConfig.cta
       };
       
-      pushLeadToDataLayer({
-        leadType: getLeadType(currentPageConfig),
-        userData: form,
-        formData: {
-          id: `lead-form-${slug}`,
-          name: `${slug}_demo`,
-          variant: getFormVariant(currentPageConfig)
-        },
-        value: getLeadValue(currentPageConfig),
-        currency: 'USD',
-        pageConfig: currentPageConfig
-      });
+      try {
+        pushLeadToDataLayer({
+          leadType: getLeadType(currentPageConfig),
+          userData: form,
+          formData: {
+            id: `lead-form-${slug}`,
+            name: `${slug}_demo`,
+            variant: getFormVariant(currentPageConfig)
+          },
+          value: getLeadValue(currentPageConfig),
+          currency: 'USD',
+          pageConfig: currentPageConfig
+        });
+      } catch (dataLayerError) {
+        console.warn('Data layer push failed, but continuing with form submission:', dataLayerError);
+      }
       
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
         publicKey: EMAILJS_PUBLIC_KEY,

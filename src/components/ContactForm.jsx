@@ -28,21 +28,25 @@ const GetStartedForm = () => {
       const formWithAttribution = addAttributionToForm(form);
       
       // Push to data layer before email submission
-      pushLeadToDataLayer({
-        leadType: 'Contact',
-        userData: form,
-        formData: {
-          id: 'main-contact-form',
-          name: 'homepage_contact',
-          variant: getFormVariant({})
-        },
-        value: parseInt(import.meta.env.VITE_DEFAULT_LEAD_VALUE || '100', 10),
-        currency: 'USD',
-        pageConfig: {
-          slug: 'homepage',
-          cta: 'Contact Us'
-        }
-      });
+      try {
+        pushLeadToDataLayer({
+          leadType: 'Contact',
+          userData: form,
+          formData: {
+            id: 'main-contact-form',
+            name: 'homepage_contact',
+            variant: getFormVariant({})
+          },
+          value: parseInt(import.meta.env.VITE_DEFAULT_LEAD_VALUE || '100', 10),
+          currency: 'USD',
+          pageConfig: {
+            slug: 'homepage',
+            cta: 'Contact Us'
+          }
+        });
+      } catch (dataLayerError) {
+        console.warn('Data layer push failed, but continuing with form submission:', dataLayerError);
+      }
       
       await emailjs.send(
         SERVICE_ID,

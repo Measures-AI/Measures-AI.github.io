@@ -7,7 +7,25 @@
  * @returns {string} Unique lead ID in format LEAD-{uuid}
  */
 export function generateLeadId() {
+  // Use crypto.randomUUID() if available, otherwise fallback to custom UUID
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return `LEAD-${crypto.randomUUID()}`;
+  }
+  
+  // Fallback UUID generation for older browsers
+  return `LEAD-${generateFallbackUUID()}`;
+}
+
+/**
+ * Generate a fallback UUID for browsers that don't support crypto.randomUUID()
+ * @returns {string} UUID string
+ */
+function generateFallbackUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
 
 /**
@@ -50,82 +68,78 @@ export function getPageInfo() {
  * @param {object} options.pageConfig - Page configuration object
  */
 export function pushLeadToDataLayer({
-    leadType = 'Demo Request',
-    userData = {},
-    formData = {},
-    value = 100,
-    currency = 'USD',
-    pageConfig = {}
+  leadType = 'Demo Request',
+  userData = {},
+  formData = {},
+  value = 100,
+  currency = 'USD',
+  pageConfig = {}
 }) {
+  try {
     // Ensure dataLayer exists
     window.dataLayer = window.dataLayer || [];
-
+    
     const leadId = generateLeadId();
     const attribution = parseAttributionData();
     const pageInfo = getPageInfo();
-
+    
     // Split name into first_name and last_name if provided as single field
+    let firstName = userData.first_name || '';
+    let lastName = userData.last_name || '';
+    
     if (userData.name && !firstName && !lastName) {
-        const nameParts = userData.name.trim().split(' ');
-        firstName = nameParts[0] || '';
-        lastName = nameParts.slice(1).join(' ') || '';
+      const nameParts = userData.name.trim().split(' ');
+      firstName = nameParts[0] || '';
+      lastName = nameParts.slice(1).join(' ') || '';
     }
-
-    const normEmail = (userData?.email || '').trim().toLowerCase();
-    const firstName = (userData?.first_name || userData?.firstName || '').trim();
-    const lastName = (userData?.last_name || userData?.lastName || '').trim();
-    const company = (userData?.company || '').trim();
-
-    const val = Number(value);
-    const curr = (currency || 'USD').toString().toUpperCase();
-
-    // Build user_data dynamically to avoid empty fields
-    const user_data = {};
-    if (normEmail) user_data.email = normEmail;
-    if (firstName) user_data.first_name = firstName;
-    if (lastName) user_data.last_name = lastName;
-    if (company) user_data.company = company;
-
-    // Pass through any other custom user fields that are truthy
-    if (userData && typeof userData === 'object') {
-        Object.keys(userData).forEach((key) => {
-            if (!['name', 'email', 'company', 'first_name', 'last_name', 'firstName', 'lastName'].includes(key)) {
-                const v = userData[key];
-                if (v !== undefined && v !== null && v !== '') user_data[key] = v;
-            }
-        });
-    }
-
+    
     const dataLayerEvent = {
-        event: 'lead',
-        lead_id: leadId,                 // will map to Ads "Order ID"
-        lead_type: leadType || 'lead',
-        value: isNaN(val) ? 0 : val,     // Ads expects number; set a sane default if needed
-        currency: curr,                  // 'USD'
-        user_data,                       // only populated fields
-        form: {
-            ...formData,                  // (kept at end so explicit props above can be overridden if you intend that)
-            id: formData?.id || 'lead-form',
-            name: formData?.name || pageConfig?.slug || 'unknown',
-            variant: formData?.variant || 'A',
-            role: pageConfig?.role || '',
-            industry: pageConfig?.industry || '',
-        },
-        page: pageInfo,                  // { url, path, title } – fine
-        attribution                      // { gclid, utm_* } – fine
+      event: 'lead',
+      lead_id: leadId,
+      lead_type: leadType,
+      value: value,
+      currency: currency,
+      user_data: {
+        email: userData.email || '',
+        first_name: firstName,
+        last_name: lastName,
+        company: userData.company || '',
+        // Add any additional user fields
+        ...Object.keys(userData).reduce((acc, key) => {
+          if (!['name', 'email', 'company', 'first_name', 'last_name'].includes(key)) {
+            acc[key] = userData[key];
+          }
+          return acc;
+        }, {})
+      },
+      form: {
+        id: formData.id || 'lead-form',
+        name: formData.name || pageConfig.slug || 'unknown',
+        variant: formData.variant || 'A',
+        role: pageConfig.role || '',
+        industry: pageConfig.industry || '',
+        ...formData
+      },
+      page: pageInfo,
+      attribution: attribution
     };
-
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(dataLayerEvent);
-
-
+    
     // Push to dataLayer
     window.dataLayer.push(dataLayerEvent);
-
+    
     // Also log for debugging (remove in production if needed)
     console.log('DataLayer Lead Event:', dataLayerEvent);
-
+    
     return dataLayerEvent;
+  } catch (error) {
+    console.error('Error pushing to data layer:', error);
+    // Return a minimal event object so the form submission can continue
+    return {
+      event: 'lead',
+      lead_id: `LEAD-fallback-${Date.now()}`,
+      error: true
+    };
+  }
 }
 
 /**

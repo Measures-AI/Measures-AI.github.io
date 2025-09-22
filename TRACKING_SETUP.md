@@ -128,6 +128,17 @@ To test the implementation:
 4. Check the console for "DataLayer Lead Event:" log
 5. Verify the event structure matches the expected format
 
+## Troubleshooting
+
+If forms are failing to submit:
+
+1. **Check browser console** for JavaScript errors
+2. **Verify EmailJS configuration** - ensure all environment variables are set
+3. **Check data layer errors** - look for "Error pushing to data layer" messages
+4. **Browser compatibility** - the system includes fallbacks for older browsers that don't support `crypto.randomUUID()`
+
+The data layer implementation includes error handling to ensure form submissions continue even if tracking fails.
+
 ## Attribution Data
 
 The system automatically captures and includes:
