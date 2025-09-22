@@ -55,7 +55,18 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, st
       });
       setStatus('success');
       if (tracking) tracking('lead_submit', templateParams);
-      alert('Thanks! We will be in touch.');
+      
+      // Redirect to thank you page with form data as URL parameters
+      const params = new URLSearchParams();
+      Object.keys(form).forEach(key => {
+        if (form[key]) {
+          params.append(key, form[key]);
+        }
+      });
+      
+      const thankYouUrl = `/lets-see/${slug}/thank-you?${params.toString()}`;
+      window.location.href = thankYouUrl;
+      
       if (onSuccess) onSuccess();
     } catch (err) {
       setStatus('error');

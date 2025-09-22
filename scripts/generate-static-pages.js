@@ -52,7 +52,21 @@ function generateMetaTags(config, slug) {
 }
 
 // Generate server-side rendered content
-function generateSSRContent(config) {
+function generateSSRContent(config, isThankYou = false) {
+  if (isThankYou) {
+    return `
+      <div class="thank-you-page" data-theme="${config.themeColor}">
+        <div class="hero-section">
+          <h1>Thanks!</h1>
+          <p>${config.headline}</p>
+          <p>Let's schedule a quick demo to show you exactly how we can help achieve your goals.</p>
+        </div>
+        <div class="loading-indicator">
+          <p>Loading calendar...</p>
+        </div>
+      </div>`;
+  }
+  
   return `
     <div class="landing-page" data-theme="${config.themeColor}">
       <div class="hero-section">
@@ -100,6 +114,7 @@ async function generatePages() {
       .replace(/<script type="module"/, `<script>
         // Pre-load the configuration for this page
         window.__PRELOADED_CONFIG__ = ${JSON.stringify(config)};
+        window.__PAGE_TYPE__ = 'landing';
       </script>
       <script type="module"`);
     
@@ -107,6 +122,42 @@ async function generatePages() {
     fs.writeFileSync(path.join(pageDir, 'index.html'), pageHtml);
     
     console.log(`Generated: /lets-see/${slug}/index.html`);
+    
+    // Generate thank-you page for each landing page
+    const thankYouDir = path.join(pageDir, 'thank-you');
+    if (!fs.existsSync(thankYouDir)) {
+      fs.mkdirSync(thankYouDir, { recursive: true });
+    }
+    
+    const thankYouTitle = `Thank You - ${config.headline} - ${buildConfig.site.name}`;
+    const thankYouDescription = `Thank you for your interest! Schedule a demo to see how we can help.`;
+    const thankYouUrl = `https://${buildConfig.domain}/lets-see/${slug}/thank-you`;
+    const thankYouSSRContent = generateSSRContent(config, true);
+    
+    // Create thank-you page HTML
+    let thankYouHtml = template
+      // Replace title and meta tags
+      .replace(/<title>.*?<\/title>/, `<title>${thankYouTitle}</title>`)
+      .replace(/<meta name="viewport".*?>/, `<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="${thankYouDescription}" />
+      <meta property="og:title" content="${thankYouTitle}" />
+      <meta property="og:description" content="${thankYouDescription}" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="${thankYouUrl}" />`)
+      // Replace the root div content with thank-you SSR content
+      .replace(/<div id="root"><\/div>/, `<div id="root">${thankYouSSRContent}</div>`)
+      // Add preloaded configuration before the first script tag
+      .replace(/<script type="module"/, `<script>
+        // Pre-load the configuration for this page
+        window.__PRELOADED_CONFIG__ = ${JSON.stringify(config)};
+        window.__PAGE_TYPE__ = 'thank-you';
+      </script>
+      <script type="module"`);
+    
+    // Write the thank-you HTML file
+    fs.writeFileSync(path.join(thankYouDir, 'index.html'), thankYouHtml);
+    
+    console.log(`Generated: /lets-see/${slug}/thank-you/index.html`);
   });
 
   // Generate main lets-see index page with redirect
@@ -156,7 +207,8 @@ async function generatePages() {
   fs.writeFileSync(path.join(letsSeeDir, 'index.html'), redirectPageHtml);
   console.log('Generated: /lets-see/index.html (redirect)');
 
-  console.log(`\nGenerated ${Object.keys(configs).length + 1} static pages successfully!`);
+  const totalPages = (Object.keys(configs).length * 2) + 1; // landing pages + thank-you pages + redirect
+  console.log(`\nGenerated ${totalPages} static pages successfully!`);
 }
 
 // Run the async function

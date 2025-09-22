@@ -1,0 +1,231 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.heroSection {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.textContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.headline {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.story {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.subtext {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.formDataSummary {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem auto;
+  max-width: 400px;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.formDataSummary h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.formDataSummary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.formDataSummary li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.formDataSummary strong {
+  color: #ffffff;
+}
+
+.bookingSection {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bookingContainer {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.bookingTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.bookingSubtext {
+  font-size: 1.1rem;
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.calendlyContainer {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  min-height: 700px;
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #666;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.alternativeOptions {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.alternativeText {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 1rem;
+}
+
+.emailLink {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+.emailLink:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 3rem;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .headline {
+    font-size: 2rem;
+  }
+
+  .story {
+    font-size: 1.2rem;
+  }
+
+  .subtext {
+    font-size: 1rem;
+  }
+
+  .bookingSection {
+    padding: 1.5rem;
+  }
+
+  .bookingTitle {
+    font-size: 1.5rem;
+  }
+
+  .calendlyContainer {
+    min-height: 600px;
+  }
+
+  .formDataSummary {
+    margin: 1.5rem auto;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headline {
+    font-size: 1.8rem;
+  }
+
+  .calendlyContainer {
+    min-height: 500px;
+  }
+
+  .content {
+    gap: 2rem;
+  }
+
+  .heroSection {
+    padding: 2rem 0;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { LandingPage } from './template/LandingPage';
+import { ThankYouPage } from './template/ThankYouPage';
 import { getLandingConfigFromPath } from './utils/config';
 
 export const LandingRouter = () => {
@@ -7,6 +8,7 @@ export const LandingRouter = () => {
   
   // Check if we have a preloaded configuration from SSR
   const preloadedConfig = typeof window !== 'undefined' ? window.__PRELOADED_CONFIG__ : null;
+  const pageType = typeof window !== 'undefined' ? window.__PAGE_TYPE__ : null;
   
   const config = useMemo(() => {
     // Use preloaded config if available, otherwise fallback to dynamic loading
@@ -16,6 +18,13 @@ export const LandingRouter = () => {
   // Handle redirect case (config will be null) - this happens for invalid slugs
   if (!config) {
     return null;
+  }
+  
+  // Determine if this is a thank-you page
+  const isThankYouPage = pageType === 'thank-you' || pathname.includes('/thank-you');
+  
+  if (isThankYouPage) {
+    return <ThankYouPage config={config} />;
   }
   
   return <LandingPage config={config} />;
