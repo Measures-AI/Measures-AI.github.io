@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import Cal, { getCalApi } from "@calcom/embed-react";
 import styles from './ThankYouPage.module.css';
 import { TrackingProvider } from '../components/TrackingProvider';
 import { Header } from '../components/Header';
@@ -47,24 +48,41 @@ export const ThankYouPage = ({ config }) => {
     }
   }, [tracking, role, industry, slug]);
 
-  // Build Cal.com iframe URL with prefilled data
-  const calIframeUrl = useMemo(() => {
-    const baseUrl = `https://cal.com/${CALCOM_USERNAME}/${CALCOM_EVENT_SLUG}`;
-    const params = new URLSearchParams();
-    
-    // Add embed parameters
-    params.set('embed', 'true');
-    params.set('theme', 'light');
-    params.set('hideEventTypeDetails', 'false');
-    params.set('layout', 'month_view');
-    
-    // Add user data
-    if (formData.name) params.set('name', formData.name);
-    if (formData.email) params.set('email', formData.email);
-    if (formData.company) params.set('metadata[company]', formData.company);
-    
-    return `${baseUrl}?${params.toString()}`;
+  // Configure Cal.com embed with prefilled data
+  const calConfig = useMemo(() => {
+    const config = {
+      calLink: `${CALCOM_USERNAME}/${CALCOM_EVENT_SLUG}`,
+      config: {
+        layout: 'column_view',
+        theme: 'dark'
+      }
+    };
+
+    // Add prefilled data if available
+    if (formData.name || formData.email || formData.company) {
+      config.config.prefill = {};
+      if (formData.name) config.config.prefill.name = formData.name;
+      if (formData.email) config.config.prefill.email = formData.email;
+      if (formData.company) config.config.prefill.metadata = { company: formData.company };
+    }
+
+    return config;
   }, [formData]);
+
+  // Initialize Cal API for additional customizations
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi();
+      cal("ui", {
+        "theme": "dark",
+        "styles": {
+          "branding": { "brandColor": "#ffffff" }
+        },
+        "hideEventTypeDetails": false,
+        "layout": "column_view"
+      });
+    })();
+  }, []);
 
   return (
     <TrackingProvider>
@@ -84,25 +102,14 @@ export const ThankYouPage = ({ config }) => {
               </div>
             </div>
 
-            <div className={styles.bookingSection}>
-              <div className={styles.bookingContainer}>
-                {/* Cal.com Iframe Widget */}
-                <div className={styles.calContainer}>
-                  <iframe
-                    src={calIframeUrl}
-                    width="100%"
-                    height="700"
-                    frameBorder="0"
-                    title="Schedule a meeting"
-                    className={styles.calIframe}
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allow="payment *; clipboard-read *; clipboard-write *; microphone *; camera *;"
-                    sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"
-                    loading="lazy"
-                  ></iframe>
-                </div>
-              </div>
-            </div>
+                {/* Cal.com React Embed */}
+                  <Cal
+                    calLink={calConfig.calLink}
+                    config={calConfig.config}
+                    style={{
+                      width: "100%",
+                    }}
+                  />
 
             {/* Alternative booking options */}
             <div className={styles.alternativeOptions}>
