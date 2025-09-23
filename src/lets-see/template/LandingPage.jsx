@@ -9,8 +9,14 @@ import { CaseStudySection } from '../components/CaseStudySection';
 import { FeatureRowsSection } from '../components/FeatureRowsSection';
 import { QuoteSection } from '../components/QuoteSection';
 import { BottomCTA } from '../components/BottomCTA';
+import { applyUtmOverrides } from '../utils/dataLayer';
 
 export const LandingPage = ({ config }) => {
+  // Apply UTM overrides to the config
+  const configWithUtmOverrides = useMemo(() => {
+    return config ? applyUtmOverrides(config) : {};
+  }, [config]);
+
   const {
     role,
     industry,
@@ -25,7 +31,7 @@ export const LandingPage = ({ config }) => {
     typedSections,
     bottomCta,
     themeColor
-  } = config || {};
+  } = configWithUtmOverrides;
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -84,7 +90,7 @@ export const LandingPage = ({ config }) => {
             pageHeadline={headline}
             pageStory={story}
             slug={slug}
-            pageConfig={config}
+            pageConfig={configWithUtmOverrides}
           />
         );
       
@@ -130,7 +136,7 @@ export const LandingPage = ({ config }) => {
           cta={cta}
           themeColor={themeColor}
           slug={slug}
-          pageConfig={config}
+          pageConfig={configWithUtmOverrides}
         />
         
         {logos && logos.length > 0 && (
@@ -149,7 +155,7 @@ export const LandingPage = ({ config }) => {
           headline={headline}
           story={story}
           slug={slug}
-          pageConfig={config}
+          pageConfig={configWithUtmOverrides}
         />
         
         <footer className={styles.footer}>

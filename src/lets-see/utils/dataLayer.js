@@ -42,6 +42,9 @@ export function parseAttributionData(search = window.location.search) {
         utm_campaign: params.get('utm_campaign') || null,
         utm_term: params.get('utm_term') || null,
         utm_content: params.get('utm_content') || null,
+        utm_h1: params.get('utm_h1') || null,
+        utm_sub: params.get('utm_sub') || null,
+        utm_cta: params.get('utm_cta') || null,
     };
 }
 
@@ -122,6 +125,10 @@ export function pushLeadToDataLayer({
         variant: formData.variant || 'A',
         role: pageConfig.role || '',
         industry: pageConfig.industry || '',
+        // Include UTM overrides in form data
+        utm_h1: attribution.utm_h1,
+        utm_sub: attribution.utm_sub,
+        utm_cta: attribution.utm_cta,
         ...formData
       },
       page: pageInfo,
@@ -169,6 +176,36 @@ export function pushLeadToDataLayer({
 }
 
 /**
+ * Apply UTM parameter overrides to page configuration
+ * @param {object} config - Original page configuration
+ * @param {string} search - URL search string (window.location.search)
+ * @returns {object} Page configuration with UTM overrides applied
+ */
+export function applyUtmOverrides(config, search = window.location.search) {
+    const attribution = parseAttributionData(search);
+    
+    // Create a copy of the config to avoid mutating the original
+    const updatedConfig = { ...config };
+    
+    // Override headline if utm_h1 is present
+    if (attribution.utm_h1) {
+        updatedConfig.headline = decodeURIComponent(attribution.utm_h1);
+    }
+    
+    // Override story if utm_sub is present
+    if (attribution.utm_sub) {
+        updatedConfig.story = decodeURIComponent(attribution.utm_sub);
+    }
+    
+    // Override CTA if utm_cta is present
+    if (attribution.utm_cta) {
+        updatedConfig.cta = decodeURIComponent(attribution.utm_cta);
+    }
+    
+    return updatedConfig;
+}
+
+/**
  * Add attribution data to form submission payload
  * @param {object} formData - Original form data
  * @returns {object} Form data with attribution fields added
@@ -184,6 +221,9 @@ export function addAttributionToForm(formData) {
         utm_campaign: attribution.utm_campaign,
         utm_term: attribution.utm_term,
         utm_content: attribution.utm_content,
+        utm_h1: attribution.utm_h1,
+        utm_sub: attribution.utm_sub,
+        utm_cta: attribution.utm_cta,
     };
 }
 
