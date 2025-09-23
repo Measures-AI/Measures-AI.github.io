@@ -138,17 +138,17 @@ export const config = {
       "items": [
         {
           "title": "Step 1: Establish connections",
-          "text": "\"It was amazing how seamless the integration meeting was. Everything was ready to go.\" - Bob, IT Director",
+          "text": "With only an API key, we connect to your Zendesk, Slack, and other platforms. One meeting, guaranteed.",
           "image": "/img/platform-graphic.svg"
         },
         {
           "title": "Step 2: Provide company context",
-          "text": "\"They only needed a list of terms and a couple of questions to get us going.\" - James, CEO",
+          "text": "Tell us about your business, your customer flow, and your goals.",
           "image": "/img/data-graphic.svg"
         },
         {
           "title": "Step 3: Get your insights",
-          "text": "\"Half the questions we've been arguing about for months were answered the next day.\" - Emily, CMO",
+          "text": "We automatically measure and analyze your data, and surface the insights you need to make decisions.",
           "image": "/img/insights-graphic.svg"
         }
       ],
