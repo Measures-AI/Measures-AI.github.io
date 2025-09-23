@@ -66,6 +66,8 @@ export function getPageInfo() {
  * @param {number} options.value - Estimated value of the lead (default: 100)
  * @param {string} options.currency - Currency code (default: 'USD')
  * @param {object} options.pageConfig - Page configuration object
+ * @param {function} options.callback - Optional callback function to execute after dataLayer push
+ * @param {number} options.timeout - Timeout in milliseconds for callback execution (default: 2000)
  */
 export function pushLeadToDataLayer({
   leadType = 'Demo Request',
@@ -73,7 +75,9 @@ export function pushLeadToDataLayer({
   formData = {},
   value = 100,
   currency = 'USD',
-  pageConfig = {}
+  pageConfig = {},
+  callback = null,
+  timeout = 2000
 }) {
   try {
     // Ensure dataLayer exists
@@ -130,9 +134,31 @@ export function pushLeadToDataLayer({
     // Also log for debugging (remove in production if needed)
     console.log('DataLayer Lead Event:', dataLayerEvent);
     
+    // Execute callback after a brief delay to allow GTM to process
+    if (callback && typeof callback === 'function') {
+      // Set up timeout fallback
+      const timeoutId = setTimeout(() => {
+        console.warn('DataLayer callback timeout reached, executing callback anyway');
+        callback();
+      }, timeout);
+      
+      // Try to detect when GTM has processed the event
+      // We'll use a small delay to allow GTM to process, then clear timeout and execute callback
+      setTimeout(() => {
+        clearTimeout(timeoutId);
+        callback();
+      }, 100); // Small delay to allow GTM processing
+    }
+    
     return dataLayerEvent;
   } catch (error) {
     console.error('Error pushing to data layer:', error);
+    
+    // Execute callback even if dataLayer push failed
+    if (callback && typeof callback === 'function') {
+      setTimeout(callback, 100);
+    }
+    
     // Return a minimal event object so the form submission can continue
     return {
       event: 'lead',

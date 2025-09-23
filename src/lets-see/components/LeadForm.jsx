@@ -54,7 +54,27 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, st
         cta: cta || '',
       };
       
-      // Push to data layer before email submission
+      // Send email first
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
+        publicKey: EMAILJS_PUBLIC_KEY,
+      });
+      setStatus('success');
+      if (tracking) tracking('lead_submit', templateParams);
+      
+      // Prepare redirect function
+      const performRedirect = () => {
+        const params = new URLSearchParams();
+        Object.keys(form).forEach(key => {
+          if (form[key]) {
+            params.append(key, form[key]);
+          }
+        });
+        
+        const thankYouUrl = `/lets-see/${slug}/thank-you?${params.toString()}`;
+        window.location.href = thankYouUrl;
+      };
+      
+      // Push to data layer with callback for redirect
       const currentPageConfig = {
         ...pageConfig,
         role: role || pageConfig.role,
@@ -74,28 +94,15 @@ export const LeadForm = ({ role, industry, cta, fields, themeColor, headline, st
           },
           value: getLeadValue(currentPageConfig),
           currency: 'USD',
-          pageConfig: currentPageConfig
+          pageConfig: currentPageConfig,
+          callback: performRedirect,
+          timeout: 2000 // 2 second timeout fallback
         });
       } catch (dataLayerError) {
-        console.warn('Data layer push failed, but continuing with form submission:', dataLayerError);
+        console.warn('Data layer push failed, redirecting anyway:', dataLayerError);
+        // If dataLayer push fails completely, still redirect after a brief delay
+        setTimeout(performRedirect, 100);
       }
-      
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
-        publicKey: EMAILJS_PUBLIC_KEY,
-      });
-      setStatus('success');
-      if (tracking) tracking('lead_submit', templateParams);
-      
-      // Redirect to thank you page with form data as URL parameters
-      const params = new URLSearchParams();
-      Object.keys(form).forEach(key => {
-        if (form[key]) {
-          params.append(key, form[key]);
-        }
-      });
-      
-      const thankYouUrl = `/lets-see/${slug}/thank-you?${params.toString()}`;
-      window.location.href = thankYouUrl;
       
       if (onSuccess) onSuccess();
     } catch (err) {
