@@ -90,10 +90,10 @@ export async function testPageLoader() {
     console.log(`   Available slugs: ${slugs.join(', ')}\n`);
     
     // Test a specific config
-    if (configs['head-of-support-retail']) {
+    if (configs['support-nps']) {
       console.log('✅ Sample config test passed');
-      console.log(`   Role: ${configs['head-of-support-retail'].role}`);
-      console.log(`   Headline: ${configs['head-of-support-retail'].headline}`);
+      console.log(`   Role: ${configs['support-nps'].role}`);
+      console.log(`   Headline: ${configs['support-nps'].headline}`);
     } else {
       console.log('❌ Sample config test failed');
     }
