@@ -116,7 +116,17 @@ export const MeasureTwiceForm = ({ config }) => {
 
   return (
     <form className={styles.formCard} onSubmit={onSubmit} id="measure-twice-form">
-      <div className={styles.row}>
+      {!showAdditionalFields ? (
+        <div className={styles.attractiveLine}>
+          📧 Get the insights that matter – straight to your inbox
+        </div>
+      ) : (
+        <div className={styles.oneMoreThing}>
+          One more thing...
+        </div>
+      )}
+
+      <div className={`${styles.row} ${showAdditionalFields ? styles.hiddenRow : styles.visibleRow}`}>
         <label className={styles.label} htmlFor="email">
           Work email
         </label>
@@ -128,13 +138,13 @@ export const MeasureTwiceForm = ({ config }) => {
           required 
           value={form.email} 
           onChange={onChange} 
-          placeholder="Your email"
+          placeholder="Your email address"
         />
       </div>
 
       {showAdditionalFields && (
         <>
-          <div className={styles.row}>
+          <div className={styles.visibleRow}>
             <label className={styles.label} htmlFor="industry">
               Industry
             </label>
@@ -150,7 +160,7 @@ export const MeasureTwiceForm = ({ config }) => {
             />
           </div>
 
-          <div className={styles.row}>
+          <div className={styles.visibleRow}>
             <label className={styles.label} htmlFor="role">
               Role
             </label>
@@ -173,7 +183,7 @@ export const MeasureTwiceForm = ({ config }) => {
         type="submit" 
         disabled={isDisabled}
       >
-        {status === 'submitting' ? 'Submitting…' : (showAdditionalFields ? 'Subscribe' : 'Subscribe')}
+        {status === 'submitting' ? 'Submitting…' : (showAdditionalFields ? 'Finish Subscribing' : 'Subscribe')}
       </button>
       <div className={styles.hint}>We'll only use this to send you our newsletter.</div>
     </form>
