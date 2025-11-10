@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './MeasureTwiceForm.module.css';
-import emailjs from '@emailjs/browser';
 import { useTracking } from './TrackingProvider';
 import { pushLeadToDataLayer, addAttributionToForm, getLeadType, getLeadValue, getFormVariant } from '../utils/dataLayer';
 
-const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SERVICE_ID || (window.__ENV && window.__ENV.EMAILJS_SERVICE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_SERVICE_ID);
-const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
-const EMAILJS_LANDING_PAGES_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_LANDING_PAGES_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_LANDING_PAGES_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_LANDING_PAGES_TEMPLATE_ID);
-const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+// Netlify function endpoints for Beehiiv integration
+const BEEHIIV_SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe-beehiiv';
+const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
 
 export const MeasureTwiceForm = ({ config }) => {
   const [form, setForm] = useState({
@@ -39,36 +37,47 @@ export const MeasureTwiceForm = ({ config }) => {
       // enters their email and clicks "Subscribe" for the first time.
       // We don't wait for the additional fields to be filled out.
       
-      console.log('📧 Sending initial newsletter subscription email with just email address...');
+      console.log('🐝 Subscribing email to Beehiiv newsletter...');
       
       try {
         // Add attribution data to the email-only form submission
         const emailOnlyForm = { email: form.email };
         const formWithAttribution = addAttributionToForm(emailOnlyForm);
         
-        const templateParams = {
-          ...formWithAttribution,
-          slug: 'measure-twice',
-          cta: 'Newsletter Subscription (Email Only)',
-          headline: 'Measure Twice Newsletter - Initial Signup',
-          story: 'User subscribed with email only, additional info to follow',
-          // Mark this as a partial submission for email template handling
-          submissionType: 'email_only'
+        const subscriptionData = {
+          email: form.email,
+          submissionType: 'email_only',
+          utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
+          utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
         };
         
-        // Send the newsletter subscription email immediately
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
-          publicKey: EMAILJS_PUBLIC_KEY,
+        // Subscribe to Beehiiv newsletter immediately
+        const response = await fetch(BEEHIIV_SUBSCRIBE_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(subscriptionData)
         });
         
-        console.log('✅ Initial newsletter subscription email sent successfully');
+        const result = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to subscribe to newsletter');
+        }
+        
+        console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
         
         // Track the email-only submission
-        if (tracking) tracking('newsletter_email_submitted', templateParams);
+        if (tracking) tracking('beehiiv_newsletter_subscribed', { 
+          email: form.email,
+          submissionType: 'email_only'
+        });
         
-      } catch (emailError) {
-        console.error('❌ Failed to send initial newsletter subscription email:', emailError);
-        // Continue with the flow even if email fails - user experience shouldn't be blocked
+      } catch (beehiivError) {
+        console.error('❌ Failed to subscribe to Beehiiv newsletter:', beehiivError);
+        // Continue with the flow even if subscription fails - user experience shouldn't be blocked
+        alert('There was an issue subscribing to our newsletter, but you can still continue. We\'ll try again shortly.');
       }
       
       // Show additional fields for demographic data collection
@@ -92,31 +101,47 @@ export const MeasureTwiceForm = ({ config }) => {
     // including industry and role for better personalization and segmentation.
     // The user is already subscribed from the first submission above.
     
-    console.log('📊 Sending complete demographic information for newsletter personalization...');
+    console.log('📊 Updating Beehiiv subscriber with demographic information...');
     
     setStatus('submitting');
     try {
       // Add attribution data to complete form
       const formWithAttribution = addAttributionToForm(form);
       
-      const templateParams = {
-        ...formWithAttribution,
-        slug: 'measure-twice',
-        cta: 'Newsletter Subscription - Complete Profile',
-        headline: 'Measure Twice Newsletter - Complete Signup',
-        story: 'User completed full demographic profile for newsletter personalization',
-        submissionType: 'complete_profile'
+      const completeProfileData = {
+        email: form.email,
+        industry: form.industry,
+        role: form.role,
+        submissionType: 'complete_profile',
+        utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
+        utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
       };
       
-      // Send complete profile email for internal tracking and personalization
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_LANDING_PAGES_TEMPLATE_ID, templateParams, {
-        publicKey: EMAILJS_PUBLIC_KEY,
+      // Update Beehiiv subscriber with complete demographic information
+      const beehiivResponse = await fetch(BEEHIIV_SUBSCRIBE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(completeProfileData)
       });
       
-      setStatus('success');
-      console.log('✅ Complete demographic information sent successfully');
+      const beehiivResult = await beehiivResponse.json();
       
-      if (tracking) tracking('newsletter_profile_completed', templateParams);
+      if (!beehiivResponse.ok) {
+        console.warn('Failed to update Beehiiv profile:', beehiivResult);
+        // Don't fail the whole process if this fails
+      } else {
+        console.log('✅ Successfully updated Beehiiv subscriber profile:', beehiivResult);
+      }
+      
+      setStatus('success');
+      
+      if (tracking) tracking('beehiiv_profile_completed', {
+        email: form.email,
+        industry: form.industry,
+        role: form.role
+      });
       
       // Prepare redirect function
       const performRedirect = () => {

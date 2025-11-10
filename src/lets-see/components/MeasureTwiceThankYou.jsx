@@ -1,9 +1,66 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './MeasureTwiceThankYou.module.css';
 import { TrackingProvider } from './TrackingProvider';
 import { Header } from './Header';
 
+// Google Sheets integration endpoint
+const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
+
 export const MeasureTwiceThankYou = () => {
+  // Add subscriber data to Google Sheets on page load
+  useEffect(() => {
+    const addToGoogleSheets = async () => {
+      try {
+        // Get form data from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+        const industry = urlParams.get('industry');
+        const role = urlParams.get('role');
+        
+        if (!email) {
+          console.log('No email found in URL parameters, skipping Google Sheets integration');
+          return;
+        }
+
+        console.log('📊 Adding subscriber data to Google Sheets...');
+
+        const sheetsData = {
+          email: email,
+          industry: industry || '',
+          role: role || '',
+          timestamp: new Date().toISOString(),
+          utm_source: urlParams.get('utm_source') || 'measure-twice-landing',
+          utm_campaign: urlParams.get('utm_campaign') || 'measure-twice-newsletter'
+        };
+
+        const response = await fetch(GOOGLE_SHEETS_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(sheetsData)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to add data to Google Sheets');
+        }
+
+        console.log('✅ Successfully added subscriber data to Google Sheets:', result);
+
+      } catch (error) {
+        console.error('❌ Failed to add data to Google Sheets:', error);
+        // Don't show error to user - this is background data collection
+      }
+    };
+
+    // Add a small delay to ensure the page has fully loaded
+    const timer = setTimeout(addToGoogleSheets, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <TrackingProvider>
       <div className={styles.page}>
