@@ -13,6 +13,9 @@ import Footer from './components/Footer';
 import NotFound from './components/NotFound';
 import LandingRouter from './lets-see';
 import { getLandingConfigFromPath } from './lets-see/utils/config';
+import { MeasureTwice } from './lets-see/components/MeasureTwice';
+import { MeasureTwiceThankYou } from './lets-see/components/MeasureTwiceThankYou';
+import { config as measureTwiceConfig } from './lets-see/utils/pages/measure-twice';
 
 function App() {
   const isClient = typeof window !== 'undefined';
@@ -50,16 +53,34 @@ function App() {
   }
   
   const pathStartsWithLetsSee = pathname.startsWith('/lets-see');
+  const pathStartsWithMeasureTwice = pathname.startsWith('/measure-twice');
   
   if (pathStartsWithLetsSee) {
     return <LandingRouter />;
+  }
+  
+  // Handle measure-twice routes
+  if (pathStartsWithMeasureTwice) {
+    const isThankYou = pathname === '/measure-twice/thank-you';
+    
+    if (isThankYou) {
+      return <MeasureTwiceThankYou />;
+    }
+    
+    // Main measure-twice landing page
+    if (pathname === '/measure-twice' || pathname === '/measure-twice/') {
+      return <MeasureTwice config={measureTwiceConfig} />;
+    }
+    
+    // Invalid measure-twice path
+    return <NotFound />;
   }
   
   // Check if this is a valid root path
   const isHomePage = pathname === '/' || pathname === '';
   
   if (!isHomePage) {
-    // For any other path that's not lets-see and not home, show 404
+    // For any other path that's not lets-see, measure-twice, and not home, show 404
     return <NotFound />;
   }
   

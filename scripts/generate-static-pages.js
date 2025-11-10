@@ -28,6 +28,12 @@ if (!fs.existsSync(letsSeeDir)) {
   fs.mkdirSync(letsSeeDir, { recursive: true });
 }
 
+// Create measure-twice directory if it doesn't exist
+const measureTwiceDir = path.join(distDir, 'measure-twice');
+if (!fs.existsSync(measureTwiceDir)) {
+  fs.mkdirSync(measureTwiceDir, { recursive: true });
+}
+
 // Generate meta tags for a page
 function generateMetaTags(config, slug) {
   const title = `${config.headline} - ${buildConfig.site.name}`;
@@ -207,7 +213,79 @@ async function generatePages() {
   fs.writeFileSync(path.join(letsSeeDir, 'index.html'), redirectPageHtml);
   console.log('Generated: /lets-see/index.html (redirect)');
 
-  const totalPages = (Object.keys(configs).length * 2) + 1; // landing pages + thank-you pages + redirect
+  // Generate measure-twice pages
+  console.log('\nGenerating measure-twice pages...');
+  
+  // Generate measure-twice landing page
+  const measureTwiceTitle = 'Measure Twice Newsletter - Measures AI';
+  const measureTwiceDescription = 'Turning millions of documents across 10 industries into a handful of good ideas.';
+  const measureTwiceUrl = `https://${buildConfig.domain}/measure-twice`;
+  const measureTwiceSSRContent = `
+    <div class="measure-twice-page">
+      <div class="hero-section">
+        <h1>Measure Twice Newsletter</h1>
+        <p>Turning millions of documents across 10 industries into a handful of good ideas.</p>
+      </div>
+      <div class="loading-indicator">
+        <p>Loading content...</p>
+      </div>
+    </div>`;
+  
+  let measureTwiceHtml = template
+    .replace(/<title>.*?<\/title>/, `<title>${measureTwiceTitle}</title>`)
+    .replace(/<meta name="viewport".*?>/, `<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="${measureTwiceDescription}" />
+    <meta property="og:title" content="${measureTwiceTitle}" />
+    <meta property="og:description" content="${measureTwiceDescription}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${measureTwiceUrl}" />`)
+    .replace(/<div id="root"><\/div>/, `<div id="root">${measureTwiceSSRContent}</div>`)
+    .replace(/<script type="module"/, `<script>
+      window.__PAGE_TYPE__ = 'measure-twice';
+    </script>
+    <script type="module"`);
+  
+  fs.writeFileSync(path.join(measureTwiceDir, 'index.html'), measureTwiceHtml);
+  console.log('Generated: /measure-twice/index.html');
+  
+  // Generate measure-twice thank-you page
+  const thankYouDir = path.join(measureTwiceDir, 'thank-you');
+  if (!fs.existsSync(thankYouDir)) {
+    fs.mkdirSync(thankYouDir, { recursive: true });
+  }
+  
+  const measureTwiceThankYouTitle = 'Thank You - Measure Twice Newsletter - Measures AI';
+  const measureTwiceThankYouDescription = 'Thank you for subscribing to the Measure Twice Newsletter!';
+  const measureTwiceThankYouUrl = `https://${buildConfig.domain}/measure-twice/thank-you`;
+  const measureTwiceThankYouSSRContent = `
+    <div class="measure-twice-thank-you-page">
+      <div class="thank-you-section">
+        <h1>Thank You!</h1>
+        <p>You've successfully subscribed to the Measure Twice Newsletter.</p>
+      </div>
+      <div class="loading-indicator">
+        <p>Loading content...</p>
+      </div>
+    </div>`;
+  
+  let measureTwiceThankYouHtml = template
+    .replace(/<title>.*?<\/title>/, `<title>${measureTwiceThankYouTitle}</title>`)
+    .replace(/<meta name="viewport".*?>/, `<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="${measureTwiceThankYouDescription}" />
+    <meta property="og:title" content="${measureTwiceThankYouTitle}" />
+    <meta property="og:description" content="${measureTwiceThankYouDescription}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${measureTwiceThankYouUrl}" />`)
+    .replace(/<div id="root"><\/div>/, `<div id="root">${measureTwiceThankYouSSRContent}</div>`)
+    .replace(/<script type="module"/, `<script>
+      window.__PAGE_TYPE__ = 'measure-twice-thank-you';
+    </script>
+    <script type="module"`);
+  
+  fs.writeFileSync(path.join(thankYouDir, 'index.html'), measureTwiceThankYouHtml);
+  console.log('Generated: /measure-twice/thank-you/index.html');
+
+  const totalPages = (Object.keys(configs).length * 2) + 1 + 2; // landing pages + thank-you pages + redirect + measure-twice pages
   console.log(`\nGenerated ${totalPages} static pages successfully!`);
 }
 

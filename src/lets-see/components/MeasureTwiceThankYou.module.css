@@ -1,0 +1,186 @@
+/* Import Montserrat font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.main {
+  padding-top: 80px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.thankYouSection {
+  text-align: center;
+  margin-bottom: 80px;
+  padding: 60px 0;
+}
+
+.thankYouTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  color: white;
+  margin: 0 0 24px 0;
+  line-height: 1.2;
+}
+
+.thankYouMessage {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contentBlock {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 60px;
+}
+
+.contentTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 35px;
+  color: white;
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+.contentText {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: white;
+  line-height: 1.6;
+}
+
+.contentText p {
+  margin: 0 0 20px 0;
+}
+
+.contentText p:last-child {
+  margin-bottom: 0;
+}
+
+.footer {
+  width: 100%;
+  padding: 40px 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.footer div {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .thankYouSection {
+    margin-bottom: 60px;
+    padding: 40px 0;
+  }
+  
+  .thankYouTitle {
+    font-size: 36px;
+  }
+  
+  .thankYouMessage {
+    font-size: 16px;
+  }
+  
+  .contentBlock {
+    padding: 30px 24px;
+    margin-bottom: 40px;
+  }
+  
+  .contentTitle {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+  
+  .contentText {
+    font-size: 15px;
+  }
+  
+  .footer div {
+    padding: 0 20px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .thankYouSection {
+    margin-bottom: 50px;
+    padding: 32px 0;
+  }
+  
+  .thankYouTitle {
+    font-size: 32px;
+  }
+  
+  .thankYouMessage {
+    font-size: 15px;
+  }
+  
+  .contentBlock {
+    padding: 24px 20px;
+  }
+  
+  .contentTitle {
+    font-size: 24px;
+  }
+  
+  .contentText {
+    font-size: 14px;
+  }
+  
+  .footer div {
+    padding: 0 16px;
+  }
+}
