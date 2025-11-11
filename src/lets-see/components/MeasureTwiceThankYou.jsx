@@ -3,10 +3,12 @@ import styles from './MeasureTwiceThankYou.module.css';
 import { TrackingProvider } from './TrackingProvider';
 import { Header } from './Header';
 
-// Google Sheets integration endpoint
-const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
+// COMMENTED OUT - Google Sheets integration no longer used
+// const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
 
 export const MeasureTwiceThankYou = () => {
+  // COMMENTED OUT - Google Sheets integration replaced with EmailJS in form component
+  /*
   // Add subscriber data to Google Sheets on page load
   useEffect(() => {
     const addToGoogleSheets = async () => {
@@ -60,6 +62,7 @@ export const MeasureTwiceThankYou = () => {
     
     return () => clearTimeout(timer);
   }, []);
+  */
 
   return (
     <TrackingProvider>

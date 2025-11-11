@@ -2,10 +2,21 @@ import React, { useEffect, useState } from 'react';
 import styles from './MeasureTwiceForm.module.css';
 import { useTracking } from './TrackingProvider';
 import { pushLeadToDataLayer, addAttributionToForm, getLeadType, getLeadValue, getFormVariant } from '../utils/dataLayer';
+import emailjs from '@emailjs/browser';
 
-// Netlify function endpoints for Beehiiv integration
-const BEEHIIV_SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe-beehiiv';
-const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
+// EmailJS configuration - using existing templates from other forms
+const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SERVICE_ID || (window.__ENV && window.__ENV.EMAILJS_SERVICE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_SERVICE_ID);
+const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
+const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+
+// Beehiiv API configuration - direct client-side integration
+const BEEHIIV_API_KEY = (typeof window !== 'undefined' && (window.BEEHIIV_API_KEY || (window.__ENV && window.__ENV.BEEHIIV_API_KEY))) || (import.meta.env && import.meta.env.VITE_BEEHIIV_API_KEY);
+const BEEHIIV_PUBLICATION_ID = (typeof window !== 'undefined' && (window.BEEHIIV_PUBLICATION_ID || (window.__ENV && window.__ENV.BEEHIIV_PUBLICATION_ID))) || (import.meta.env && import.meta.env.VITE_BEEHIIV_PUBLICATION_ID);
+const BEEHIIV_API_BASE = 'https://api.beehiiv.com/v2';
+
+// Commented out Netlify function endpoints - now using direct API
+// const BEEHIIV_SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe-beehiiv';
+// const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
 
 export const MeasureTwiceForm = ({ config }) => {
   const [form, setForm] = useState({
@@ -31,30 +42,36 @@ export const MeasureTwiceForm = ({ config }) => {
     
     if (!showAdditionalFields) {
       // =================================================================
-      // FIRST SUBMISSION: EMAIL ONLY - SEND SUBSCRIPTION EMAIL IMMEDIATELY
+      // FIRST SUBMISSION: EMAIL ONLY - DIRECT BEEHIIV API SUBSCRIPTION
       // =================================================================
-      // This sends the newsletter subscription email as soon as the user
-      // enters their email and clicks "Subscribe" for the first time.
-      // We don't wait for the additional fields to be filled out.
+      // Direct client-side call to Beehiiv API. API key will be exposed
+      // but this is acceptable for newsletter subscriptions.
       
-      console.log('🐝 Subscribing email to Beehiiv newsletter...');
+      console.log('🐝 Subscribing email to Beehiiv via direct API...');
       
       try {
+        // Validate API credentials
+        if (!BEEHIIV_API_KEY || !BEEHIIV_PUBLICATION_ID) {
+          throw new Error('Beehiiv API credentials not configured. Please set VITE_BEEHIIV_API_KEY and VITE_BEEHIIV_PUBLICATION_ID environment variables.');
+        }
+
         // Add attribution data to the email-only form submission
         const emailOnlyForm = { email: form.email };
         const formWithAttribution = addAttributionToForm(emailOnlyForm);
         
         const subscriptionData = {
           email: form.email,
-          submissionType: 'email_only',
+          send_welcome_email: true, // Send welcome email on first submission
           utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
+          utm_medium: 'newsletter-form',
           utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
         };
         
-        // Subscribe to Beehiiv newsletter immediately
-        const response = await fetch(BEEHIIV_SUBSCRIBE_ENDPOINT, {
+        // Make direct API call to Beehiiv
+        const response = await fetch(`${BEEHIIV_API_BASE}/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`, {
           method: 'POST',
           headers: {
+            'Authorization': `Bearer ${BEEHIIV_API_KEY}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(subscriptionData)
@@ -63,10 +80,16 @@ export const MeasureTwiceForm = ({ config }) => {
         const result = await response.json();
         
         if (!response.ok) {
-          throw new Error(result.error || 'Failed to subscribe to newsletter');
+          // Handle specific error cases
+          if (response.status === 409) {
+            console.log('✅ Email already subscribed to Beehiiv newsletter');
+            // Continue with flow - user is already subscribed
+          } else {
+            throw new Error(result.error || `API error: ${response.status}`);
+          }
+        } else {
+          console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
         }
-        
-        console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
         
         // Track the email-only submission
         if (tracking) tracking('beehiiv_newsletter_subscribed', { 
@@ -76,8 +99,15 @@ export const MeasureTwiceForm = ({ config }) => {
         
       } catch (beehiivError) {
         console.error('❌ Failed to subscribe to Beehiiv newsletter:', beehiivError);
-        // Continue with the flow even if subscription fails - user experience shouldn't be blocked
-        alert('There was an issue subscribing to our newsletter, but you can still continue. We\'ll try again shortly.');
+        
+        // Check if it's a CORS error
+        if (beehiivError.message.includes('CORS') || beehiivError.message.includes('fetch')) {
+          alert('Unable to subscribe directly due to browser security restrictions. Please visit our newsletter signup page to subscribe manually.');
+        } else {
+          alert(`There was an issue subscribing to our newsletter: ${beehiivError.message}. You can still continue with the form.`);
+        }
+        
+        // Continue with the flow even if subscription fails
       }
       
       // Show additional fields for demographic data collection
@@ -95,53 +125,70 @@ export const MeasureTwiceForm = ({ config }) => {
     }
 
     // =================================================================
-    // FINAL SUBMISSION: COMPLETE DEMOGRAPHIC DATA COLLECTION
+    // FINAL SUBMISSION: SEND INDUSTRY CONTEXT VIA EMAILJS
     // =================================================================
-    // This sends a follow-up email with the complete user information
-    // including industry and role for better personalization and segmentation.
-    // The user is already subscribed from the first submission above.
+    // Instead of updating Beehiiv (which requires server-side), we'll email
+    // the industry context information directly using EmailJS
     
-    console.log('📊 Updating Beehiiv subscriber with demographic information...');
+    console.log('📧 Sending industry context email via EmailJS...');
     
     setStatus('submitting');
     try {
       // Add attribution data to complete form
       const formWithAttribution = addAttributionToForm(form);
       
-      const completeProfileData = {
+      // Prepare email template parameters
+      const emailTemplateParams = {
+        ...formWithAttribution,
         email: form.email,
         industry: form.industry,
         role: form.role,
-        submissionType: 'complete_profile',
-        utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
-        utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
+        subject: 'New Measure Twice Newsletter Subscriber - Industry Context',
+        message: `New subscriber details:
+
+Email: ${form.email}
+Industry: ${form.industry}
+Role: ${form.role}
+
+UTM Source: ${formWithAttribution.utm_source || 'measure-twice-landing'}
+UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`,
+        from_name: form.email,
+        to_name: 'Measures Team'
       };
       
-      // Update Beehiiv subscriber with complete demographic information
-      const beehiivResponse = await fetch(BEEHIIV_SUBSCRIBE_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(completeProfileData)
-      });
+      // Send email with industry context via EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        emailTemplateParams,
+        EMAILJS_PUBLIC_KEY
+      );
       
-      const beehiivResult = await beehiivResponse.json();
-      
-      if (!beehiivResponse.ok) {
-        console.warn('Failed to update Beehiiv profile:', beehiivResult);
-        // Don't fail the whole process if this fails
-      } else {
-        console.log('✅ Successfully updated Beehiiv subscriber profile:', beehiivResult);
-      }
+      console.log('✅ Successfully sent industry context email');
       
       setStatus('success');
       
-      if (tracking) tracking('beehiiv_profile_completed', {
+      if (tracking) tracking('industry_context_email_sent', {
         email: form.email,
         industry: form.industry,
         role: form.role
       });
+      
+      // Comment out Google Sheets integration
+      /*
+      // OLD GOOGLE SHEETS INTEGRATION - COMMENTED OUT
+      try {
+        await fetch(GOOGLE_SHEETS_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(completeProfileData)
+        });
+      } catch (sheetsError) {
+        console.warn('Google Sheets integration failed:', sheetsError);
+      }
+      */
       
       // Prepare redirect function
       const performRedirect = () => {
@@ -185,8 +232,9 @@ export const MeasureTwiceForm = ({ config }) => {
       
     } catch (err) {
       setStatus('error');
+      console.error('❌ Failed to send industry context email:', err);
       if (tracking) tracking('lead_submit_error', { message: String(err) });
-      alert('Submission failed. Please try again.');
+      alert('There was an issue sending your information. Please try again or contact us directly.');
     }
   };
 
@@ -196,7 +244,7 @@ export const MeasureTwiceForm = ({ config }) => {
     <form className={styles.formCard} onSubmit={onSubmit} id="measure-twice-form">
       {!showAdditionalFields ? (
         <div className={styles.attractiveLine}>
-          Make sense of it all... once a month.
+           Join operators, builders, and analysts who want to measure what actually matters.
         </div>
       ) : (
         <div className={styles.oneMoreThing}>

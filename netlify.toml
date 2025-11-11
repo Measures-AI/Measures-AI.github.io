@@ -2,13 +2,21 @@
   publish = "dist"
   command = "npm run build"
 
-[functions]
-  directory = "netlify/functions"
+# COMMENTED OUT - No longer using Netlify functions for Beehiiv/Google Sheets
+# [functions]
+#   directory = "netlify/functions"
 
-# Environment variables needed (set these in Netlify dashboard):
-# BEEHIIV_API_KEY = "your_beehiiv_api_key_here"
-# BEEHIIV_PUBLICATION_ID = "pub_your_publication_id_here" 
+# Environment variables needed for client-side Beehiiv API integration:
+# VITE_BEEHIIV_API_KEY = "your_beehiiv_api_key_here"
+# VITE_BEEHIIV_PUBLICATION_ID = "pub_your_publication_id_here" 
+
+# COMMENTED OUT - No longer using Google Sheets:
 # GOOGLE_SHEETS_WEBHOOK_URL = "your_google_apps_script_webhook_url_here"
+
+# EmailJS environment variables (still needed):
+# VITE_EMAILJS_SERVICE_ID = "your_emailjs_service_id"
+# VITE_EMAILJS_TEMPLATE_ID = "your_emailjs_template_id"  
+# VITE_EMAILJS_PUBLIC_KEY = "your_emailjs_public_key"
 
 [[redirects]]
   from = "/*"
