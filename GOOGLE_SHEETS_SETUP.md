@@ -6,7 +6,7 @@ This guide walks you through setting up a free Google Sheets integration using G
 
 1. Go to [Google Sheets](https://sheets.google.com)
 2. Create a new spreadsheet
-3. Name it "Measure Twice Newsletter Subscribers"
+3. Name it "S"
 4. Set up the following column headers in row 1:
    - A1: `Email`
    - B1: `Industry`
@@ -31,46 +31,45 @@ function doPost(e) {
   try {
     // Parse the JSON data from the request
     const data = JSON.parse(e.postData.contents);
-    
+
     // Get the active spreadsheet
     const sheet = SpreadsheetApp.getActiveSheet();
-    
+
     // Prepare the row data
     const rowData = [
-      data.email || '',
-      data.industry || '',
-      data.role || '',
+      data.email || "",
+      data.industry || "",
+      data.role || "",
       data.timestamp || new Date().toISOString(),
-      data.utm_source || '',
-      data.utm_campaign || '',
-      data.source || 'Measure Twice Landing Page'
+      data.utm_source || "",
+      data.utm_campaign || "",
+      data.source || "Measure Twice Landing Page",
     ];
-    
+
     // Add the data to the sheet
     sheet.appendRow(rowData);
-    
+
     // Log the successful addition
-    console.log('Added subscriber data:', data.email);
-    
+    console.log("Added subscriber data:", data.email);
+
     // Return success response
-    return ContentService
-      .createTextOutput(JSON.stringify({
+    return ContentService.createTextOutput(
+      JSON.stringify({
         success: true,
-        message: 'Data added successfully',
-        email: data.email
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
+        message: "Data added successfully",
+        email: data.email,
+      })
+    ).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
-    console.error('Error adding data to sheet:', error);
-    
+    console.error("Error adding data to sheet:", error);
+
     // Return error response
-    return ContentService
-      .createTextOutput(JSON.stringify({
+    return ContentService.createTextOutput(
+      JSON.stringify({
         success: false,
-        error: error.toString()
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
+        error: error.toString(),
+      })
+    ).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
@@ -81,18 +80,18 @@ function testFunction() {
   const testData = {
     postData: {
       contents: JSON.stringify({
-        email: 'test@example.com',
-        industry: 'Technology',
-        role: 'Developer',
+        email: "test@example.com",
+        industry: "Technology",
+        role: "Developer",
         timestamp: new Date().toISOString(),
-        utm_source: 'test',
-        utm_campaign: 'test'
-      })
-    }
+        utm_source: "test",
+        utm_campaign: "test",
+      }),
+    },
   };
-  
+
   const result = doPost(testData);
-  console.log('Test result:', result.getContent());
+  console.log("Test result:", result.getContent());
 }
 ```
 
@@ -116,10 +115,12 @@ function testFunction() {
 In your Netlify dashboard, add these environment variables:
 
 ### Required for Beehiiv Integration:
+
 - `BEEHIIV_API_KEY` = Your Beehiiv API key
 - `BEEHIIV_PUBLICATION_ID` = Your Beehiiv publication ID (starts with `pub_`)
 
 ### Required for Google Sheets Integration:
+
 - `GOOGLE_SHEETS_WEBHOOK_URL` = The Google Apps Script Web App URL from Step 3
 
 ## Step 5: Test the Integration
@@ -133,16 +134,19 @@ In your Netlify dashboard, add these environment variables:
 ## Troubleshooting
 
 ### Google Apps Script Issues:
+
 - **Permission denied**: Make sure the Web App is set to "Anyone" access
 - **Script not executing**: Check the Apps Script logs in the Google Apps Script editor
 - **Data not appearing**: Verify the column headers match exactly
 
 ### Netlify Function Issues:
+
 - **Function not found**: Make sure the `netlify/functions` directory is in your project root
 - **CORS errors**: The functions include CORS headers, but check browser console for issues
 - **Environment variables**: Verify all required env vars are set in Netlify dashboard
 
 ### Beehiiv Integration Issues:
+
 - **API key invalid**: Double-check your API key in Beehiiv settings
 - **Publication ID wrong**: Ensure the publication ID starts with `pub_`
 - **Rate limiting**: Beehiiv may have rate limits, check their API documentation
@@ -154,6 +158,7 @@ In your Netlify dashboard, add these environment variables:
 3. **User reaches thank you page** → Google Sheets (data collection for analysis)
 
 This setup provides:
+
 - ✅ Free Google Sheets integration (no monthly costs)
 - ✅ Real-time newsletter subscription via Beehiiv
 - ✅ Comprehensive data collection for analysis

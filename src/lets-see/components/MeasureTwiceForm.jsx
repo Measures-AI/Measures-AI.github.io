@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
+import { useEffect, useState } from 'react';
+import { addAttributionToForm, getFormVariant, getLeadType, getLeadValue, pushLeadToDataLayer } from '../utils/dataLayer';
 import styles from './MeasureTwiceForm.module.css';
 import { useTracking } from './TrackingProvider';
-import { pushLeadToDataLayer, addAttributionToForm, getLeadType, getLeadValue, getFormVariant } from '../utils/dataLayer';
-import emailjs from '@emailjs/browser';
 
-// EmailJS configuration - using existing templates from other forms
+// EmailJS configuration
 const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SERVICE_ID || (window.__ENV && window.__ENV.EMAILJS_SERVICE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_SERVICE_ID);
 const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
 const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
-// Beehiiv API configuration - direct client-side integration
-const BEEHIIV_API_KEY = (typeof window !== 'undefined' && (window.BEEHIIV_API_KEY || (window.__ENV && window.__ENV.BEEHIIV_API_KEY))) || (import.meta.env && import.meta.env.VITE_BEEHIIV_API_KEY);
-const BEEHIIV_PUBLICATION_ID = (typeof window !== 'undefined' && (window.BEEHIIV_PUBLICATION_ID || (window.__ENV && window.__ENV.BEEHIIV_PUBLICATION_ID))) || (import.meta.env && import.meta.env.VITE_BEEHIIV_PUBLICATION_ID);
-const BEEHIIV_API_BASE = 'https://api.beehiiv.com/v2';
-
-// Commented out Netlify function endpoints - now using direct API
-// const BEEHIIV_SUBSCRIBE_ENDPOINT = '/.netlify/functions/subscribe-beehiiv';
-// const GOOGLE_SHEETS_ENDPOINT = '/.netlify/functions/add-to-sheets';
+// AWS API Gateway endpoint - same as LeadForm
+const AWS_API_BASE = 'https://rnp1bexup2.execute-api.us-east-1.amazonaws.com';
 
 export const MeasureTwiceForm = ({ config }) => {
   const [form, setForm] = useState({
@@ -42,53 +36,36 @@ export const MeasureTwiceForm = ({ config }) => {
     
     if (!showAdditionalFields) {
       // =================================================================
-      // FIRST SUBMISSION: EMAIL ONLY - DIRECT BEEHIIV API SUBSCRIPTION
+      // FIRST SUBMISSION: EMAIL ONLY - SUBSCRIBE VIA AWS LAMBDA
       // =================================================================
-      // Direct client-side call to Beehiiv API. API key will be exposed
-      // but this is acceptable for newsletter subscriptions.
-      
-      console.log('🐝 Subscribing email to Beehiiv via direct API...');
+      console.log('🐝 Subscribing email to Beehiiv via AWS Lambda...');
       
       try {
-        // Validate API credentials
-        if (!BEEHIIV_API_KEY || !BEEHIIV_PUBLICATION_ID) {
-          throw new Error('Beehiiv API credentials not configured. Please set VITE_BEEHIIV_API_KEY and VITE_BEEHIIV_PUBLICATION_ID environment variables.');
-        }
-
         // Add attribution data to the email-only form submission
         const emailOnlyForm = { email: form.email };
         const formWithAttribution = addAttributionToForm(emailOnlyForm);
         
-        const subscriptionData = {
-          email: form.email,
-          send_welcome_email: true, // Send welcome email on first submission
-          utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
-          utm_medium: 'newsletter-form',
-          utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
-        };
-        
-        // Make direct API call to Beehiiv
-        const response = await fetch(`${BEEHIIV_API_BASE}/publications/${BEEHIIV_PUBLICATION_ID}/subscriptions`, {
+        // Call AWS Lambda function to subscribe to Beehiiv
+        const response = await fetch(`${AWS_API_BASE}/subscribe-beehiiv`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${BEEHIIV_API_KEY}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(subscriptionData)
+          body: JSON.stringify({
+            email: form.email,
+            industry: '', // Empty on first submission
+            role: '', // Empty on first submission
+            submissionType: 'email_only' // This will trigger welcome email
+          })
         });
         
-        const result = await response.json();
-        
-        if (!response.ok) {
-          // Handle specific error cases
-          if (response.status === 409) {
-            console.log('✅ Email already subscribed to Beehiiv newsletter');
-            // Continue with flow - user is already subscribed
-          } else {
-            throw new Error(result.error || `API error: ${response.status}`);
-          }
-        } else {
+        if (response.ok) {
+          const result = await response.json();
           console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
+        } else {
+          const errorText = await response.text();
+          console.error('⚠️ Beehiiv subscription failed:', errorText);
+          // Continue anyway - show additional fields
         }
         
         // Track the email-only submission
@@ -99,15 +76,7 @@ export const MeasureTwiceForm = ({ config }) => {
         
       } catch (beehiivError) {
         console.error('❌ Failed to subscribe to Beehiiv newsletter:', beehiivError);
-        
-        // Check if it's a CORS error
-        if (beehiivError.message.includes('CORS') || beehiivError.message.includes('fetch')) {
-          alert('Unable to subscribe directly due to browser security restrictions. Please visit our newsletter signup page to subscribe manually.');
-        } else {
-          alert(`There was an issue subscribing to our newsletter: ${beehiivError.message}. You can still continue with the form.`);
-        }
-        
-        // Continue with the flow even if subscription fails
+        alert(`There was an issue subscribing to our newsletter: ${beehiivError.message}. You can still continue with the form.`);
       }
       
       // Show additional fields for demographic data collection
@@ -125,26 +94,81 @@ export const MeasureTwiceForm = ({ config }) => {
     }
 
     // =================================================================
-    // FINAL SUBMISSION: SEND INDUSTRY CONTEXT VIA EMAILJS
+    // FINAL SUBMISSION: UPDATE BEEHIIV + SAVE TO SHEETS + SEND EMAIL
     // =================================================================
-    // Instead of updating Beehiiv (which requires server-side), we'll email
-    // the industry context information directly using EmailJS
-    
-    console.log('📧 Sending industry context email via EmailJS...');
+    console.log('📊 Processing final submission with industry context...');
     
     setStatus('submitting');
     try {
       // Add attribution data to complete form
       const formWithAttribution = addAttributionToForm(form);
       
-      // Prepare email template parameters
-      const emailTemplateParams = {
-        ...formWithAttribution,
-        email: form.email,
-        industry: form.industry,
-        role: form.role,
-        subject: 'New Measure Twice Newsletter Subscriber - Industry Context',
-        message: `New subscriber details:
+      // 1. Update Beehiiv subscriber with industry/role via AWS Lambda
+      console.log('🐝 Updating Beehiiv subscriber profile...');
+      try {
+        const beehiivResponse = await fetch(`${AWS_API_BASE}/subscribe-beehiiv`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: form.email,
+            industry: form.industry,
+            role: form.role,
+            submissionType: 'complete' // Don't send welcome email again
+          })
+        });
+        
+        if (beehiivResponse.ok) {
+          const beehiivResult = await beehiivResponse.json();
+          console.log('✅ Beehiiv profile updated:', beehiivResult);
+        } else {
+          const errorText = await beehiivResponse.text();
+          console.error('⚠️ Beehiiv update failed:', errorText);
+        }
+      } catch (beehiivError) {
+        console.error('⚠️ Beehiiv update error:', beehiivError);
+      }
+      
+      // 2. Save to Google Sheets via AWS Lambda
+      console.log('📊 Saving to Google Sheets...');
+      try {
+        const sheetsResponse = await fetch(`${AWS_API_BASE}/add-to-sheets`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: form.email,
+            industry: form.industry,
+            role: form.role,
+            timestamp: new Date().toISOString(),
+            utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
+            utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
+          })
+        });
+        
+        if (sheetsResponse.ok) {
+          const sheetsResult = await sheetsResponse.json();
+          console.log('✅ Google Sheets save successful:', sheetsResult);
+        } else {
+          const errorText = await sheetsResponse.text();
+          console.error('⚠️ Google Sheets save failed:', errorText);
+        }
+      } catch (sheetsError) {
+        console.error('⚠️ Google Sheets save error:', sheetsError);
+      }
+      
+      // 3. Send email notification via EmailJS
+      console.log('📧 Sending industry context email via EmailJS...');
+      try {
+        const emailTemplateParams = {
+          ...formWithAttribution,
+          email: form.email,
+          industry: form.industry,
+          role: form.role,
+          subject: 'New Measure Twice Newsletter Subscriber - Industry Context',
+          message: `New subscriber details:
 
 Email: ${form.email}
 Industry: ${form.industry}
@@ -152,43 +176,29 @@ Role: ${form.role}
 
 UTM Source: ${formWithAttribution.utm_source || 'measure-twice-landing'}
 UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`,
-        from_name: form.email,
-        to_name: 'Measures Team'
-      };
-      
-      // Send email with industry context via EmailJS
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        emailTemplateParams,
-        EMAILJS_PUBLIC_KEY
-      );
-      
-      console.log('✅ Successfully sent industry context email');
+          from_name: form.email,
+          to_name: 'Measures Team'
+        };
+        
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          emailTemplateParams,
+          EMAILJS_PUBLIC_KEY
+        );
+        
+        console.log('✅ Successfully sent industry context email');
+      } catch (emailError) {
+        console.error('⚠️ EmailJS error:', emailError);
+      }
       
       setStatus('success');
       
-      if (tracking) tracking('industry_context_email_sent', {
+      if (tracking) tracking('industry_context_completed', {
         email: form.email,
         industry: form.industry,
         role: form.role
       });
-      
-      // Comment out Google Sheets integration
-      /*
-      // OLD GOOGLE SHEETS INTEGRATION - COMMENTED OUT
-      try {
-        await fetch(GOOGLE_SHEETS_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(completeProfileData)
-        });
-      } catch (sheetsError) {
-        console.warn('Google Sheets integration failed:', sheetsError);
-      }
-      */
       
       // Prepare redirect function
       const performRedirect = () => {
@@ -200,6 +210,7 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
         });
         
         const thankYouUrl = `/measure-twice/thank-you?${params.toString()}`;
+        console.log('🎉 Form submission complete! Redirecting to:', thankYouUrl);
         window.location.href = thankYouUrl;
       };
       
@@ -226,13 +237,12 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
         });
       } catch (dataLayerError) {
         console.warn('Data layer push failed, redirecting anyway:', dataLayerError);
-        // If dataLayer push fails completely, still redirect after a brief delay
         setTimeout(performRedirect, 100);
       }
       
     } catch (err) {
       setStatus('error');
-      console.error('❌ Failed to send industry context email:', err);
+      console.error('❌ Failed to complete submission:', err);
       if (tracking) tracking('lead_submit_error', { message: String(err) });
       alert('There was an issue sending your information. Please try again or contact us directly.');
     }
