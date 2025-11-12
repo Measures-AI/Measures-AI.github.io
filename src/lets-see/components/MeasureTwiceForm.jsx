@@ -9,8 +9,14 @@ const EMAILJS_SERVICE_ID = (typeof window !== 'undefined' && (window.EMAILJS_SER
 const EMAILJS_TEMPLATE_ID = (typeof window !== 'undefined' && (window.EMAILJS_TEMPLATE_ID || (window.__ENV && window.__ENV.EMAILJS_TEMPLATE_ID))) || (import.meta.env && import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
 const EMAILJS_PUBLIC_KEY = (typeof window !== 'undefined' && (window.EMAILJS_PUBLIC_KEY || (window.__ENV && window.__ENV.EMAILJS_PUBLIC_KEY))) || (import.meta.env && import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
-// AWS API Gateway endpoint - same as LeadForm
+// AWS API Gateway endpoint
 const AWS_API_BASE = 'https://rnp1bexup2.execute-api.us-east-1.amazonaws.com';
+
+// Email validation
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
 export const MeasureTwiceForm = ({ config }) => {
   const [form, setForm] = useState({
@@ -18,8 +24,9 @@ export const MeasureTwiceForm = ({ config }) => {
     industry: '',
     role: ''
   });
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState('idle'); // 'idle', 'submitting', 'success', 'error'
   const [showAdditionalFields, setShowAdditionalFields] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const tracking = useTracking();
 
   useEffect(() => {
@@ -28,7 +35,8 @@ export const MeasureTwiceForm = ({ config }) => {
   }, []);
 
   const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   };
 
   const onSubmit = async (e) => {
@@ -36,61 +44,115 @@ export const MeasureTwiceForm = ({ config }) => {
     
     if (!showAdditionalFields) {
       // =================================================================
-      // FIRST SUBMISSION: EMAIL ONLY - SUBSCRIBE VIA AWS LAMBDA
+      // FIRST SUBMISSION: EMAIL ONLY - SUBSCRIBE TO BEEHIIV
+      // Fallback to Google Sheets if Beehiiv fails
       // =================================================================
-      console.log('🐝 Subscribing email to Beehiiv via AWS Lambda...');
+      
+      // Validate email
+      if (!form.email || !validateEmail(form.email)) {
+        setEmailError('Please enter a valid work email address');
+        return;
+      }
+      
+      setEmailError('');
+      setStatus('submitting');
+      
+      console.log('Subscribing email to Beehiiv via AWS Lambda...');
       
       try {
-        // Add attribution data to the email-only form submission
         const emailOnlyForm = { email: form.email };
         const formWithAttribution = addAttributionToForm(emailOnlyForm);
         
-        // Call AWS Lambda function to subscribe to Beehiiv
-        const response = await fetch(`${AWS_API_BASE}/subscribe-beehiiv`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: form.email,
-            industry: '', // Empty on first submission
-            role: '', // Empty on first submission
-            submissionType: 'email_only' // This will trigger welcome email
-          })
-        });
+        let beehiivSuccess = false;
         
-        if (response.ok) {
-          const result = await response.json();
-          console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
-        } else {
-          const errorText = await response.text();
-          console.error('⚠️ Beehiiv subscription failed:', errorText);
-          // Continue anyway - show additional fields
+        // Try Beehiiv first
+        try {
+          const response = await fetch(`${AWS_API_BASE}/subscribe-beehiiv`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: form.email,
+              industry: '',
+              role: '',
+              submissionType: 'email_only'
+            })
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
+            beehiivSuccess = true;
+          } else {
+            const errorText = await response.text();
+            console.error('⚠️ Beehiiv subscription failed (HTTP error):', errorText);
+            beehiivSuccess = false;
+          }
+        } catch (beehiivNetworkError) {
+          console.error('⚠️ Beehiiv subscription failed (network error):', beehiivNetworkError);
+          beehiivSuccess = false;
         }
         
-        // Track the email-only submission
-        if (tracking) tracking('beehiiv_newsletter_subscribed', { 
-          email: form.email,
-          submissionType: 'email_only'
-        });
+        // If Beehiiv failed, fallback to Google Sheets
+        if (!beehiivSuccess) {
+          console.log('Beehiiv failed, saving to Google Sheets as fallback...');
+          try {
+            const sheetsResponse = await fetch(`${AWS_API_BASE}/add-to-sheets`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: form.email,
+                industry: '',
+                role: '',
+                timestamp: new Date().toISOString(),
+                utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
+                utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter',
+                fallbackReason: 'beehiiv_failed'
+              })
+            });
+            
+            if (sheetsResponse.ok) {
+              const sheetsResult = await sheetsResponse.json();
+              console.log('Fallback to Google Sheets successful:', sheetsResult);
+            } else {
+              const errorText = await sheetsResponse.text();
+              console.error('Google Sheets fallback also failed:', errorText);
+            }
+          } catch (sheetsError) {
+            console.error('Google Sheets fallback error:', sheetsError);
+          }
+        }
         
-      } catch (beehiivError) {
-        console.error('❌ Failed to subscribe to Beehiiv newsletter:', beehiivError);
-        alert(`There was an issue subscribing to our newsletter: ${beehiivError.message}. You can still continue with the form.`);
+        // Track the email-only submission (whether via Beehiiv or Sheets)
+        if (tracking) {
+          tracking('beehiiv_newsletter_subscribed', { 
+            email: form.email,
+            submissionType: 'email_only',
+            method: beehiivSuccess ? 'beehiiv' : 'sheets_fallback'
+          });
+        }
+        
+        setStatus('idle');
+        setShowAdditionalFields(true);
+        
+        // Focus on the first additional field
+        setTimeout(() => {
+          const industryField = document.getElementById('industry');
+          if (industryField) {
+            industryField.focus();
+          }
+        }, 100);
+        
+      } catch (err) {
+        console.error('Unexpected error in first submission:', err);
+        setStatus('error');
+        setEmailError('There was an issue subscribing. Please try again.');
       }
       
-      // Show additional fields for demographic data collection
-      setShowAdditionalFields(true);
-      
-      // Focus on the first additional field
-      setTimeout(() => {
-        const industryField = document.getElementById('industry');
-        if (industryField) {
-          industryField.focus();
-        }
-      }, 100);
-      
-      return; // Exit here - don't continue to final submission logic
+      return;
     }
 
     // =================================================================
@@ -99,11 +161,12 @@ export const MeasureTwiceForm = ({ config }) => {
     console.log('📊 Processing final submission with industry context...');
     
     setStatus('submitting');
+    
     try {
-      // Add attribution data to complete form
       const formWithAttribution = addAttributionToForm(form);
+      let beehiivSuccess = false;
       
-      // 1. Update Beehiiv subscriber with industry/role via AWS Lambda
+      // 1. Update Beehiiv subscriber with industry/role
       console.log('🐝 Updating Beehiiv subscriber profile...');
       try {
         const beehiivResponse = await fetch(`${AWS_API_BASE}/subscribe-beehiiv`, {
@@ -115,22 +178,23 @@ export const MeasureTwiceForm = ({ config }) => {
             email: form.email,
             industry: form.industry,
             role: form.role,
-            submissionType: 'complete' // Don't send welcome email again
+            submissionType: 'complete'
           })
         });
         
         if (beehiivResponse.ok) {
           const beehiivResult = await beehiivResponse.json();
-          console.log('✅ Beehiiv profile updated:', beehiivResult);
+          console.log('Beehiiv profile updated:', beehiivResult);
+          beehiivSuccess = true;
         } else {
           const errorText = await beehiivResponse.text();
-          console.error('⚠️ Beehiiv update failed:', errorText);
+          console.error('Beehiiv update failed:', errorText);
         }
       } catch (beehiivError) {
-        console.error('⚠️ Beehiiv update error:', beehiivError);
+        console.error('Beehiiv update error:', beehiivError);
       }
       
-      // 2. Save to Google Sheets via AWS Lambda
+      // 2. Save to Google Sheets via AWS Lambda (always, or as fallback if Beehiiv fails)
       console.log('📊 Saving to Google Sheets...');
       try {
         const sheetsResponse = await fetch(`${AWS_API_BASE}/add-to-sheets`, {
@@ -144,23 +208,24 @@ export const MeasureTwiceForm = ({ config }) => {
             role: form.role,
             timestamp: new Date().toISOString(),
             utm_source: formWithAttribution.utm_source || 'measure-twice-landing',
-            utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter'
+            utm_campaign: formWithAttribution.utm_campaign || 'measure-twice-newsletter',
+            fallbackReason: beehiivSuccess ? null : 'beehiiv_failed'
           })
         });
         
         if (sheetsResponse.ok) {
           const sheetsResult = await sheetsResponse.json();
-          console.log('✅ Google Sheets save successful:', sheetsResult);
+          console.log('Google Sheets save successful:', sheetsResult);
         } else {
           const errorText = await sheetsResponse.text();
-          console.error('⚠️ Google Sheets save failed:', errorText);
+          console.error('Google Sheets save failed:', errorText);
         }
       } catch (sheetsError) {
-        console.error('⚠️ Google Sheets save error:', sheetsError);
+        console.error('Google Sheets save error:', sheetsError);
       }
       
       // 3. Send email notification via EmailJS
-      console.log('📧 Sending industry context email via EmailJS...');
+      console.log('Sending industry context email via EmailJS...');
       try {
         const emailTemplateParams = {
           ...formWithAttribution,
@@ -189,32 +254,22 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
         
         console.log('✅ Successfully sent industry context email');
       } catch (emailError) {
-        console.error('⚠️ EmailJS error:', emailError);
+        console.error('EmailJS error:', emailError);
       }
       
+      // Set status to success (this will show the green checkmark)
       setStatus('success');
       
-      if (tracking) tracking('industry_context_completed', {
-        email: form.email,
-        industry: form.industry,
-        role: form.role
-      });
-      
-      // Prepare redirect function
-      const performRedirect = () => {
-        const params = new URLSearchParams();
-        Object.keys(form).forEach(key => {
-          if (form[key]) {
-            params.append(key, form[key]);
-          }
+      if (tracking) {
+        tracking('industry_context_completed', {
+          email: form.email,
+          industry: form.industry,
+          role: form.role,
+          beehiivSuccess: beehiivSuccess
         });
-        
-        const thankYouUrl = `/measure-twice/thank-you?${params.toString()}`;
-        console.log('🎉 Form submission complete! Redirecting to:', thankYouUrl);
-        window.location.href = thankYouUrl;
-      };
+      }
       
-      // Push to data layer with callback for redirect
+      // Push to data layer
       const currentPageConfig = {
         ...config,
         slug: 'measure-twice'
@@ -232,52 +287,95 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
           value: getLeadValue(currentPageConfig),
           currency: 'USD',
           pageConfig: currentPageConfig,
-          callback: performRedirect,
-          timeout: 2000 // 2 second timeout fallback
+          callback: () => {
+            console.log('Data layer pushed successfully');
+          },
+          timeout: 1000
         });
       } catch (dataLayerError) {
-        console.warn('Data layer push failed, redirecting anyway:', dataLayerError);
-        setTimeout(performRedirect, 100);
+        console.warn('Data layer push failed (non-blocking):', dataLayerError);
       }
       
     } catch (err) {
       setStatus('error');
-      console.error('❌ Failed to complete submission:', err);
-      if (tracking) tracking('lead_submit_error', { message: String(err) });
-      alert('There was an issue sending your information. Please try again or contact us directly.');
+      console.error('Failed to complete submission:', err);
+      if (tracking) {
+        tracking('lead_submit_error', { message: String(err) });
+      }
     }
   };
 
   const isDisabled = status === 'submitting';
+  const isSuccess = status === 'success';
 
+  // =================================================================
+  // SUCCESS STATE - Show green checkmark
+  // =================================================================
+  if (isSuccess && showAdditionalFields) {
+    return (
+      <div className={styles.formCard}>
+        <div className={styles.successContainer}>
+          <div className={styles.checkmarkCircle}>
+            <svg 
+              className={styles.checkmark} 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <h2 className={styles.successTitle}>You're all set!</h2>
+          <p className={styles.successMessage}>
+            You signed up for Measure Twice! Check your inbox for the welcome letter. Or read it below.
+          </p>
+          <p className={styles.successSubtext}>
+            If you want to talk more, send us an email at info@measuresai.com
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // =================================================================
+  // NORMAL FORM STATE
+  // =================================================================
   return (
     <form className={styles.formCard} onSubmit={onSubmit} id="measure-twice-form">
       {!showAdditionalFields ? (
         <div className={styles.attractiveLine}>
-           Join operators, builders, and analysts who want to measure what actually matters.
+          Join operators, builders, and analysts who want to measure what actually matters.
         </div>
       ) : (
         <div className={styles.oneMoreThing}>
-          One more thing...
+          You're in! One more thing...
         </div>
       )}
 
+      {/* EMAIL FIELD - Hidden after first submission */}
       <div className={`${styles.row} ${showAdditionalFields ? styles.hiddenRow : styles.visibleRow}`}>
         <label className={styles.label} htmlFor="email">
           Work email
         </label>
         <input 
-          className={styles.input} 
+          className={`${styles.input} ${emailError ? styles.inputError : ''}`} 
           id="email" 
           name="email" 
-          type="email" 
+          type="text"
+          inputMode="email"
           required 
           value={form.email} 
           onChange={onChange} 
-          placeholder="Your email address"
+          placeholder="your@company.com"
+          disabled={isDisabled}
         />
+        {emailError && (
+          <span className={styles.errorText}>{emailError}</span> 
+        )}
       </div>
 
+      {/* ADDITIONAL FIELDS - Industry & Role */}
       {showAdditionalFields && (
         <>
           <div className={styles.visibleRow}>
@@ -292,7 +390,8 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
               required 
               value={form.industry} 
               onChange={onChange} 
-              placeholder="Your industry"
+              placeholder="e.g., SaaS, Retail, Finance"
+              disabled={isDisabled}
             />
           </div>
 
@@ -308,20 +407,50 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
               required 
               value={form.role} 
               onChange={onChange} 
-              placeholder="Your role"
+              placeholder="e.g., Product Lead, Founder, CMO"
+              disabled={isDisabled}
             />
           </div>
         </>
       )}
 
-      <button 
-        className={styles.button} 
-        type="submit" 
-        disabled={isDisabled}
-      >
-        {status === 'submitting' ? 'Submitting…' : (showAdditionalFields ? 'Finish Subscribing' : 'Subscribe')}
-      </button>
-      <div className={styles.hint}>We'll only use this to send you our newsletter.</div>
+      {/* LOADING STATE */}
+      {status === 'submitting' && (
+        <div className={styles.loadingState}>
+          <span className={styles.spinner}></span>
+          <span className={styles.loadingText}>
+            {showAdditionalFields ? 'Writing that down...' : 'Signing you up...'}
+          </span>
+        </div>
+      )}
+
+      {/* ERROR STATE */}
+      {status === 'error' && (
+        <div className={styles.errorMessage}>
+          <span>Something went wrong. Please try again.</span>
+        </div>
+      )}
+
+      {/* SUBMIT BUTTON */}
+      {status !== 'submitting' && status !== 'error' && (
+        <button 
+          className={styles.button} 
+          type="submit" 
+          disabled={isDisabled}
+        >
+          {showAdditionalFields ? 'Personalize your Insights' : 'Subscribe'}
+        </button>
+      )}
+
+      {/* HINT TEXT - Different based on step */}
+      {status !== 'submitting' && (
+        <div className={styles.hint}>
+          {showAdditionalFields 
+            ? 'This helps us tailor insights to your role and industry.'
+            : 'We\'ll only use this to send you our newsletter.'
+          }
+        </div>
+      )}
     </form>
   );
 };
