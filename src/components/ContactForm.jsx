@@ -1,88 +1,211 @@
-import React, { useState } from 'react';
-import styles from './ContactForm.module.css';
+import Cal, { getCalApi } from "@calcom/embed-react";
 import emailjs from '@emailjs/browser';
-import { pushLeadToDataLayer, addAttributionToForm, getFormVariant } from '../lets-see/utils/dataLayer';
+import { useEffect, useState } from 'react';
+import { addAttributionToForm, pushLeadToDataLayer } from '../lets-see/utils/dataLayer';
+// import { pushLeadToDataLayer } from '../lets-see/utils/dataLayer';
+import styles from './ContactForm.module.css';
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const CALCOM_USERNAME = import.meta.env.VITE_CALCOM_USERNAME || 'measures-ai';
+const CALCOM_EVENT_SLUG = import.meta.env.VITE_CALCOM_EVENT_SLUG || 'demo';
 
-const GetStartedForm = () => {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    company: '',
-    message: '',
-  });
+// Email validation
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+export const DemoBooking = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', company: '' });
+  const [showCalendar, setShowCalendar] = useState(false);
   const [status, setStatus] = useState('');
+  const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    if (showCalendar) {
+      (async function () {
+        const cal = await getCalApi();
+        cal("ui", { 
+          theme: "dark",
+          styles: {
+            branding: { brandColor: "#ffffff" }
+          }
+        });
+      })();
+    }
+  }, [showCalendar]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear error for the field being edited
+    if (formErrors[e.target.name]) {
+      setFormErrors({ ...formErrors, [e.target.name]: '' });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('');
+    
+    // Validate all fields
+    const errors = {};
+    
+    if (!formData.name || formData.name.trim() === '') {
+      errors.name = 'Please enter your name';
+    }
+    
+    if (!formData.email || formData.email.trim() === '') {
+      errors.email = 'Please enter your email address';
+    } else if (!validateEmail(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    // If there are errors, show them and stop
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+    
+    setFormErrors({});
+    setStatus('loading');
+
     try {
-      // Add attribution data to form
-      const formWithAttribution = addAttributionToForm(form);
-      
-      // Push to data layer before email submission
+      // EMAIL SENDING - COMMENTED OUT FOR TESTING
+      const formWithAttribution = addAttributionToForm(formData);
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, formWithAttribution, PUBLIC_KEY);
+
+      // Track lead
       try {
         pushLeadToDataLayer({
-          leadType: 'Contact',
-          userData: form,
-          formData: {
-            id: 'main-contact-form',
-            name: 'homepage_contact',
-            variant: getFormVariant({})
+          leadType: 'Demo Request',
+          userData: formData,
+          formData: { 
+            id: 'demo-form', 
+            name: 'demo_booking',
+            variant: 'inline_embed'
           },
           value: parseInt(import.meta.env.VITE_DEFAULT_LEAD_VALUE || '100', 10),
           currency: 'USD',
           pageConfig: {
-            slug: 'homepage',
-            cta: 'Contact Us'
+            slug: 'demo',
+            cta: 'Book Demo'
           }
         });
       } catch (dataLayerError) {
-        console.warn('Data layer push failed, but continuing with form submission:', dataLayerError);
+        console.warn('Data layer push failed:', dataLayerError);
       }
-      
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        formWithAttribution,
-        PUBLIC_KEY
-      );
-      setStatus('Message sent! We will follow up soon.');
-      setForm({ name: '', email: '', company: '', message: '' });
+
+      // Show calendar
+      setShowCalendar(true);
+      setStatus('');
     } catch (error) {
-      setStatus('Failed to send. Please try again later.');
+      setStatus('error');
+      console.error('Form submission failed:', error);
     }
   };
 
+  if (showCalendar) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.calendarSection}>
+          <h2 className={styles.headline}>We'll be in touch,<br></br>{formData.name}!</h2>
+          <p className={styles.subtext}>
+            Want to schedule something now? Pick a time below.
+          </p>
+          
+          <div className={styles.calendarWrapper}>
+            <Cal
+              calLink={`${CALCOM_USERNAME}/${CALCOM_EVENT_SLUG}`}
+              config={{
+                layout: 'column_view',
+                theme: 'dark',
+                prefill: {
+                  name: formData.name,
+                  email: formData.email,
+                  ...(formData.company && { 
+                    metadata: { company: formData.company } 
+                  })
+                }
+              }}
+              style={{ width: "100%", minHeight: "600px" }}
+            />
+          </div>
+
+          <div className={styles.alternativeOptions}>
+            <p className={styles.alternativeText}>
+              We'll reach out within 24 hours if you don't schedule a time.<br></br>
+              Or email us directly at <span className={styles.emailAddress}>info@measuresai.com</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div className={styles.formGroup}>
-        <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" value={form.name} onChange={handleChange} required />
+    <div className={styles.container}>
+      <div className={styles.formSection}>
+        <h2 className={styles.headline}>Book a Demo</h2>
+        <p className={styles.subtext}>Let us show you how Measures AI can change your business</p>
+        
+        <form onSubmit={handleSubmit} className={styles.form} noValidate>
+          <div className={styles.inputGroup}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your name"
+              value={formData.name}
+              onChange={handleChange}
+              className={`${styles.input} ${formErrors.name ? styles.inputError : ''}`}
+            />
+            {formErrors.name && (
+              <span className={styles.errorText}>{formErrors.name}</span>
+            )}
+          </div>
+
+          <div className={styles.inputGroup}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Work email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`${styles.input} ${formErrors.email ? styles.inputError : ''}`}
+            />
+            {formErrors.email && (
+              <span className={styles.errorText}>{formErrors.email}</span>
+            )}
+          </div>
+
+          <div className={styles.inputGroup}>
+            <input
+              type="text"
+              name="company"
+              placeholder="Company name (optional)"
+              value={formData.company}
+              onChange={handleChange}
+              className={styles.input}
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            className={styles.button}
+            disabled={status === 'loading'}
+          >
+            {status === 'loading' ? 'Loading...' : 'Get in Touch'}
+          </button>
+
+          {status === 'error' && (
+            <div className={styles.errorMessage}>
+              <span>Something went wrong. Please try again.</span>
+            </div>
+          )}
+        </form>
       </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" value={form.email} onChange={handleChange} required />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="company">Company</label>
-        <input type="text" id="company" name="company" value={form.company} onChange={handleChange} />
-      </div>
-      <div className={styles.formGroup}>
-        <label htmlFor="message">Message</label>
-        <textarea id="message" name="message" value={form.message} onChange={handleChange} required></textarea>
-      </div>
-      <button type="submit" className={styles.contactBtn}>Submit</button>
-      {status && <div style={{ marginTop: '1em', color: status.startsWith('Message') ? 'green' : 'red' }}>{status}</div>}
-    </form>
+    </div>
   );
 };
 
-export default GetStartedForm; 
+export default DemoBooking;

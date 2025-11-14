@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './Header.module.css';
 
 const Header = () => {
@@ -27,11 +27,11 @@ const Header = () => {
               : styles.navList
           }
         >
-          <li><a href="#opportunity">About</a></li>
+          <li><a href="#opportunity">About Measures</a></li>
           <li><a href="#insight">Our Insights</a></li>
           <li><a href="#process">Our Process</a></li>
           {/* <li><a href="#mission">Mission & Vision</a></li> */}
-          <li><a href="#contact">Get Started</a></li>
+          <li><a href="#contact">Book a Demo</a></li>
         </ul>
       </nav>
     </header>

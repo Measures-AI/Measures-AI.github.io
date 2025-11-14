@@ -1,6 +1,5 @@
-import React from 'react';
-import styles from './Insights.module.css';
 import Carousel from './Carousel';
+import styles from './Insights.module.css';
 
 const cardData = [
   {
@@ -125,7 +124,7 @@ const Insights = () => (
   <section id="insight" className={styles.insight}>
     <div className={styles.insightText}>
       <h2>Our Insights</h2>
-      <p className={styles.insightTagline}>Real insights from real data, no humans necessary.</p>
+      <p className={styles.insightTagline}>Real insights from real data. No humans necessary.</p>
     </div>
     <div className={styles.carouselContainer}>
       <Carousel cards={cardData} />
