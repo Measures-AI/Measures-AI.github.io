@@ -191,10 +191,10 @@ export const config = {
     },
     {
       "type": "quote",
-      "text": "This is the best application of AI our investors have seen to date.",
-      "author": "Chad",
-      "role": "CFO",
-      "mobile": false
+      "text": "This is the best AI application our PE investors have seen to date.",
+      "author": "CFO",
+      "role": "Denver",
+      "mobile": true
     }
   ],
   "bottomCta": {

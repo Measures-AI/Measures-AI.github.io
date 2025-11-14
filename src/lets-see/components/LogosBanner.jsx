@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './LogosBanner.module.css';
 
 export const LogosBanner = ({ logos }) => {
@@ -10,7 +9,7 @@ export const LogosBanner = ({ logos }) => {
 
   return (
     <section className={styles.logosBanner}>
-      <div className={styles.logoLabel}>integrates with all your platforms</div>
+      <div className={styles.logoLabel}>Integrates with all your platforms</div>
       <div className={styles.logosContainer}>
         <div className={styles.logoRow}>
           {firstRow.map((logo, index) => (

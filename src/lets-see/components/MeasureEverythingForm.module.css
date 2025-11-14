@@ -1,0 +1,582 @@
+/* Form Container */
+.formContainer {
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Form Header */
+.formHeadline {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: white;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.formSubtext {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 2rem 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.inputGroup {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 16px 18px;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(126, 203, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(126, 203, 255, 0.15);
+}
+
+.inputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.inputError:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.errorText {
+  font-size: 0.85rem;
+  color: #ef4444;
+  margin-top: 0.5rem;
+  display: block;
+  font-weight: 500;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #7ecbff 0%, #4f9ecf 100%);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(126, 203, 255, 0.4);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  color: #ef4444;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Modal Overlay - Full Screen */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Content */
+.modalContent {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
+  border: 1px solid rgba(126, 203, 255, 0.2);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Close Button */
+.modalClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* Modal Header */
+.modalHeader {
+  margin-bottom: 30px;
+  text-align: center;
+  padding-right: 40px; /* Account for close button */
+}
+
+.modalHeadline {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #e5e5e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.modalSubtext {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  line-height: 1.5;
+  font-family: 'Montserrat', sans-serif;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Calendar Wrapper */
+.calendarWrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 20px 0;
+  min-height: 600px;
+}
+
+/* Hide scrollbars in Cal embed */
+.calendarWrapper :global(*) {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
+}
+
+.calendarWrapper :global(*::-webkit-scrollbar) {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.calendarWrapper :global(*::-webkit-scrollbar-track) {
+  background: transparent !important;
+}
+
+.calendarWrapper :global(*::-webkit-scrollbar-thumb) {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 3px !important;
+}
+
+.calendarWrapper :global(*::-webkit-scrollbar-thumb:hover) {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Alternative Options */
+.alternativeOptions {
+  text-align: center;
+  padding: 20px 0 0 0;
+}
+
+.alternativeText {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  margin: 0;
+  line-height: 1.6;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.emailAddress {
+  color: #7ecbff;
+  font-weight: 500;
+  opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .formContainer {
+    max-width: 100%;
+  }
+
+  .formHeadline {
+    font-size: 1.5rem;
+  }
+
+  .formSubtext {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .input {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+  }
+
+  .submitButton {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  .modalOverlay {
+    padding: 10px;
+  }
+
+  .modalContent {
+    padding: 30px 20px;
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .modalClose {
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .modalHeader {
+    margin-bottom: 20px;
+    padding-right: 30px;
+  }
+
+  .modalHeadline {
+    font-size: 2rem;
+  }
+
+  .modalSubtext {
+    font-size: 1rem;
+  }
+
+  .calendarWrapper {
+    padding: 15px;
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formHeadline {
+    font-size: 1.35rem;
+  }
+
+  .formSubtext {
+    font-size: 0.85rem;
+  }
+
+  .input {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+  }
+
+  .submitButton {
+    padding: 13px 18px;
+    font-size: 0.95rem;
+  }
+
+  .modalContent {
+    padding: 20px 15px;
+    border-radius: 12px;
+  }
+
+  .modalClose {
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .modalHeader {
+    margin-bottom: 15px;
+    padding-right: 25px;
+  }
+
+  .modalHeadline {
+    font-size: 1.5rem;
+  }
+
+  .modalSubtext {
+    font-size: 0.9rem;
+  }
+
+  .calendarWrapper {
+    padding: 10px;
+    min-height: 450px;
+  }
+
+  .alternativeText {
+    font-size: 0.85rem;
+  }
+}
+
+/* Add to your existing styles */
+
+/* SUCCESS STATE STYLES */
+.successContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 20px;
+}
+
+.checkmarkCircle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+  animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.checkmark {
+  width: 48px;
+  height: 48px;
+  color: white;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: checkAnimation 0.6s ease-out 0.2s backwards;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes checkAnimation {
+  from {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    opacity: 0;
+  }
+  to {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.successTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: white;
+  margin: 0;
+}
+
+.successMessage {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.successSubtext {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* UPDATED Modal Content - Better scrolling and sizing */
+.modalContent {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.98), rgba(10, 10, 10, 0.98));
+  border: 1px solid rgba(126, 203, 255, 0.2);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease;
+  overflow: hidden; /* Changed from overflow-y: auto */
+}
+
+/* UPDATED Calendar Wrapper - Fixed sizing */
+.calendarWrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 20px 0;
+  height: 500px; /* Fixed height */
+  overflow: hidden; /* Prevent overflow */
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Ensure Cal.com embed fits properly */
+.calendarWrapper > div {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Better scrollbar styling for the calendar */
+.calendarWrapper :global(iframe) {
+  border-radius: 8px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .modalContent {
+    padding: 30px 20px;
+    max-height: 95vh;
+    border-radius: 16px;
+  }
+
+  .calendarWrapper {
+    padding: 15px;
+    height: 450px;
+    margin: 15px 0;
+  }
+
+  .checkmarkCircle {
+    width: 70px;
+    height: 70px;
+  }
+
+  .checkmark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .successTitle {
+    font-size: 24px;
+  }
+
+  .successMessage {
+    font-size: 15px;
+  }
+
+  .successSubtext {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 20px 15px;
+    border-radius: 12px;
+  }
+
+  .calendarWrapper {
+    padding: 10px;
+    height: 400px;
+  }
+
+  .successTitle {
+    font-size: 20px;
+  }
+
+  .successMessage {
+    font-size: 14px;
+  }
+
+  .successSubtext {
+    font-size: 12px;
+  }
+}

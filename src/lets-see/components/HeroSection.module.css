@@ -1,7 +1,7 @@
 .hero {
   width: 100%;
-  min-height: 90vh;
-  padding: 60px 0 80px 0;
+  min-height: 70vh; /* Changed from 90vh */
+  padding: 60px 0 40px 0; /* Reduced bottom padding from 80px to 40px */
   background: transparent;
 }
 
@@ -16,7 +16,7 @@
   grid-template-columns: 1.2fr 0.8fr;
   gap: 60px;
   align-items: start;
-  min-height: 70vh;
+  min-height: auto; /* Changed from 70vh to auto */
 }
 
 .leftContent {

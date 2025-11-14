@@ -1,137 +1,78 @@
-import React, { useState } from 'react';
+import { DemoCard } from './DemoCard';
 import styles from './HeroSection.module.css';
 import { LeadForm } from './LeadForm';
-import { DemoCard } from './DemoCard';
+import { MeasureEverythingForm } from './MeasureEverythingForm';
 
 export const HeroSection = ({ 
   headline, 
   story, 
-  points, 
-  belowPoints, 
+  points,
+  belowPoints,
   fields, 
-  demoData, 
-  role, 
-  industry, 
+  demoData,
+  role,
+  industry,
   cta,
   themeColor,
   slug,
-  pageConfig = {}
+  pageConfig
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  // Check if this is the measure-everything page
+  const isMeasureEverything = slug === 'measure-everything';
 
   return (
-    <>
-      <section className={styles.hero}>
-        <div className={styles.content}>
-          <div className={styles.heroGrid}>
-            <div className={styles.leftContent}>
-              <h1 className={styles.headline}>{headline}</h1>
-              <div className={styles.story}>
-                {Array.isArray(story) 
-                  ? story.map((line, index) => (
-                      <React.Fragment key={index}>
-                        {line}
-                        {index < story.length - 1 && <br />}
-                      </React.Fragment>
-                    ))
-                  : story
-                }
-              </div>
-              
-              {points && points.length > 0 && (
-                <div className={styles.points}>
-                  {points.map((point, index) => (
-                    <div key={index} className={styles.point}>
-                      {point.icon && (
-                        <i 
-                          className={`fas fa-${point.icon} ${styles.pointIcon}`}
-                          style={{ color: themeColor || '#7ecbff' }}
-                        ></i>
-                      )}
-                      <span 
-                        className={styles.pointText}
-                        style={{ color: themeColor || '#7ecbff' }}
-                      >
-                        {point.text || point}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              
-              <div className={styles.formSection}>
-                {belowPoints && (
-                  <p className={styles.belowPoints}>{belowPoints}</p>
-                )}
-                
-                {/* Desktop form */}
-                <div className={styles.formContainer}>
-                  <LeadForm 
-                    role={role} 
-                    industry={industry} 
-                    cta={cta}
-                    fields={fields}
-                    themeColor={themeColor}
-                    headline={headline}
-                    story={story}
-                    slug={slug}
-                    pageConfig={pageConfig}
-                  />
-                </div>
-                
-                {/* Mobile CTA button */}
-                <button 
-                  className={styles.mobileCTAButton}
-                  onClick={openModal}
-                  style={{ backgroundColor: themeColor || '#4f46e5' }}
-                >
-                  {cta || 'Request demo'}
-                </button>
-              </div>
-              
-              <div className={styles.mobileCard}>
-                <DemoCard demoData={demoData} themeColor={themeColor} />
-              </div>
-            </div>
+    <section className={styles.hero}>
+      <div className={styles.content}>
+        <div className={styles.heroGrid}>
+          <div className={styles.leftContent}>
+            <h1 className={styles.headline}>{headline}</h1>
+            <p className={styles.story}>{story}</p>
             
-            <div className={styles.rightContent}>
-              <DemoCard demoData={demoData} themeColor={themeColor} />
-            </div>
-          </div>
-        </div>
-      </section>
+            {points && points.length > 0 && (
+              <div className={styles.points}>
+                {points.map((point, index) => (
+                  <div key={index} className={styles.point}>
+                    {point.icon && (
+                      <i className={`fas fa-${point.icon} ${styles.pointIcon}`} 
+                         style={{ color: themeColor }}></i>
+                    )}
+                    <span className={styles.pointText}>{point.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.modalClose} onClick={closeModal}>
-              <i className="fas fa-times"></i>
-            </button>
-            <div className={styles.modalHeader}>
-              <h3 className={styles.modalTitle}>Get Started</h3>
-              <p className={styles.modalSubtitle}>Tell us about yourself and we'll be in touch.</p>
-            </div>
-            <LeadForm 
-              role={role} 
-              industry={industry} 
-              cta={cta}
-              fields={fields}
-              themeColor={themeColor}
-              headline={headline}
-              story={story}
-              slug={slug}
-              pageConfig={pageConfig}
-              onSuccess={closeModal}
-            />
+            {belowPoints && (
+              <p className={styles.belowPoints}>{belowPoints}</p>
+            )}
+          </div>
+
+          <div className={styles.rightContent}>
+            {isMeasureEverything ? (
+              // Show the new calendar-switching form
+              <div className={styles.formContainer}>
+                <MeasureEverythingForm config={pageConfig} />
+              </div>
+            ) : demoData ? (
+              // Show demo card for other pages
+              <DemoCard {...demoData} themeColor={themeColor} />
+            ) : (
+              // Show regular lead form as fallback
+              <div className={styles.formContainer}>
+                <LeadForm 
+                  fields={fields}
+                  cta={cta}
+                  role={role}
+                  industry={industry}
+                  themeColor={themeColor}
+                  slug={slug}
+                  pageConfig={pageConfig}
+                />
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </section>
   );
 };
-
-export default HeroSection;

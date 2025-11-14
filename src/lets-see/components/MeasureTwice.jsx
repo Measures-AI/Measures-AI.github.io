@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styles from './MeasureTwice.module.css';
-import { TrackingProvider } from './TrackingProvider';
+import { useEffect, useState } from 'react';
 import { Header } from './Header';
+import styles from './MeasureTwice.module.css';
 import { MeasureTwiceForm } from './MeasureTwiceForm';
+import { TrackingProvider } from './TrackingProvider';
 
 export const MeasureTwice = ({ config }) => {
   const [isMobile, setIsMobile] = useState(false);

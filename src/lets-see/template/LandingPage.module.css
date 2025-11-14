@@ -127,3 +127,67 @@
     font-size: 14px;
   }
 }
+
+/* Sticky Footer */
+.stickyFooter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px 24px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.stickyFooter.show {
+  transform: translateY(0);
+}
+
+.stickyFooterContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stickyButton {
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #7ecbff 0%, #4f9ecf 100%);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stickyButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(126, 203, 255, 0.4);
+}
+
+.stickyButton i {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .stickyFooter {
+    padding: 12px 20px;
+  }
+
+  .stickyButton {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+}

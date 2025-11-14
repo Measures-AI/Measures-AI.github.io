@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './QuoteSection.module.css';
 
 export const QuoteSection = ({ text, author, role }) => {
@@ -6,13 +5,13 @@ export const QuoteSection = ({ text, author, role }) => {
     <section className={styles.quoteSection}>
       <div className={styles.content}>
         <blockquote className={styles.quote}>
-          {text}
+          <div>{text}</div>
+          {(author || role) && (
+            <div className={styles.attribution}>
+              — {author}{role ? `, ${role}` : ''}
+            </div>
+          )}
         </blockquote>
-        {(author || role) && (
-          <div className={styles.attribution}>
-            — {author}{role ? `, ${role}` : ''}
-          </div>
-        )}
       </div>
     </section>
   );
