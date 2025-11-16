@@ -230,7 +230,14 @@
   }
   
   .rightContent {
-    display: none;
+    display: flex;
+    order: 2;
+    justify-content: center; /* Center the form on tablets */
+    width: 100%; /* Full width to allow proper centering */
+  }
+  
+  .formContainer {
+    margin: 0 auto; /* Additional centering */
   }
   
   .mobileCard {
@@ -277,7 +284,7 @@
   
   .formContainer {
     max-width: 100%;
-    display: none;
+    padding: 40px 20px;
   }
   
   .formSection {
