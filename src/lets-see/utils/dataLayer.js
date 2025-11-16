@@ -208,13 +208,15 @@ export function applyUtmOverrides(config, search = window.location.search) {
 /**
  * Add attribution data to form submission payload
  * @param {object} formData - Original form data
+ * @param {string} formLocation - Optional form location identifier
  * @returns {object} Form data with attribution fields added
  */
-export function addAttributionToForm(formData) {
+export function addAttributionToForm(formData, formLocation = null) {
     const attribution = parseAttributionData();
 
     return {
         ...formData,
+        ...(formLocation && { form_location: formLocation }), // Add form location if provided
         gclid: attribution.gclid,
         utm_source: attribution.utm_source,
         utm_medium: attribution.utm_medium,

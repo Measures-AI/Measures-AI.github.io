@@ -1,9 +1,14 @@
 import Cal, { getCalApi } from "@calcom/embed-react";
+import emailjs from '@emailjs/browser'; // ADD THIS
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { pushLeadToDataLayer } from '../utils/dataLayer';
+import { addAttributionToForm, pushLeadToDataLayer } from '../utils/dataLayer'; // ADD addAttributionToForm
 import styles from './MeasureEverythingForm.module.css';
 
+// ADD THESE CONSTANTS
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 const CALCOM_USERNAME = import.meta.env.VITE_CALCOM_USERNAME || 'measures-ai';
 const CALCOM_EVENT_SLUG = import.meta.env.VITE_CALCOM_EVENT_SLUG || 'demo';
 
@@ -74,6 +79,10 @@ export const MeasureEverythingForm = ({ config }) => {
     setStatus('loading');
 
     try {
+      // Send email with attribution data
+      const formWithAttribution = addAttributionToForm(formData, 'Measure Everything Form');
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, formWithAttribution, PUBLIC_KEY);
+
       // Track lead
       try {
         pushLeadToDataLayer({

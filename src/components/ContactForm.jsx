@@ -72,7 +72,7 @@ export const DemoBooking = () => {
 
     try {
       // EMAIL SENDING - COMMENTED OUT FOR TESTING
-      const formWithAttribution = addAttributionToForm(formData);
+      const formWithAttribution = addAttributionToForm(formData, 'Demo Booking Form');
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, formWithAttribution, PUBLIC_KEY);
 
       // Track lead
