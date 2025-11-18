@@ -82,15 +82,15 @@ export const MeasureTwiceForm = ({ config }) => {
           
           if (response.ok) {
             const result = await response.json();
-            console.log('✅ Successfully subscribed to Beehiiv newsletter:', result);
+            console.log('Successfully subscribed to Beehiiv newsletter:', result);
             beehiivSuccess = true;
           } else {
             const errorText = await response.text();
-            console.error('⚠️ Beehiiv subscription failed (HTTP error):', errorText);
+            console.error('Beehiiv subscription failed (HTTP error):', errorText);
             beehiivSuccess = false;
           }
         } catch (beehiivNetworkError) {
-          console.error('⚠️ Beehiiv subscription failed (network error):', beehiivNetworkError);
+          console.error('Beehiiv subscription failed (network error):', beehiivNetworkError);
           beehiivSuccess = false;
         }
         
@@ -345,7 +345,7 @@ UTM Campaign: ${formWithAttribution.utm_campaign || 'measure-twice-newsletter'}`
     <form className={styles.formCard} onSubmit={onSubmit} id="measure-twice-form">
       {!showAdditionalFields ? (
         <div className={styles.attractiveLine}>
-          Join operators, builders, and analysts who want to measure what actually matters.
+          Join operators, builders, and analysts that measure what actually matters.
         </div>
       ) : (
         <div className={styles.oneMoreThing}>
