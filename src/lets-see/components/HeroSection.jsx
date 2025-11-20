@@ -18,7 +18,7 @@ export const HeroSection = ({
   pageConfig
 }) => {
   // Check if this is the measure-everything page
-  const isMeasureEverything = slug === 'measure-everything';
+  const isMeasureEverything = true;
 
   return (
     <section className={styles.hero}>
