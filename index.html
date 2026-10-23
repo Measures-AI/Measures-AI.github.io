@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/img/platform.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Measures AI - Thank You</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       * {
         margin: 0;
@@ -14,79 +14,264 @@
         font-family: 'Montserrat', sans-serif;
         color: white;
       }
-      html, body {
-        height: 100%;
-        width: 100%;
-      }
+
       body {
         background-color: black;
         overflow-x: hidden;
       }
+
+      html, body {
+        height: 100%;
+        width: 100%;
+      }
+
+      strong, em, b, i {
+        color: inherit !important;
+      }
+
       .header {
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         padding: 20px 50px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        z-index: 1000;
         background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
       }
+
       .logo {
         font-weight: 700;
         font-size: 24px;
       }
+
       .container {
         min-height: 100vh;
-        padding: 100px 24px 50px 24px;
+        padding: 100px 50px 50px 50px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        text-align: center;
+        justify-content: flex-start;
       }
+
+      .jumbotron {
+        text-align: center;
+        margin-bottom: 40px;
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
       .headline {
         font-size: 4rem;
         font-weight: 700;
-        line-height: 1.1;
         margin-bottom: 20px;
+        line-height: 1.1;
       }
+
       .subline {
         font-size: 2rem;
+        font-weight: 400;
         color: #b0b0b0;
-        margin-bottom: 48px;
+        margin-bottom: 60px;
       }
+
+      .content-container {
+        max-width: 1000px;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 60px;
+      }
+
       .content {
-        max-width: 700px;
+        max-width: 800px;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 60px;
+        margin-right: auto;
       }
+
       .content p {
         font-size: 1.1rem;
         line-height: 1.6;
         margin-bottom: 20px;
+        font-weight: 400;
       }
-      .contact {
-        margin-top: 40px;
+
+      .content ul {
+        margin: 20px 0;
+        padding-left: 20px;
+      }
+
+      .content li {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        /* margin-bottom: 10px; */
+        font-weight: 400;
+        font-style: italic;
+      }
+
+      .timeline {
+        max-width: 1000px;
+        width: 100%;
+        margin-bottom: 60px;
+      }
+
+      .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .timeline-dash {
+        width: 30px;
+        height: 10px;
+        background-color: white;
+        margin-right: 20px;
+        margin-top: 8px;
+        flex-shrink: 0;
+      }
+
+      .timeline-content {
+        flex: 1;
+      }
+
+      .timeline-date {
+        font-weight: 700;
         font-size: 1rem;
+        margin-bottom: 5px;
+      }
+
+      .timeline-text {
+        font-size: 1rem;
+        line-height: 1.5;
         color: #b0b0b0;
       }
+
+      .positive {
+        color: #99FF99;
+      }
+
+      .pitch {
+        color: #ffD700;
+      }
+
+      .negative {
+        color: #FF9999;
+      }
+
+      .contact {
+        max-width: 1000px;
+        width: 100%;
+        text-align: left;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #e0e0e0;
+        margin-top: 60px;
+        margin-bottom: 60px;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .timeline-highlight-wrapper {
+        border: 3px solid #99FF99;
+        border-radius: 12px;
+        padding: 20px 17px 0px 17px;
+        margin: 0 -20px 20px -20px;
+      }
+
+      @media (max-width: 800px) {
+        .header {
+          padding: 20px 20px;
+        }
+
+        .logo {
+          font-size: 20px;
+        }
+
+        .container {
+          padding: 80px 20px 50px 20px;
+        }
+
+        .headline {
+          font-size: 2.5rem;
+        }
+
+        .subline {
+          font-size: 1.5rem;
+        }
+
+        .content, .timeline, .contact {
+          max-width: 100%;
+        }
+
+        .timeline-dash {
+          margin-right: 15px;
+        }
+      }
+
       @media (max-width: 600px) {
-        .header { padding: 20px 24px; }
-        .headline { font-size: 2.5rem; }
-        .subline { font-size: 1.4rem; }
+        .headline {
+          font-size: 2rem;
+        }
+
+        .subline {
+          font-size: 1.2rem;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="header">
+    <header class="header">
       <div class="logo">Measures AI</div>
-    </div>
+    </header>
+
     <div class="container">
-      <h1 class="headline">Thank you for your support.</h1>
-      <div class="subline">Sep 2024 &ndash; Dec 2025</div>
-      <div class="content">
-        <p>Measures AI has wound down.</p>
-        <p>Thank you to our customers for trusting a small team with important work, and to our investors and advisors for your time, support, and hard questions.</p>
-        <p>We will be playing the game again soon.</p>
+      <div class="jumbotron">
+        <h1 class="headline">Thank you for your support.</h1>
+        <p class="subline">Sep 2024 - Dec 2025</p>
       </div>
-      <div class="contact">Questions? Contact beckett (at) becketthyde (dot) com.</div>
+
+      <div class="content-container">
+      <div class="content">
+        <p><strong>Measures AI turned unstructured customer communications into financial insight.</strong></p>
+        
+        <p>We ingested customer calls, emails, and chats and used fine-tuned models to answer the questions:</p>
+        
+        <ul>
+          <li>What problems are contributing the most to lost sales or customer churn?</li>
+          <li>How much do they cost?</li>
+        </ul>
+        
+        <p>We focused on sales and support teams, but had product leaders as our biggest cheerleaders. Our mission was to "Measure everything."</p>
+        
+        <p>We were extremely accurate at putting a price on behavior. <strong>Our models guessed revenue within 1% of actual with just conversations...</strong> no invoice data at all.</p>
+        
+        <p>We didn't build a repeatable distribution motion fast enough. On Dec 15th, we made the decision to wind down and return capital to our investors.</p>
+        
+        <p>We set out to build something ambitious and didn't get there. We're proud of the work, the problems we took seriously, and the people who chose to bet on us.</p>
+        
+        <p>Thank you to our customers for trusting a small team with important work. Thank you to our investors and advisors for your time, capital, and hard questions.</p>
+        
+        <p><br/>We will be playing the game again soon.</p>
+      </div>
+    </div>
+
+      <div class="contact">
+        <p>If you have any questions, please contact beckett (at) becketthyde (dot) com.</p>
+      </div>
     </div>
   </body>
 </html>
